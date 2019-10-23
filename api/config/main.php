@@ -20,6 +20,11 @@
             ],
             'response'   => [
                 'class'         => 'yii\web\Response',
+                // 'as resBeforeSend' => [
+                //     'class'         => 'api\extensions\ResBeforeSendBehavior',
+                //     'defaultCode'   => 500,
+                //     'defaultMsg'    => 'error',
+                // ],
                 'on beforeSend' => function ($event) {
                     $response = $event->sender;
                     $data     = null;

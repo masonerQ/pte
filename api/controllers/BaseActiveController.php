@@ -1,8 +1,6 @@
 <?php
 
-
     namespace api\controllers;
-
 
     use yii\filters\auth\CompositeAuth;
     use yii\filters\auth\HttpBasicAuth;
@@ -51,7 +49,6 @@
                             'class' => HttpBearerAuth::className()
                         ],
                         // 3.请求参数: access token 当作API URL请求参数发送，这种方式应主要用于JSONP请求，因为它不能使用HTTP头来发送access token
-                        // http://localhost/user/index/index?access-token=123
                         'QueryParamAuth' => [
                             'class'      => QueryParamAuth::className(),
                             'tokenParam' => 'access-token'

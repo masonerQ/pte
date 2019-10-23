@@ -18,7 +18,7 @@
         public function actionIndex()
         {
             return [
-                'code' => '200',
+                'code' => 500,
                 'msg'  => '这是course/index'
             ];
         }

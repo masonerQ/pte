@@ -8,7 +8,6 @@
     {
         public $modelClass = 'common\models\User';
 
-
         public function actionIndex()
         {
             return [
