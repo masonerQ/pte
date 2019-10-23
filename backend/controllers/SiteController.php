@@ -32,7 +32,9 @@
                         [
                             'actions' => [
                                 'logout',
-                                'index'
+                                'index',
+                                'test',
+                                'main'
                             ],
                             'allow'   => true,
                             'roles'   => ['@'],
@@ -40,7 +42,7 @@
                     ],
                 ],
                 'verbs'  => [
-                    'class' => VerbFilter::className(),
+                    'class'   => VerbFilter::className(),
                     'actions' => [
                         'logout' => ['post'],
                     ],
@@ -68,6 +70,17 @@
         public function actionIndex()
         {
             return $this->render('index');
+        }
+
+        public function actionTest()
+        {
+            $this->layout = false;
+            return $this->render('test');
+        }
+
+        public function actionMain()
+        {
+            return $this->render('main');
         }
 
         /**
