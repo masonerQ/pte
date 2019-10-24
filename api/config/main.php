@@ -8,6 +8,7 @@
 
     return [
         'id'                  => 'app-api',
+        'name'                => '无界教育',
         'basePath'            => dirname(__DIR__),
         'bootstrap'           => ['log'],
         'controllerNamespace' => 'api\controllers',
@@ -43,10 +44,7 @@
                         'data'    => $data,
                     ];
                     $response->statusCode = 200;
-                },
-                // 'class'       => 'api\extensions\ResBeforeSendBehavior',
-                // 'defaultCode' => 500,
-                // 'defaultMsg'  => 'error'
+                }
             ],
             'user'       => [
                 'identityClass'   => 'common\models\User',
@@ -89,16 +87,13 @@
                             'user',
                             'course'
                         ],
-                        'except'        => [
-                            'update',
-                            'view'
-                        ],
                         'pluralize'     => false,
+                        'except'        => [],
                         'extraPatterns' => [
-                            'abc' => 'index',
-                            //自定义的方法
-                            'ttt' => 'test',
-                            //自定义的方法
+                            'abc'   => 'index',
+                            'ttt'   => 'test',
+                            'login' => 'login',
+                            'reg'   => 'register',
                         ]
                     ],
                 ],
