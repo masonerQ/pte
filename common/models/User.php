@@ -17,6 +17,7 @@
      * @property string $password_reset_token
      * @property string $verification_token
      * @property string $access_token
+     * @property string $access_token_expir
      * @property string $email
      * @property string $auth_key
      * @property integer $status
@@ -96,6 +97,22 @@
             return static::findOne(
                 [
                     'username' => $username,
+                    'status'   => self::STATUS_ACTIVE
+                ]
+            );
+        }
+
+        /**
+         * Finds user by email
+         *
+         * @param string $email
+         * @return static|null
+         */
+        public static function findByEmail($email)
+        {
+            return static::findOne(
+                [
+                    'email' => $email,
                     'status'   => self::STATUS_ACTIVE
                 ]
             );

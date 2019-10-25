@@ -38,8 +38,6 @@
 
         public function actionRegister()
         {
-            $username      = Yii::$app->request->post('username');
-            $password      = Yii::$app->request->post('password');
             $UserFormModel = new SignupForm();
             if ($UserFormModel->load(Yii::$app->request->post(), '') && $UserFormModel->signup()) {
                 Yii::$app->response->statusText = '注册成功';
@@ -53,13 +51,16 @@
         public function actionLogin()
         {
             $loginForm = new LoginForm();
-            if ($loginForm->load(Yii::$app->request->post()) && $loginForm->login()){
-
+            if ($loginForm->load(Yii::$app->request->post(), '') && $loginForm->login()) {
+                Yii::$app->response->statusText = '登录成功';
+                return [
+                    'access_token' => Yii::$app->user->identity->access_token
+                ];
+            } else {
+                Yii::$app->response->statusCode = '304';
+                Yii::$app->response->statusText = '登录失败';
             }
-            return [
-                'code' => 200,
-                'msg'  => '这是登录'
-            ];
+
         }
 
     }
