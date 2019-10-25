@@ -8,6 +8,6 @@
 ?>
 Hello <?= $user->username ?>, 欢迎注册无界教育
 
-下面是您的激活链接:
+下面是您的激活码:
 
-<?= $verifyLink ?>
+<?= $user->verification_token ?>

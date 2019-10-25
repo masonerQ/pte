@@ -5,8 +5,8 @@
 
 $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $user->password_reset_token]);
 ?>
-Hello <?= $user->username ?>,
+Hello <?= $user->username ?>, 欢迎注册无界教育
 
-Follow the link below to reset your password:
+下面是您的找回密码 验证码:
 
-<?= $resetLink ?>
+<?= $user->password_reset_token; ?>

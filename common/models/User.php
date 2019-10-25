@@ -112,8 +112,8 @@
         {
             return static::findOne(
                 [
-                    'email' => $email,
-                    'status'   => self::STATUS_ACTIVE
+                    'email'  => $email,
+                    'status' => self::STATUS_ACTIVE
                 ]
             );
         }
@@ -217,6 +217,17 @@
             $this->password_hash = Yii::$app->security->generatePasswordHash($password);
         }
 
+        public function generateCode($length = 6)
+        {
+            $pool        = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';//定义一个验证码池，验证码由其中几个字符组成
+            $word_length = $length;                                                         // 验证码长度
+            $code        = '';                                                              // 验证码
+            for ($i = 0, $mt_rand_max = strlen($pool) - 1; $i < $word_length; $i++) {
+                $code .= $pool[mt_rand(0, $mt_rand_max)];
+            }
+            return $code;
+        }
+
         /**
          * Generates "remember me" authentication key
          */
@@ -230,12 +241,13 @@
          */
         public function generatePasswordResetToken()
         {
-            $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+            $this->password_reset_token = $this->generateCod(6);
         }
 
         public function generateEmailVerificationToken()
         {
-            $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+            $this->verification_token = $this->generateCode(6);
+            // $this->verification_token = Yii::$app->security->generateRandomString(6);
         }
 
         public function generateAccessToken()

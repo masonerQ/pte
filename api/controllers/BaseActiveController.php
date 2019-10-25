@@ -63,4 +63,20 @@
             ];
             return $behaviors;
         }
+
+
+
+        public function generateCode($length = 6)
+        {
+            $pool        = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';//定义一个验证码池，验证码由其中几个字符组成
+            $word_length = $length;                                                         // 验证码长度
+            $code        = '';                                                              // 验证码
+            for ($i = 0, $mt_rand_max = strlen($pool) - 1; $i < $word_length; $i++) {
+                $code .= $pool[mt_rand(0, $mt_rand_max)];
+            }
+            return $code;
+        }
+
+
+
     }
