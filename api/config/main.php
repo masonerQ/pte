@@ -90,10 +90,12 @@
                         'pluralize'     => false,
                         'except'        => [],
                         'extraPatterns' => [
-                            'abc'   => 'index',
-                            'ttt'   => 'test',
-                            'login' => 'login',
-                            'reg'   => 'register',
+                            'abc'       => 'index',
+                            'ttt'       => 'test',
+                            'login'     => 'login',
+                            'reg'       => 'register',
+                            'sendemail' => 'send-email',
+                            'restpwd'   => 'rest-password',
                         ]
                     ],
                 ],
