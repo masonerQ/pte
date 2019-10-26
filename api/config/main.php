@@ -17,34 +17,16 @@
                 'csrfParam' => '_csrf-api',
                 'parsers'   => [
                     'application/json' => 'yii\web\JsonParser',
+                    'text/json'        => 'yii\web\JsonParser'
                 ]
             ],
             'response'   => [
                 'class'         => 'yii\web\Response',
-                // 'as resBeforeSend' => [
-                //     'class'         => 'api\extensions\ResBeforeSendBehavior',
-                //     'defaultCode'   => 500,
-                //     'defaultMsg'    => 'error',
-                // ],
-                'on beforeSend' => function ($event) {
-                    $response = $event->sender;
-                    $data     = null;
-                    $message  = $response->statusText;
-                    if ($response->statusCode == 200) {
-                        $data = $response->data;
-                    } else {
-                        if ($response->statusCode == 401) {
-                            $message = '授权信息不正确';
-                        }
-                    }
-                    $response->data       = [
-                        'success' => $response->isSuccessful,
-                        'code'    => $response->getStatusCode(),
-                        'message' => $message,
-                        'data'    => $data,
-                    ];
-                    $response->statusCode = 200;
-                }
+                'format'        => yii\web\Response::FORMAT_JSON,
+                'charset'       => 'UTF-8',
+                'as beforeSend' => [
+                    'class' => 'api\extensions\BeforeSendBehavior'
+                ]
             ],
             'user'       => [
                 'identityClass'   => 'common\models\User',
@@ -85,17 +67,23 @@
                         'class'         => 'yii\rest\UrlRule',
                         'controller'    => [
                             'user',
-                            'course'
+                            'course',
+                            'teacher',
+                            'article',
+                            'goods',
+                            'video-class',
                         ],
                         'pluralize'     => false,
                         'except'        => [],
                         'extraPatterns' => [
-                            'abc'       => 'index',
-                            'ttt'       => 'test',
-                            'login'     => 'login',
-                            'reg'       => 'register',
-                            'sendemail' => 'send-email',
-                            'restpwd'   => 'rest-password',
+                            'index'      => 'index',
+                            'view'       => 'view',
+                            'login'      => 'login',
+                            'reg'        => 'register',
+                            'sendemail'  => 'send-email',
+                            'restpwd'    => 'rest-password',
+                            'list'       => 'list',
+                            'classcate' => 'video-class-cate',
                         ]
                     ],
                 ],

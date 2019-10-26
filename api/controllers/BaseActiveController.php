@@ -8,6 +8,7 @@
     use yii\filters\auth\QueryParamAuth;
     use yii\filters\ContentNegotiator;
     use yii\filters\RateLimiter;
+    use yii\filters\VerbFilter;
     use yii\rest\ActiveController;
     use yii\web\Response;
 
@@ -16,21 +17,34 @@
         public $serializer = [
             'class'              => 'yii\rest\Serializer',
             'collectionEnvelope' => 'items',
+            'metaEnvelope'       => 'page',
+            'linksEnvelope'      => 'link',
         ];
+
+        protected function verbs()
+        {
+            $verbs          = parent::verbs();
+            $verbs['index'] = ['GET'];
+            $verbs['view']  = ['GET'];
+            return $verbs;
+        }
 
         public function actions()
         {
             $actions = parent::actions();
-            unset($actions['index']);
-            unset($actions['view']);
             unset($actions['create']);
             unset($actions['update']);
+            return $actions;
         }
 
         public function behaviors()
         {
             parent::behaviors();
             $behaviors = [
+                'verbFilter'        => [
+                    'class'   => VerbFilter::className(),
+                    'actions' => $this->verbs(),
+                ],
                 'rateLimiter'       => [
                     'class'                  => RateLimiter::className(),
                     'enableRateLimitHeaders' => true
@@ -38,11 +52,12 @@
                 'contentNegotiator' => [
                     'class'   => ContentNegotiator::className(),
                     'formats' => [
-                        'application/json' => Response::FORMAT_JSON
+                        'application/json' => Response::FORMAT_JSON,
                     ]
                 ],
                 'authenticator'     => [
                     'class'       => CompositeAuth::className(),
+                    'optional'    => ['video-class'=>'video-class-cate', 'index', 'view'],
                     'authMethods' => [
                         /*下面是三种验证access_token方式*/
                         // 1.HTTP 基本认证: access token 当作用户名发送，应用在access token可安全存在API使用端的场景，例如，API使用端是运行在一台服务器上的程序。
@@ -65,7 +80,6 @@
         }
 
 
-
         public function generateCode($length = 6)
         {
             $pool        = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';//定义一个验证码池，验证码由其中几个字符组成
@@ -76,7 +90,6 @@
             }
             return $code;
         }
-
 
 
     }

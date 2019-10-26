@@ -21,8 +21,7 @@
         {
             $behaviors                              = parent::behaviors();
             $behaviors['authenticator']['optional'] = [
-                'login',
-                'register'
+                'login', 'register'
             ];
             return $behaviors;
         }
@@ -38,15 +37,15 @@
         {
             Yii::$app->response->statusText = '注册成功';
             return [
-                'code' => 200,
-                'msg'  => 'test'
+                'code' => 200, 'msg' => 'test'
             ];
         }
 
         /**
          * 注册接口
-         * @author 郭锋
+         *
          * @throws \yii\base\Exception
+         * @author 郭锋
          */
         public function actionRegister()
         {
@@ -55,15 +54,16 @@
                 Yii::$app->response->statusText = '注册成功';
             } else {
                 Yii::$app->response->statusCode = 203;
-                $errorValues = array_values($UserFormModel->getFirstErrors());
-                Yii::$app->response->statusText = '注册失败:'.$errorValues[0];
+                $errorValues                    = array_values($UserFormModel->getFirstErrors());
+                Yii::$app->response->statusText = '注册失败:' . $errorValues[0];
             }
         }
 
         /**
          * 登录
-         * @author 郭锋
+         *
          * @return array|null
+         * @author 郭锋
          */
         public function actionLogin()
         {
@@ -83,27 +83,28 @@
 
         /**
          * 发送验证码
+         *
          * @author 郭锋
          */
         public function actionSendEmail()
         {
-            $email              = Yii::$app->request->post('email');
-            $type               = Yii::$app->request->post('type');
+            $email = Yii::$app->request->post('email');
+            $type  = Yii::$app->request->post('type');
 
-            if (!$email || !$type || !in_array($type, [1,2])){
+            if (!$email || !$type || !in_array($type, [1, 2])) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数错误';
                 return null;
             }
 
-            if ($type == 2 && !(User::findByEmail($email))){
+            if ($type == 2 && !(User::findByEmail($email))) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '您还未注册, 请注册';
                 return null;
             }
 
-            $EmailSendLog                = EmailSendLog::findOne(['email' => $email, 'type'=>$type, 'active'=>1]);
-            if ($EmailSendLog && $EmailSendLog->created_at+3600 > time()){
+            $EmailSendLog = EmailSendLog::findOne(['email' => $email, 'type' => $type, 'active' => 1]);
+            if ($EmailSendLog && $EmailSendLog->created_at + 3600 > time()) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '您已经发送过验证码了';
                 return null;
@@ -113,18 +114,17 @@
             $transaction        = Yii::$app->db->beginTransaction();
 
             $isSend = Yii::$app->mailer->compose(
-                    ['html' => 'register-html'],
-                    ['verification_token' => $verification_token]
-                )
-                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' 自动发送(请勿回复)'])
-                ->setTo( $email)
-                ->setCharset('utf-8')
-                ->setSubject('注册验证码 ' . Yii::$app->name)
-                ->send();
+                ['html' => 'register-html'],
+                ['verification_token' => $verification_token]
+            )->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' 自动发送(请勿回复)'])->setTo(
+                $email
+            )->setCharset('utf-8')->setSubject(
+                '注册验证码 ' . Yii::$app->name
+            )->send();
 
             $EmailSendLogModel                = new EmailSendLog();
             $EmailSendLogModel->email_address = $email;
-            $EmailSendLogModel->type = $type;
+            $EmailSendLogModel->type          = $type;
 
             if ($isSend && $EmailSendLogModel->save()) {
                 try {
@@ -143,6 +143,7 @@
 
         /**
          * 重置密码
+         *
          * @throws \yii\base\Exception
          */
         public function actionRestPassword()
@@ -150,10 +151,10 @@
             $model = new ResetPasswordForm();
             if ($model->load(Yii::$app->request->post(), '') && $model->validate() && $model->resetPassword()) {
                 Yii::$app->response->statusText = '重置成功';
-            }else{
+            } else {
                 Yii::$app->response->statusCode = 203;
-                $errorsValue = array_values($model->getFirstErrors());
-                Yii::$app->response->statusText = '重置失败:'. $errorsValue[0];
+                $errorsValue                    = array_values($model->getFirstErrors());
+                Yii::$app->response->statusText = '重置失败:' . $errorsValue[0];
             }
         }
     }
