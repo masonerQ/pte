@@ -43,17 +43,6 @@
         {
             parent::behaviors();
             $behaviors = [
-                'corsFilter'        => [
-                    'class' => Cors::class,
-                    'cors'  => [
-                        'Origin'                           => ['http://wwwb.baidu.com'],
-                        'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
-                        'Access-Control-Request-Headers'   => ['Content-Type', 'Accept'],
-                        'Access-Control-Allow-Credentials' => null,
-                        'Access-Control-Max-Age'           => 86400,
-                        'Access-Control-Expose-Headers'    => [],
-                    ]
-                ],
                 'contentNegotiator' => [
                     'class'   => ContentNegotiator::className(),
                     'formats' => [
