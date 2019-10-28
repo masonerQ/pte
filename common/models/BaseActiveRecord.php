@@ -2,9 +2,11 @@
 
     namespace common\models;
 
+    use yii\base\Action;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
     use yii\filters\RateLimitInterface;
+    use yii\web\Request;
 
     /**
      * BaseActiveRecord
@@ -30,26 +32,25 @@
         /**
          * 返回在单位时间内允许的请求的最大数目，例如，[10, 60] 表示在60秒内最多请求10次。
          * Returns the maximum number of allowed requests and the window size.
-         * @param \yii\web\Request $request the current request
-         * @param \yii\base\Action $action the action to be executed
+         *
+         * @param Request $request the current request
+         * @param Action $action  the action to be executed
          * @return array an array of two elements. The first element is the maximum number of allowed requests,
-         * and the second element is the size of the window in seconds.
+         *                                  and the second element is the size of the window in seconds.
          */
         public function getRateLimit($request, $action)
         {
-            return [
-                $this->rateLimit,
-                1
-            ];
+            return [1, 1];
         }
 
         /**
          * 返回剩余的允许的请求数。
          * Loads the number of allowed requests and the corresponding timestamp from a persistent storage.
-         * @param \yii\web\Request $request the current request
-         * @param \yii\base\Action $action the action to be executed
+         *
+         * @param Request $request the current request
+         * @param Action $action  the action to be executed
          * @return array an array of two elements. The first element is the number of allowed requests,
-         * and the second element is the corresponding UNIX timestamp.
+         *                                  and the second element is the corresponding UNIX timestamp.
          */
         public function loadAllowance($request, $action)
         {
@@ -62,10 +63,11 @@
         /**
          * 保存请求时的UNIX时间戳。
          * Saves the number of allowed requests and the corresponding timestamp to a persistent storage.
-         * @param \yii\web\Request $request the current request
-         * @param \yii\base\Action $action the action to be executed
-         * @param int $allowance the number of allowed requests remaining.
-         * @param int $timestamp the current timestamp.
+         *
+         * @param Request $request   the current request
+         * @param Action $action    the action to be executed
+         * @param int              $allowance the number of allowed requests remaining.
+         * @param int              $timestamp the current timestamp.
          */
         public function saveAllowance($request, $action, $allowance, $timestamp)
         {

@@ -35,9 +35,13 @@
                 } else if ($response->statusCode == 401) {
                     $message = '授权信息不正确';
                 } else if ($response->statusCode == 404) {
-                    $message = '无记录, 不存在';
+                    $message = '不存在';
                 } else if ($response->statusCode == 405) {
                     $message = '请求方法不允许';
+                } else if ($response->statusCode == 429) {
+                    $message = '您访问太快了, 让服务喝口水...';
+                } else if ($response->statusCode == 500) {
+                    $message = '服务器错误'; //$response->data['message'];
                 } else {
                     $message = $response->data['message'];
                 }
