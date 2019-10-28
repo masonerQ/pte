@@ -16,7 +16,8 @@
         'controllerNamespace' => 'api\controllers',
         'components'          => [
             'request'    => [
-                'csrfParam' => '_csrf-api',
+                'class'     => '\yii\web\Request',
+                // 'csrfParam' => '_csrf-api',
                 'parsers'   => [
                     'application/json' => 'yii\web\JsonParser',
                     'text/json'        => 'yii\web\JsonParser'
@@ -51,7 +52,8 @@
                         'class'  => 'yii\log\FileTarget',
                         'levels' => [
                             'error',
-                            'warning'
+                            'warning',
+                            'info'
                         ],
                     ],
                 ],

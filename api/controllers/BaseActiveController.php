@@ -2,11 +2,13 @@
 
     namespace api\controllers;
 
+    use yii\filters\AccessControl;
     use yii\filters\auth\CompositeAuth;
     use yii\filters\auth\HttpBasicAuth;
     use yii\filters\auth\HttpBearerAuth;
     use yii\filters\auth\QueryParamAuth;
     use yii\filters\ContentNegotiator;
+    use yii\filters\Cors;
     use yii\filters\RateLimiter;
     use yii\filters\VerbFilter;
     use yii\rest\ActiveController;
@@ -41,13 +43,16 @@
         {
             parent::behaviors();
             $behaviors = [
-                'verbFilter'        => [
-                    'class'   => VerbFilter::className(),
-                    'actions' => $this->verbs(),
-                ],
-                'rateLimiter'       => [
-                    'class'                  => RateLimiter::className(),
-                    'enableRateLimitHeaders' => true
+                'corsFilter'        => [
+                    'class' => Cors::class,
+                    'cors'  => [
+                        'Origin'                           => ['http://wwwb.baidu.com'],
+                        'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
+                        'Access-Control-Request-Headers'   => ['Content-Type', 'Accept'],
+                        'Access-Control-Allow-Credentials' => null,
+                        'Access-Control-Max-Age'           => 86400,
+                        'Access-Control-Expose-Headers'    => [],
+                    ]
                 ],
                 'contentNegotiator' => [
                     'class'   => ContentNegotiator::className(),
@@ -55,9 +60,13 @@
                         'application/json' => Response::FORMAT_JSON,
                     ]
                 ],
+                'verbFilter'        => [
+                    'class'   => VerbFilter::className(),
+                    'actions' => $this->verbs(),
+                ],
                 'authenticator'     => [
                     'class'       => CompositeAuth::className(),
-                    'optional'    => ['video-class'=>'video-class-cate', 'index', 'view'],
+                    'optional'    => ['video-class' => 'video-class-cate', 'index', 'view'],
                     'authMethods' => [
                         /*下面是三种验证access_token方式*/
                         // 1.HTTP 基本认证: access token 当作用户名发送，应用在access token可安全存在API使用端的场景，例如，API使用端是运行在一台服务器上的程序。
@@ -74,6 +83,10 @@
                             'tokenParam' => 'access-token'
                         ]
                     ],
+                ],
+                'rateLimiter'       => [
+                    'class'                  => RateLimiter::className(),
+                    'enableRateLimitHeaders' => true
                 ]
             ];
             return $behaviors;

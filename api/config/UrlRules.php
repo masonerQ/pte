@@ -11,6 +11,7 @@
                 'article',
                 'goods',
                 'video-class',
+                'pte-online-exercise',
             ],
             'pluralize'     => false,
             'except'        => [],
@@ -22,7 +23,7 @@
                 'sendemail' => 'send-email',
                 'restpwd'   => 'rest-password',
                 'list'      => 'list',
-                'classcate' => 'video-class-cate',
+                'classcate' => 'video-class-cate'
             ]
         ]
     ];
