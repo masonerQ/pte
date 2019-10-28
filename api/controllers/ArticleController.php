@@ -10,9 +10,7 @@
 
     class ArticleController extends BaseActiveController
     {
-
         public $modelClass = 'common\models\Article';
-
 
         public function actions()
         {
@@ -24,7 +22,6 @@
 
         public function actionIndex()
         {
-
             $where   = [];
             $nivo    = Yii::$app->request->get('nivo');
             $cate_id = Yii::$app->request->get('cate_id');

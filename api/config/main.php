@@ -6,6 +6,8 @@
         require __DIR__ . '/params-local.php'
     );
 
+    $rules = require __DIR__ . '/UrlRules.php';
+
     return [
         'id'                  => 'app-api',
         'name'                => '无界教育',
@@ -58,35 +60,11 @@
             //    'errorAction' => 'site/error',
             //],
             'urlManager' => [
+                'class'               => 'yii\web\UrlManager',
                 'enablePrettyUrl'     => true,
                 'enableStrictParsing' => true,
                 'showScriptName'      => false,
-                'rules'               => [
-                    // '/<controller:\w+>/<action:\w+>' => '/<controller>/<action>',
-                    [
-                        'class'         => 'yii\rest\UrlRule',
-                        'controller'    => [
-                            'user',
-                            'course',
-                            'teacher',
-                            'article',
-                            'goods',
-                            'video-class',
-                        ],
-                        'pluralize'     => false,
-                        'except'        => [],
-                        'extraPatterns' => [
-                            'index'      => 'index',
-                            'view'       => 'view',
-                            'login'      => 'login',
-                            'reg'        => 'register',
-                            'sendemail'  => 'send-email',
-                            'restpwd'    => 'rest-password',
-                            'list'       => 'list',
-                            'classcate' => 'video-class-cate',
-                        ]
-                    ],
-                ],
+                'rules'               => $rules
             ],
         ],
         'params'              => $params,
