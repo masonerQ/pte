@@ -145,6 +145,7 @@
             } else {
                 $transaction->rollBack();
             }
+            return 'asd';
         }
 
 
