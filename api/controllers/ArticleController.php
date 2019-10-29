@@ -34,14 +34,15 @@
                 $where['nivo'] = $nivo;
             }
 
-            $model = ($this->modelClass)::find()->select(
-                ['id', 'cate_id', 'avatar', 'article_name', 'article_content']
-            )->where($where);
+            $model = ($this->modelClass)::find()
+                                        ->select(
+                                            ['id', 'cate_id', 'avatar', 'article_name', 'article_content', 'created_at']
+                                        )
+                                        ->where($where);
 
             return new ActiveDataProvider(
-                [
-                    'query'      => $model,
-                    'pagination' => new Pagination(['pageSize' => 20])
+                ['query'      => $model,
+                 'pagination' => new Pagination(['pageSize' => 20])
                 ]
             );
         }
