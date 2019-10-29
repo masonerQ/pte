@@ -49,6 +49,17 @@
                         'application/json' => Response::FORMAT_JSON,
                     ]
                 ],
+                'corsFilter'        => [
+                    'class' => Cors::class,
+                    'cors'  => [
+                        'Origin'                           => ['*'],
+                        'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
+                        'Access-Control-Request-Headers'   => ['Content-Type', 'Accept'],
+                        'Access-Control-Allow-Credentials' => null,
+                        'Access-Control-Max-Age'           => 86400,
+                        'Access-Control-Expose-Headers'    => [],
+                    ]
+                ],
                 'verbFilter'        => [
                     'class'   => VerbFilter::className(),
                     'actions' => $this->verbs(),
