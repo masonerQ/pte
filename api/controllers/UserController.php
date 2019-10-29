@@ -110,7 +110,7 @@
                 return null;
             }
 
-            $EmailSendLog = EmailSendLog::findOne(['email' => $email, 'type' => $type, 'active' => 1]);
+            $EmailSendLog = EmailSendLog::find()->where(['email' => $email, 'type' => $type, 'active' => 1])->one();
             if ($EmailSendLog && $EmailSendLog->created_at + 3600 > time()) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '您已经发送过验证码了';
