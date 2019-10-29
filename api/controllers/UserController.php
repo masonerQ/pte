@@ -62,8 +62,10 @@
         public function actionRegister()
         {
             $UserFormModel = new SignupForm();
-            if ($UserFormModel->load(Yii::$app->request->post(),
-                                     '') && $UserFormModel->signup()) {
+            if ($UserFormModel->load(
+                    Yii::$app->request->post(),
+                    ''
+                ) && $UserFormModel->signup()) {
                 Yii::$app->response->statusText = '注册成功';
             } else {
                 Yii::$app->response->statusCode = 203;
@@ -81,8 +83,10 @@
         public function actionLogin()
         {
             $loginForm = new LoginForm();
-            if ($loginForm->load(Yii::$app->request->post(),
-                                 '') && $loginForm->login()) {
+            if ($loginForm->load(
+                    Yii::$app->request->post(),
+                    ''
+                ) && $loginForm->login()) {
                 Yii::$app->response->statusText = '登录成功';
                 return ['access_token' => Yii::$app->user->identity->access_token
                 ];
@@ -104,8 +108,10 @@
             $email = Yii::$app->request->post('email');
             $type  = Yii::$app->request->post('type');
 
-            if (!$email || !$type || !in_array($type,
-                                               [1, 2])) {
+            if (!$email || !$type || !in_array(
+                    $type,
+                    [1, 2]
+                )) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数错误';
                 return null;
@@ -117,7 +123,9 @@
                 return null;
             }
 
-            $EmailSendLog = EmailSendLog::find()->where(['email_address' => $email, 'type' => $type, 'active' => 1])->one();
+            $EmailSendLog = EmailSendLog::find()
+                                        ->where(['email_address' => $email, 'type' => $type, 'active' => 1])
+                                        ->one();
             if ($EmailSendLog && $EmailSendLog->created_at + 3600 > time()) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '您已经发送过验证码了';
@@ -162,8 +170,10 @@
         public function actionRestPassword()
         {
             $model = new ResetPasswordForm();
-            if ($model->load(Yii::$app->request->post(),
-                             '') && $model->validate() && $model->resetPassword()) {
+            if ($model->load(
+                    Yii::$app->request->post(),
+                    ''
+                ) && $model->validate() && $model->resetPassword()) {
                 Yii::$app->response->statusText = '重置成功';
             } else {
                 Yii::$app->response->statusCode = 203;
