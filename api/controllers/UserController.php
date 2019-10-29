@@ -21,7 +21,7 @@
         {
             $behaviors                              = parent::behaviors();
             $behaviors['authenticator']['optional'] = [
-                'login', 'register'
+                'login', 'register', 'send-email', 'rest-password'
             ];
             return $behaviors;
         }
