@@ -19,8 +19,11 @@
 
         protected function verbs()
         {
-            $verbs          = parent::verbs();
-            // $verbs['send-email'] = ['POST'];
+            $verbs                  = parent::verbs();
+            $verbs['login']         = ['POST'];
+            $verbs['register']      = ['POST'];
+            $verbs['send-email']    = ['POST'];
+            $verbs['rest-password'] = ['POST'];
             return $verbs;
         }
 
@@ -28,7 +31,10 @@
         {
             $behaviors                              = parent::behaviors();
             $behaviors['authenticator']['optional'] = [
-                'login', 'register', 'send-email', 'rest-password'
+                'login',
+                'register',
+                'send-email',
+                'rest-password'
             ];
             return $behaviors;
         }
@@ -44,7 +50,8 @@
         {
             Yii::$app->response->statusText = '注册成功';
             return [
-                'code' => 200, 'msg' => 'test'
+                'code' => 200,
+                'msg'  => 'test'
             ];
         }
 
