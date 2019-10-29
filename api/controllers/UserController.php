@@ -17,6 +17,13 @@
     {
         public $modelClass = 'common\models\User';
 
+        protected function verbs()
+        {
+            $verbs          = parent::verbs();
+            // $verbs['send-email'] = ['POST'];
+            return $verbs;
+        }
+
         public function behaviors()
         {
             $behaviors                              = parent::behaviors();
