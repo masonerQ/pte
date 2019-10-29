@@ -52,8 +52,7 @@
                         'class'  => 'yii\log\FileTarget',
                         'levels' => [
                             'error',
-                            'warning',
-                            'info'
+                            'warning'
                         ],
                     ],
                 ],
