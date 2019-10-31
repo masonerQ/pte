@@ -54,7 +54,7 @@
                     'cors'  => [
                         'Origin'                           => ['*'],
                         'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
-                        'Access-Control-Request-Headers'   => ['Content-Type', 'Accept'],
+                        'Access-Control-Request-Headers'   => ['*'],
                         'Access-Control-Allow-Credentials' => null,
                         'Access-Control-Max-Age'           => 86400,
                         'Access-Control-Expose-Headers'    => [],

@@ -25,6 +25,7 @@
                 'list'      => 'list',
                 'classcate' => 'video-class-cate',
                 'getuser'   => 'get-user',
+                'cate'   => 'cate'
             ]
         ]
     ];
