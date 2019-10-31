@@ -41,7 +41,7 @@
                 } else if ($response->statusCode == 429) {
                     $message = '您访问太快了, 让服务喝口水...';
                 } else if ($response->statusCode == 500) {
-                    // $message = '服务器错误'; //$response->data['message'];
+                    $message = '服务器错误'; //$response->data['message'];
                 }
             }
 

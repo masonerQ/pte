@@ -62,10 +62,7 @@
         public function actionRegister()
         {
             $UserFormModel = new SignupForm();
-            if ($UserFormModel->load(
-                    Yii::$app->request->post(),
-                    ''
-                ) && $UserFormModel->signup()) {
+            if ($UserFormModel->load(Yii::$app->request->post(), '') && $UserFormModel->signup()) {
                 Yii::$app->response->statusText = '注册成功';
             } else {
                 Yii::$app->response->statusCode = 203;
@@ -142,23 +139,24 @@
                                        ->setSubject('注册验证码 ' . Yii::$app->name)
                                        ->send();
 
-            $EmailSendLogModel                = new EmailSendLog();
-            $EmailSendLogModel->email_address = $email;
-            $EmailSendLogModel->type          = $type;
+            $EmailSendLogModel                     = new EmailSendLog();
+            $EmailSendLogModel->email_address      = $email;
+            $EmailSendLogModel->verification_token = $verification_token;
+            $EmailSendLogModel->type               = $type;
 
-            if ($isSend && $EmailSendLogModel->save()) {
-                try {
-                    $transaction->commit();
+            try {
+                if ($isSend && $EmailSendLogModel->save()) {
                     Yii::$app->response->statusText = '发送成功';
-                } catch (Exception $e) {
+                    $transaction->commit();
+                } else {
+                    Yii::$app->response->statusText = '发送失败';
                     $transaction->rollBack();
-                    Yii::$app->response->statusCode = 203;
-                    Yii::$app->response->statusText = '发送失败:' . $e->getMessage();
                 }
-            } else {
+            } catch (Exception $e) {
+                Yii::$app->response->statusCode = 203;
+                Yii::$app->response->statusText = '发送失败:' . $e->getMessage();
                 $transaction->rollBack();
             }
-            return 'asd';
         }
 
 
@@ -170,10 +168,7 @@
         public function actionRestPassword()
         {
             $model = new ResetPasswordForm();
-            if ($model->load(
-                    Yii::$app->request->post(),
-                    ''
-                ) && $model->validate() && $model->resetPassword()) {
+            if ($model->load(Yii::$app->request->post(), '') && $model->validate() && $model->resetPassword()) {
                 Yii::$app->response->statusText = '重置成功';
             } else {
                 Yii::$app->response->statusCode = 203;

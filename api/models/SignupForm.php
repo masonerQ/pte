@@ -109,7 +109,7 @@
 
             $EmailSendLog                = EmailSendLog::findOne(['verification_token' => $this->code]);
             if (!$EmailSendLog){
-                $this->addError('code', '验证码错误');
+                $this->addError('code', '验证码错误'.$this->code);
                 $transaction->rollBack();
                 return false;
             }
