@@ -25,7 +25,7 @@
             ],
             'response'   => [
                 'class'         => 'yii\web\Response',
-                'format'        => yii\web\Response::FORMAT_JSON,
+                'format'        => yii\web\Response::FORMAT_HTML,
                 'charset'       => 'UTF-8',
                 'as beforeSend' => [
                     'class' => 'api\extensions\BeforeSendBehavior'

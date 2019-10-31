@@ -12,6 +12,6 @@
 
         public function getChild()
         {
-            return $this->hasMany(OnlineExerciseCate::class, ['id' => 'parent_id']);
+            return $this->hasMany(OnlineExerciseCate::class, ['parent_id' => 'id'])->select(['id', 'cate_name', 'cate_desc']);
         }
     }

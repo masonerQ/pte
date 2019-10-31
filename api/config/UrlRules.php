@@ -24,6 +24,7 @@
                 'restpwd'   => 'rest-password',
                 'list'      => 'list',
                 'classcate' => 'video-class-cate',
+                'getuser'   => 'get-user',
             ]
         ]
     ];
