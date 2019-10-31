@@ -138,17 +138,9 @@
         {
             // var_dump($user->verification_token);
             // return  true;
-            return Yii::$app->mailer->compose(
-                [
-                    'html' => 'emailVerify-html',
-                    'text' => 'emailVerify-text'
-                ],
-                ['user' => $user]
-            )
+            return Yii::$app->mailer->compose(['html' => 'emailVerify-html', 'text' => 'emailVerify-text'], ['user' => $user])
                                     ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' 自动发送(请勿回复)'])
-                                    ->setTo(
-                                        $this->email
-                                    )
+                                    ->setTo($this->email)
                                     ->setCharset('utf-8')
                                     ->setSubject(Yii::$app->name . '账户激活')
                                     ->send();
