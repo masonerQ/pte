@@ -50,7 +50,7 @@
                 [
                     'status',
                     'default',
-                    'value' => self::STATUS_INACTIVE
+                    'value' => self::STATUS_ACTIVE
                 ],
                 [
                     'status',

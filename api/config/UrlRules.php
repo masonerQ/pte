@@ -23,7 +23,7 @@
                 'sendemail' => 'send-email',
                 'restpwd'   => 'rest-password',
                 'list'      => 'list',
-                'classcate' => 'video-class-cate'
+                'classcate' => 'video-class-cate',
             ]
         ]
     ];

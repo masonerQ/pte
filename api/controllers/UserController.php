@@ -30,10 +30,11 @@
         public function behaviors()
         {
             $behaviors                              = parent::behaviors();
-            $behaviors['authenticator']['optional'] = ['login',
-                                                       'register',
-                                                       'send-email',
-                                                       'rest-password'
+            $behaviors['authenticator']['optional'] = [
+                'login',
+                'register',
+                'send-email',
+                'rest-password'
             ];
             return $behaviors;
         }
@@ -48,8 +49,9 @@
         public function actionTest()
         {
             Yii::$app->response->statusText = '注册成功';
-            return ['code' => 200,
-                    'msg'  => 'test'
+            return [
+                'code' => 200,
+                'msg'  => 'test'
             ];
         }
 
@@ -80,16 +82,15 @@
         public function actionLogin()
         {
             $loginForm = new LoginForm();
-            if ($loginForm->load(
-                    Yii::$app->request->post(),
-                    ''
-                ) && $loginForm->login()) {
+            if ($loginForm->load(Yii::$app->request->post(), '') && $loginForm->login()) {
                 Yii::$app->response->statusText = '登录成功';
-                return ['access_token' => Yii::$app->user->identity->access_token
+                return [
+                    'access_token' => Yii::$app->user->identity->access_token
                 ];
             } else {
+                $errorsValue                    = array_values($loginForm->getFirstErrors());
                 Yii::$app->response->statusCode = 203;
-                Yii::$app->response->statusText = '登录失败';
+                Yii::$app->response->statusText = '登录失败:'.$errorsValue[0];
                 return null;
             }
         }

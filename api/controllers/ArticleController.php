@@ -26,25 +26,19 @@
             $nivo    = Yii::$app->request->get('nivo');
             $cate_id = Yii::$app->request->get('cate_id');
 
-            if ($cate_id) {
-                $where['cate_id'] = $cate_id;
-            }
-
             if ($nivo) {
                 $where['nivo'] = $nivo;
             }
 
+            if ($cate_id) {
+                $where['cate_id'] = $cate_id;
+            }
+
             $model = ($this->modelClass)::find()
-                                        ->select(
-                                            ['id', 'cate_id', 'avatar', 'article_name', 'article_content', 'created_at']
-                                        )
+                                        ->select(['id', 'cate_id', 'avatar', 'article_name', 'article_content', 'created_at'])
                                         ->where($where);
 
-            return new ActiveDataProvider(
-                ['query'      => $model,
-                 'pagination' => new Pagination(['pageSize' => 20])
-                ]
-            );
+            return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
         }
 
     }
