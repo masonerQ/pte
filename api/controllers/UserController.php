@@ -24,6 +24,7 @@
             $verbs['register']      = ['POST'];
             $verbs['send-email']    = ['POST'];
             $verbs['rest-password'] = ['POST'];
+            $verbs['get-user']      = ['GET'];
             return $verbs;
         }
 
@@ -90,7 +91,7 @@
             } else {
                 $errorsValue                    = array_values($loginForm->getFirstErrors());
                 Yii::$app->response->statusCode = 203;
-                Yii::$app->response->statusText = '登录失败:'.$errorsValue[0];
+                Yii::$app->response->statusText = '登录失败:' . $errorsValue[0];
                 return null;
             }
         }
@@ -176,5 +177,17 @@
                 $errorsValue                    = array_values($model->getFirstErrors());
                 Yii::$app->response->statusText = '重置失败:' . $errorsValue[0];
             }
+        }
+
+
+        public function actionGetUser()
+        {
+            $userInfo = Yii::$app->user->identity;
+            return [
+                'id'           => $userInfo['id'],
+                'username'     => $userInfo['username'],
+                'email'        => $userInfo['email'],
+                'access_token' => $userInfo['access_token'],
+            ];
         }
     }

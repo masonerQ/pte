@@ -6,6 +6,7 @@
 
     use yii\data\ActiveDataProvider;
     use yii\data\Pagination;
+    use yii\db\Query;
 
     class PteOnlineExerciseController extends BaseActiveController
     {
@@ -29,11 +30,12 @@
 
         public function actionIndex()
         {
-            $where = ['parent_id' => 0];
 
+            $where = ['parent_id' => 0];
             $model = ($this->modelClass)::find()
-                                        ->select(['id', 'cate_name', 'cate_desc'])
+                                        ->select(['id', 'parent_id', 'cate_name', 'cate_desc'])
                                         ->where($where)
+                                        ->asArray()
                                         ->with('child');
 
             return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
