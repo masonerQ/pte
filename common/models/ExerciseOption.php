@@ -16,15 +16,12 @@
      * @property int min_type
      * @package common\models
      */
-    class OnlineExercise extends BaseActiveRecord
+    class ExerciseOption extends BaseActiveRecord
     {
+
         public static function tableName()
         {
-            return "{{%online_exercise}}";
+            return "{{%online_exercise_options}}";
         }
 
-        public function getComment()
-        {
-            return $this->hasMany(Comment::class, ['exercise_id'=>'id'])->select('id, parent_id, user_id, exercise_id, type, content');
-        }
     }
