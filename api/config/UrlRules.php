@@ -27,6 +27,7 @@
                 'getuser'   => 'get-user',
                 'cate'      => 'cate',
                 'comment'   => 'comment',
+                'pass'   => 'pass-exam',
             ]
         ]
     ];

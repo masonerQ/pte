@@ -4,6 +4,11 @@
     namespace api\controllers;
 
 
+    use Yii;
+    use yii\data\ActiveDataProvider;
+    use yii\data\Pagination;
+    use yii\db\ActiveRecord;
+
     use common\models\Collection;
     use common\models\Comment;
     use common\models\ExerciseAnswer;
@@ -11,11 +16,6 @@
     use common\models\OnlineExercise;
     use common\models\OnlineExerciseCate;
     use common\models\PassExam;
-    use Yii;
-    use yii\data\ActiveDataProvider;
-    use yii\data\Pagination;
-    use yii\data\Sort;
-    use yii\db\ActiveRecord;
 
     class PteOnlineExerciseController extends BaseActiveController
     {
@@ -25,7 +25,7 @@
         public function behaviors()
         {
             $behaviors                              = parent::behaviors();
-            $behaviors['authenticator']['optional'] = ['cate', 'pass-exam'];
+            $behaviors['authenticator']['optional'] = ['cate'];
             return $behaviors;
         }
 
@@ -146,7 +146,8 @@
                 } else {
                     $isCollection = 0;
                 }
-                $value['isCollection'] = $isCollection;
+                unset($isExists);
+                $value['is_collection'] = $isCollection;
             }
 
             $ActiveDataProvider->setModels($data);
@@ -187,6 +188,31 @@
                                         ->where(['exercise_id' => $eid])
                                         ->orderBy('sorts asc')
                                         ->all();
+
+                //是否收藏
+                $CollectionIsExists = Collection::find()
+                                                ->where(['exercise_id' => $onlineExercise['id'], 'user_id' => Yii::$app->user->identity->getId()])
+                                                ->exists();
+                if ($CollectionIsExists) {
+                    $isCollection = 1;
+                } else {
+                    $isCollection = 0;
+                }
+                unset($CollectionIsExists);
+                $onlineExercise['is_collection'] = $isCollection;
+
+                //是否考过
+                $PassExamIsExists = PassExam::find()
+                                            ->where(['exercise_id' => $onlineExercise['id'], 'user_id' => Yii::$app->user->identity->getId()])
+                                            ->exists();
+                if ($PassExamIsExists) {
+                    $isCollection = 1;
+                } else {
+                    $isCollection = 0;
+                }
+                unset($PassExamIsExists);
+                $onlineExercise['is_pass'] = $isCollection;
+
 
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
@@ -254,14 +280,19 @@
         //考过
         public function actionPassExam()
         {
-            $id            = Yii::$app->request->post('id');
+            $id = Yii::$app->request->post('id');
+            if (!$id) {
+                Yii::$app->response->statusCode = 203;
+                Yii::$app->response->statusText = '参数不正确';
+                return false;
+            }
             $PassExamModel = PassExam::findOne($id);
             if (!$PassExamModel) {
                 $PassExamModel              = new PassExam();
                 $PassExamModel->exercise_id = $id;
                 $PassExamModel->user_id     = Yii::$app->user->identity->getId();
                 if ($PassExamModel->save()) {
-                    Yii::$app->response->statusText = '成功';
+                    Yii::$app->response->statusText = '考过成功';
                     return true;
                 } else {
                     Yii::$app->response->statusCode = 203;
@@ -280,8 +311,13 @@
         //收藏
         public function actionCollection()
         {
-            $id              = Yii::$app->request->post('id');
-            $level           = Yii::$app->request->post('level');
+            $id    = Yii::$app->request->post('id');
+            $level = Yii::$app->request->post('level');
+            if (!$id || !$level) {
+                Yii::$app->response->statusCode = 203;
+                Yii::$app->response->statusText = '参数不正确';
+                return false;
+            }
             $CollectionModel = Collection::findOne($id);
             if (!$CollectionModel) {
                 $CollectionModel              = new Collection();
