@@ -27,4 +27,9 @@
         {
             return $this->hasMany(Comment::class, ['exercise_id'=>'id'])->select('id, parent_id, user_id, exercise_id, type, content');
         }
+
+        public function getIscollection()
+        {
+            return $this->hasMany(Collection::class, ['exercise_id'=>'id'])->onCondition([User::className().'.id'=>\Yii::$app->user->identity->id]);
+        }
     }
