@@ -13,6 +13,14 @@
     {
         public $modelClass = 'common\models\Article';
 
+
+        public function behaviors()
+        {
+            $behaviors                              = parent::behaviors();
+            $behaviors['authenticator']['optional'] = ['index', 'cate'];
+            return $behaviors;
+        }
+
         public function actions()
         {
             $actions = parent::actions();
