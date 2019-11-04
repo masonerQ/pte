@@ -6,6 +6,7 @@
     /**
      * Class Collection
      * @property int exercise_id
+     * @property int level
      * @property int user_id
      * @package common\models
      */

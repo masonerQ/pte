@@ -14,6 +14,7 @@
     use Yii;
     use yii\data\ActiveDataProvider;
     use yii\data\Pagination;
+    use yii\data\Sort;
     use yii\db\ActiveRecord;
 
     class PteOnlineExerciseController extends BaseActiveController
@@ -72,13 +73,41 @@
         {
             $cid     = Yii::$app->request->get('cid');
             $keyword = Yii::$app->request->get('keyword');
+            $sort    = Yii::$app->request->get('sort', 'id');
             if (!$cid) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '分类id不能为空';
                 return true;
             }
 
-            $where = ['cate_id' => $cid];
+            if (!in_array($sort, ['id', 'newest', 'week', 'month'])) {
+                Yii::$app->response->statusCode = 203;
+                Yii::$app->response->statusText = '排序筛选不正常';
+                return true;
+            }
+
+            $sort_value = SORT_DESC;
+            if ($sort == 'id') {
+                $sort_field = 'id';
+                $sort_value = SORT_ASC;
+            }
+
+            if ($sort == 'newest') {
+                $sort_field = 'created_at';
+            }
+
+            $where             = [];
+            $where['cate_id']  = $cid;
+            $andWhereLookStart = $andWhereLookEnd = [];
+            if (in_array($sort, ['week', 'month'])) {
+                $sort_field        = 'looks';
+                $time              = $this->getStartEndTime($sort);
+                $start             = $time['start'];
+                $end               = $time['end'];
+                $andWhereLookStart = ['>=', 'created_at', $start];
+                $andWhereLookEnd   = ['<=', 'created_at', $end];
+            }
+
 
             $andWhere = ['or'];
             if ($keyword) {
@@ -87,11 +116,43 @@
             }
 
             $onlineExercise = OnlineExercise::find()
-                                            ->select('id, title, cate_id, content, video_link, status, type, min_type')
+                                            ->select('id, title, cate_id, content, looks, status, type, min_type')
                                             ->where($where)
-                                            ->andWhere($andWhere);
+                                            ->asArray()
+                                            ->andWhere($andWhere)
+                                            ->andWhere($andWhereLookStart)
+                                            ->andWhere($andWhereLookEnd);
 
-            return new ActiveDataProvider(['query' => $onlineExercise, 'pagination' => new Pagination(['pageSize' => 20])]);
+            $ActiveDataProvider = new ActiveDataProvider(
+                [
+                    'query'      => $onlineExercise,
+                    'pagination' => new Pagination(['pageSize' => 20]),
+                    'sort'       => [
+                        'defaultOrder' => [
+                            "$sort_field" => $sort_value
+                        ]
+                    ]
+                ]
+            );
+
+            $data = $ActiveDataProvider->getModels();
+
+            foreach ($data as $key => &$value) {
+                $isExists = Collection::find()
+                                      ->where(['exercise_id' => $value, 'user_id' => Yii::$app->user->identity->getId()])
+                                      ->exists();
+                if ($isExists) {
+                    $isCollection = 1;
+                } else {
+                    $isCollection = 0;
+                }
+                $value['isCollection'] = $isCollection;
+            }
+
+            $ActiveDataProvider->setModels($data);
+
+            return $ActiveDataProvider;
+
         }
 
 
@@ -110,7 +171,7 @@
 
             $where          = ['id' => $eid];
             $onlineExercise = OnlineExercise::find()
-                                            ->select('id, cate_id, title, content, descption, img_link, audio_link, status, type, min_type')
+                                            ->select('id, cate_id, title, content, descption, img_link, audio_link, looks, status, type, min_type')
                                             ->where($where)
                                             ->asArray()
                                             ->with('comment')
@@ -146,6 +207,10 @@
                     }
                 }
             }
+
+            //自增1
+            OnlineExercise::updateAllCounters(['looks' => 1], $where);
+
             return ['exercise' => $onlineExercise, 'options' => $options, 'answer' => $answer];
         }
 
@@ -216,10 +281,12 @@
         public function actionCollection()
         {
             $id              = Yii::$app->request->post('id');
+            $level           = Yii::$app->request->post('level');
             $CollectionModel = Collection::findOne($id);
             if (!$CollectionModel) {
                 $CollectionModel              = new Collection();
                 $CollectionModel->exercise_id = $id;
+                $CollectionModel->level       = $level;
                 $CollectionModel->user_id     = Yii::$app->user->identity->getId();
                 if ($CollectionModel->save()) {
                     Yii::$app->response->statusText = '收藏成功';

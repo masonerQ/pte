@@ -105,4 +105,40 @@
         }
 
 
+        public function getStartEndTime($type = 'week')
+        {
+
+            $time = [];
+            if ($type == 'week') {
+                //当前日期
+                $sdefaultDate = date("Y-m-d");
+                //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
+                $first = 1;
+                //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
+                $w = date('w', strtotime($sdefaultDate));
+                //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
+                $week_start = date('Y-m-d', strtotime("$sdefaultDate -" . ($w ? $w - $first : 6) . ' days')) . ' 00:00:00';
+                //本周结束日期
+                $week_end = date('Y-m-d', strtotime("$week_start +6 days")) . ' 23:59:59';
+
+                // echo $week_start."============".strtotime($week_end);
+
+                $week_start_timestamp = strtotime($week_start);
+                $week_end_timestamp   = strtotime($week_end);
+                $time['start']        = $week_start_timestamp;
+                $time['end']          = $week_end_timestamp;
+            } else if ($type == 'month') {
+                //获取本月开始的时间戳
+                $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+                //获取本月结束的时间戳
+                $endThismonth  = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+                $time['start'] = $beginThismonth;
+                $time['end']   = $endThismonth;
+            }
+
+            return $time;
+
+        }
+
+
     }
