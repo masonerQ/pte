@@ -30,7 +30,7 @@
 
         public function getUserinfo()
         {
-            return $this->hasMany(User::class, ['id'=>'user_id'])->select('id, username, nickname');
+            return $this->hasOne(User::class, ['id'=>'user_id'])->select('id, username');
         }
 
     }
