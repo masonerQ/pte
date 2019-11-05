@@ -180,10 +180,7 @@
                                             ->asArray()
                                             ->with(
                                                 [
-                                                    'comment' => function ($query) {
-                                                        return $query;
-                                                    },
-                                                    'userinfo'
+                                                    'comment',
                                                 ]
                                             )
                 // ->with('userinfo')
