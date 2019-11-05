@@ -66,7 +66,7 @@
                 ],
                 'authenticator'     => [
                     'class'       => CompositeAuth::className(),
-                    'optional'    => ['index', 'view', 'cate'],
+                    'optional'    => ['video-class' => 'video-class-cate', 'index', 'view', 'cate'],
                     'authMethods' => [
                         /*下面是三种验证access_token方式*/
                         // 1.HTTP 基本认证: access token 当作用户名发送，应用在access token可安全存在API使用端的场景，例如，API使用端是运行在一台服务器上的程序。
