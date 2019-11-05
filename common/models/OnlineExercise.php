@@ -31,6 +31,12 @@
                         ->with('userinfo');
         }
 
+        public function getCate()
+        {
+            return $this->hasOne(OnlineExerciseCate::class, ['id' => 'cate_id'])
+                        ->select('id, cate_name');
+        }
+
         // public function getIscollection()
         // {
         //     return $this->hasMany(Collection::class, ['exercise_id' => 'id'])

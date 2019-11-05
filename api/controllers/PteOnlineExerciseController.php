@@ -178,12 +178,7 @@
                                             ->select('id, cate_id, title, content, descption, img_link, audio_link, looks, status, type, min_type')
                                             ->where($where)
                                             ->asArray()
-                                            ->with(
-                                                [
-                                                    'comment',
-                                                ]
-                                            )
-                // ->with('userinfo')
+                                            ->with(['cate', 'comment'])
                                             ->one();
 
             //口语练习    答案[文字/音频]
