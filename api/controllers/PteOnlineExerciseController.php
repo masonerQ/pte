@@ -25,7 +25,7 @@
         public function behaviors()
         {
             $behaviors                              = parent::behaviors();
-            $behaviors['authenticator']['optional'] = ['index', 'cate'];
+            $behaviors['authenticator']['optional'] = ['index', 'cate', 'view'];
             return $behaviors;
         }
 
@@ -241,7 +241,18 @@
             //自增1
             OnlineExercise::updateAllCounters(['looks' => 1], $where);
 
-            return ['exercise' => $onlineExercise, 'options' => $options, 'answer' => $answer];
+            //上一个
+            $prev = OnlineExercise::find()
+                                  ->select('id')
+                                  ->where(['<', 'id', $eid])
+                                  ->scalar();
+            //下一个
+            $next = OnlineExercise::find()
+                                  ->select('id')
+                                  ->where(['>', 'id', $eid])
+                                  ->scalar();
+
+            return ['exercise' => $onlineExercise, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
         }
 
         /**
