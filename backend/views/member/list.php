@@ -93,20 +93,22 @@
                         </table>
                     </div>
                     <div class="layui-card-body ">
-                        <?=LinkPager::widget(
-                            [
-                                'pagination' => $pages,
-                            ]
-                        );?>
+
                         <div class="page">
-                            <div>
-                                <a class="prev" href="">&lt;&lt;</a>
-                                <a class="num" href="">1</a>
-                                <span class="current">2</span>
-                                <a class="num" href="">3</a>
-                                <a class="num" href="">489</a>
-                                <a class="next" href="">&gt;&gt;</a>
-                            </div>
+                            <?=LinkPager::widget(
+                                [
+                                    'pagination' => $pages,
+                                    'activePageCssClass'=>'current'
+                                ]
+                            );?>
+                            <!--<div>-->
+                            <!--    <a class="prev" href="">&lt;&lt;</a>-->
+                            <!--    <a class="num" href="">1</a>-->
+                            <!--    <span class="current">2</span>-->
+                            <!--    <a class="num" href="">3</a>-->
+                            <!--    <a class="num" href="">489</a>-->
+                            <!--    <a class="next" href="">&gt;&gt;</a>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -114,6 +116,16 @@
         </div>
     </div>
 
+    <style>
+        .page li.current a {
+            display: inline-block;
+            background: #009688;
+            color: #fff;
+            padding: 5px;
+            min-width: 15px;
+            border: 1px solid #009688;
+        }
+    </style>
 
 <?php JsBlock::begin(); ?>
     <script>

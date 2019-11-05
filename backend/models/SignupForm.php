@@ -1,12 +1,12 @@
 <?php
 
-    namespace api\models;
+    namespace backend\models;
 
-    use common\models\EmailSendLog;
     use Yii;
     use yii\base\Exception;
     use yii\base\Model;
     use common\models\User;
+    use common\models\EmailSendLog;
 
     /**
      * Signup form
@@ -38,8 +38,8 @@
                 ['password', 'required'],
                 ['password', 'string', 'min' => 6],
 
-                ['code', 'required'],
-                ['code', 'string', 'min' => 6, 'max' => 6],
+                // ['code', 'required'],
+                // ['code', 'string', 'min' => 6, 'max' => 6],
             ];
         }
 
@@ -57,13 +57,6 @@
 
             $transaction = Yii::$app->db->beginTransaction();
 
-            $EmailSendLog = EmailSendLog::findOne(['verification_token' => $this->code]);
-            if (!$EmailSendLog) {
-                $this->addError('code', '验证码错误' . $this->code);
-                $transaction->rollBack();
-                return false;
-            }
-
             $user           = new User();
             $user->username = $this->username;
             $user->email    = $this->email;
@@ -73,10 +66,10 @@
             // $user->generateEmailVerificationToken();
             // && $this->sendEmail($user)
 
-            $EmailSendLog->active        = 2;
-            $EmailSendLog->bind_username = $this->username;
+            // $EmailSendLog->active        = 2;
+            // $EmailSendLog->bind_username = $this->username;
 
-            if ($user->save() && $EmailSendLog->save()) {
+            if ($user->save()) {
                 $transaction->commit();
                 return true;
             }
