@@ -181,11 +181,16 @@
                                             ->with(['cate', 'comment'])
                                             ->one();
 
+            $count = 0;
+
             //口语练习    答案[文字/音频]
             //标记一下 大类型： 1口语，  2写作， 3阅读， 4听力
             //小类型
             $answer = $options = null;
             if ($onlineExercise) {
+                $count  = OnlineExercise::find()
+                                        ->where(['cate_id' => $onlineExercise['cate_id']])
+                                        ->count();
                 $answer = ExerciseAnswer::find()
                                         ->select('id, exercise_id, content, audio_link, sorts')
                                         ->where(['exercise_id' => $eid])
@@ -253,7 +258,7 @@
                                   ->where(['>', 'id', $eid])
                                   ->scalar();
 
-            return ['exercise' => $onlineExercise, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
+            return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
         }
 
         /**
