@@ -28,7 +28,7 @@
                 'getuser'    => 'get-user',
                 'cate'       => 'cate',
                 'comment'    => 'comment',
-                'pass'       => 'pass-exam',
+                'pass-exam'  => 'pass-exam',
                 'collection' => 'collection',
             ]
         ]

@@ -52,12 +52,11 @@
                 'corsFilter'        => [
                     'class' => Cors::class,
                     'cors'  => [
-                        'Origin'                           => ['*'],
+                        'Origin'                           => ['http://ptebind.com'],
                         'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
                         'Access-Control-Request-Headers'   => ['*'],
                         'Access-Control-Allow-Credentials' => null,
-                        'Access-Control-Max-Age'           => 86400,
-                        'Access-Control-Expose-Headers'    => [],
+                        'Access-Control-Max-Age'           => 86400
                     ]
                 ],
                 'verbFilter'        => [
