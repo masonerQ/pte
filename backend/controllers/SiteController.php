@@ -69,6 +69,7 @@
          */
         public function actionIndex()
         {
+            // $this->view->title = '标题';
             return $this->render('index');
         }
 

@@ -1,14 +1,14 @@
 <?php
 
-/* @var $this yii\web\View */
+    /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+    // $this->title = 'My Yii Application';
 ?>
 
 <!-- 顶部开始 -->
 <div class="container">
     <div class="logo">
-        <a href="./index.html">X-admin v2.2</a></div>
+        <a href="./index.html">无界教育</a></div>
     <div class="left_open">
         <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
     </div>
@@ -19,19 +19,29 @@ $this->title = 'My Yii Application';
                 <!-- 二级菜单 -->
                 <dd>
                     <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
-                        <i class="iconfont">&#xe6a2;</i>弹出最大化</a></dd>
+                        <i class="iconfont">&#xe6a2;</i>弹出最大化
+                    </a>
+                </dd>
                 <dd>
                     <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
-                        <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a></dd>
+                        <i class="iconfont">&#xe6a8;</i>弹出自动宽高
+                    </a>
+                </dd>
                 <dd>
                     <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
-                        <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>
+                        <i class="iconfont">&#xe6a8;</i>弹出指定宽高
+                    </a>
+                </dd>
                 <dd>
                     <a onclick="xadmin.add_tab('在tab打开','member-list.html')">
-                        <i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>
+                        <i class="iconfont">&#xe6b8;</i>在tab打开
+                    </a>
+                </dd>
                 <dd>
                     <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">
-                        <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a></dd>
+                        <i class="iconfont">&#xe6b8;</i>在tab打开刷新
+                    </a>
+                </dd>
             </dl>
         </li>
     </ul>
@@ -62,120 +72,151 @@ $this->title = 'My Yii Application';
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="会员管理">&#xe6b8;</i>
                     <cite>会员管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
                 <ul class="sub-menu">
                     <li>
                         <a onclick="xadmin.add_tab('统计页面','test.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>统计页面</cite></a>
+                            <cite>会员列表</cite>
+                        </a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('会员列表(静态表格)','member-list.html')">
+                        <a onclick="xadmin.add_tab('会员列表(静态表格)','member/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员列表(静态表格)</cite></a>
+                            <cite>会员列表(静态表格)</cite>
+                        </a>
                     </li>
                     <li>
                         <a onclick="xadmin.add_tab('会员列表(动态表格)','member-list1.html',true)">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员列表(动态表格)</cite></a>
+                            <cite>会员列表(动态表格)</cite>
+                        </a>
                     </li>
+                    <!--
                     <li>
                         <a onclick="xadmin.add_tab('会员删除','member-del.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员删除</cite></a>
+                            <cite>会员删除</cite>
+                        </a>
                     </li>
+
                     <li>
                         <a href="javascript:;">
                             <i class="iconfont">&#xe70b;</i>
                             <cite>会员管理</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
+                            <i class="iconfont nav_right">&#xe697;</i>
+                        </a>
                         <ul class="sub-menu">
                             <li>
                                 <a onclick="xadmin.add_tab('会员删除','member-del.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>会员删除</cite></a>
+                                    <cite>会员删除</cite>
+                                </a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('等级管理','member-list1.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>等级管理</cite></a>
+                                    <cite>等级管理</cite>
+                                </a>
                             </li>
                         </ul>
                     </li>
+                    -->
                 </ul>
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="订单管理">&#xe723;</i>
-                    <cite>订单管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
+                    <i class="iconfont left-nav-li" lay-tips="在线练习">&#xe723;</i>
+                    <cite>在线练习</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('订单列表','order-list.html')">
+                        <a onclick="xadmin.add_tab('练习分类','order-list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>订单列表</cite></a>
+                            <cite>练习分类</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('订单列表1','order-list1.html')">
+                        <a onclick="xadmin.add_tab('习题管理','order-list1.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>订单列表1</cite></a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="分类管理">&#xe723;</i>
-                    <cite>分类管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('多级分类','cate.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>多级分类</cite></a>
+                            <cite>习题管理</cite></a>
                     </li>
                 </ul>
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="城市联动">&#xe723;</i>
-                    <cite>城市联动</cite>
+                    <i class="iconfont left-nav-li" lay-tips="精品课程">&#xe723;</i>
+                    <cite>精品课程</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('三级地区联动','city.html')">
+                        <a onclick="xadmin.add_tab('课程分类','cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>三级地区联动</cite></a>
+                            <cite>课程分类</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('课程列表','cate.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>课程列表</cite></a>
                     </li>
                 </ul>
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="管理员管理">&#xe726;</i>
-                    <cite>管理员管理</cite>
+                    <i class="iconfont left-nav-li" lay-tips="视频课程">&#xe726;</i>
+                    <cite>视频课程</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('管理员列表','admin-list.html')">
+                        <a onclick="xadmin.add_tab('视频分类','admin-list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>管理员列表</cite></a>
+                            <cite>视频分类</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('角色管理','admin-role.html')">
+                        <a onclick="xadmin.add_tab('视频列表','admin-role.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>角色管理</cite></a>
+                            <cite>视频列表</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('权限分类','admin-cate.html')">
+                        <a onclick="xadmin.add_tab('电子机经','admin-cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('权限管理','admin-rule.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限管理</cite></a>
+                            <cite>电子机经</cite></a>
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="文章管理">&#xe723;</i>
+                    <cite>文章管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('文章分类','city.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>文章分类</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('文章列表','city.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>文章列表</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="教师管理">&#xe723;</i>
+                    <cite>教师管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('教师列表','/teacher/index.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>教师列表</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <!--
             <li>
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="系统统计">&#xe6ce;</i>
@@ -308,6 +349,7 @@ $this->title = 'My Yii Application';
                     </li>
                 </ul>
             </li>
+            -->
         </ul>
     </div>
 </div>
@@ -318,16 +360,19 @@ $this->title = 'My Yii Application';
     <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
         <ul class="layui-tab-title">
             <li class="home">
-                <i class="layui-icon">&#xe68e;</i>我的桌面</li></ul>
+                <i class="layui-icon">&#xe68e;</i>我的桌面
+            </li>
+        </ul>
         <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
             <dl>
                 <dd data-type="this">关闭当前</dd>
                 <dd data-type="other">关闭其它</dd>
-                <dd data-type="all">关闭全部</dd></dl>
+                <dd data-type="all">关闭全部</dd>
+            </dl>
         </div>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='./main.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe src='/site/main.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
             </div>
         </div>
         <div id="tab_show"></div>
@@ -338,10 +383,11 @@ $this->title = 'My Yii Application';
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->
 <script>//百度统计可去掉
-    var _hmt = _hmt || []; (function() {
+    var _hmt = _hmt || [];
+    (function () {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        hm.src = "https://hm.xxx.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
+        // s.parentNode.insertBefore(hm, s);
     })();
 </script>
