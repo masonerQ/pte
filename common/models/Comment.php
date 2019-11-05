@@ -8,6 +8,7 @@
      * @property integer $id
      * @property string $parent_id
      * @property string $exercise_id
+     * @property string $user_id
      * @property string $content
      * @property string $type
      * @property string $verification_token

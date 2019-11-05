@@ -121,6 +121,7 @@
                                             ->select('id, title, cate_id, content, looks, status, type, min_type')
                                             ->where($where)
                                             ->asArray()
+                                            ->with('cate')
                                             ->andWhere($andWhere)
                                             ->andWhere($andWhereLookStart)
                                             ->andWhere($andWhereLookEnd);
@@ -223,7 +224,6 @@
                 }
                 $onlineExercise['is_pass'] = $isPass;
 
-
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
                 // 阅读
@@ -267,13 +267,13 @@
          */
         public function actionComment()
         {
-            $parent_id   = intval(Yii::$app->request->post('parent_id'));
-            $exercise_id = intval(Yii::$app->request->post('exercise_id'));
-            $type        = intval(Yii::$app->request->post('type'));
+            $parent_id   = (int)(Yii::$app->request->post('parent_id'));
+            $exercise_id = (int)Yii::$app->request->post('id');
+            $type        = (int)(Yii::$app->request->post('type'));
             $content     = Yii::$app->request->post('content');
-            if (!$parent_id || !$exercise_id || !$type || !$content) {
+            if (!$exercise_id || !$type || !$content) {
                 Yii::$app->response->statusCode = 203;
-                Yii::$app->response->statusText = '参数错误';
+                Yii::$app->response->statusText = '参数错误' . $exercise_id;
                 return false;
             }
 
@@ -289,6 +289,7 @@
             $comment->exercise_id = $exercise_id;
             $comment->type        = $type;
             $comment->content     = $content;
+            $comment->user_id     = Yii::$app->user->identity->getId();
             if (!$comment->save()) {
                 $errorsValue                    = array_values($comment->getFirstErrors());
                 Yii::$app->response->statusText = '发表评论失败:' . $errorsValue[0];
