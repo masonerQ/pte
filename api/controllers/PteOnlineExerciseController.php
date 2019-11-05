@@ -336,8 +336,8 @@
         public function actionCollection()
         {
             $id    = Yii::$app->request->post('id');
-            $level = Yii::$app->request->post('level');
-            if (!$id || !$level) {
+            $level = Yii::$app->request->post('level', 1);
+            if (!$id) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
