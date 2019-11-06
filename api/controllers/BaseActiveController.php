@@ -52,7 +52,7 @@
                 'corsFilter'        => [
                     'class' => Cors::class,
                     'cors'  => [
-                        'Origin'                           => ['http://ptebind.com'],
+                        'Origin'                           => ['*'],
                         'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
                         'Access-Control-Request-Headers'   => ['*'],
                         'Access-Control-Allow-Credentials' => null,
