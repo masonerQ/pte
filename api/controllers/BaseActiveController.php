@@ -53,7 +53,7 @@
                 'corsFilter'        => [
                     'class' => Cors::class,
                     'cors'  => [
-                        'Origin'                           => ['http://pte.html'],
+                        'Origin'                           => ['*'],
                         'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
                         'Access-Control-Request-Headers'   => ['*'],
                         'Access-Control-Allow-Credentials' => null,
