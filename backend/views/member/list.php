@@ -40,7 +40,7 @@
                         </form>
                     </div>
                     <div class="layui-card-header">
-                        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+                        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量停用</button>
                         <button class="layui-btn" onclick="xadmin.open('添加用户','add.html',600,400)"><i class="layui-icon"></i>添加</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
@@ -63,7 +63,7 @@
                             <?php foreach ($list as $key => $value): ?>
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="id" value="1" lay-skin="primary">
+                                        <input type="checkbox" name="id" value="<?=$value->id;?>" lay-skin="primary">
                                     </td>
                                     <td><?= $value->id; ?></td>
                                     <td><?= $value->username; ?></td>
@@ -71,21 +71,33 @@
                                     <td>xxxx</td>
                                     <td>xxx市 xxx区</td>
                                     <td class="td-status">
-                                        <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                                        <?php if ($value->status == 10): ?>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                                        <?php elseif ($value->status == 0): ?>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已停用</span>
+                                        <?php else: ?>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">未激活</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="td-manage">
-                                        <a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">
-                                            <i class="layui-icon">&#xe601;</i>
-                                        </a>
-                                        <a title="编辑" onclick="xadmin.open('编辑','member-edit.html',600,400)" href="javascript:;">
+                                        <!--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
+                                        <!--    <i class="layui-icon">&#xe601;</i>-->
+                                        <!--</a>-->
+                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value->id; ?>',600,400)" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
-                                        <a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                                            <i class="layui-icon">&#xe631;</i>
-                                        </a>
-                                        <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                                        <!--<a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">-->
+                                        <!--    <i class="layui-icon">&#xe631;</i>-->
+                                        <!--</a>-->
+                                        <? if ($value->status == 10):?>
+                                        <a title="停用" onclick="member_del(this,'<?= $value->id; ?>')" href="javascript:void(0);">
                                             <i class="layui-icon">&#xe640;</i>
                                         </a>
+                                        <?php elseif ($value->status == 0): ?>
+                                            <a title="启用" onclick="member_del(this,'<?= $value->id; ?>')" href="javascript:void(0);">
+                                                <i class="layui-icon">&#xe601;</i>
+                                            </a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -95,12 +107,12 @@
                     <div class="layui-card-body ">
 
                         <div class="page">
-                            <?=LinkPager::widget(
+                            <?= LinkPager::widget(
                                 [
-                                    'pagination' => $pages,
-                                    'activePageCssClass'=>'current'
+                                    'pagination'         => $pages,
+                                    'activePageCssClass' => 'current'
                                 ]
-                            );?>
+                            ); ?>
                             <!--<div>-->
                             <!--    <a class="prev" href="">&lt;&lt;</a>-->
                             <!--    <a class="num" href="">1</a>-->
@@ -182,16 +194,35 @@
 
         /*用户-删除*/
         function member_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
-                //发异步删除数据
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!', {icon: 1, time: 1000});
+            layer.confirm('确认要停用吗？', function (index) {
+                $.ajax({
+                    url: "/member/del.html",
+                    method: "POST",
+                    data: {id: [id], "<?=Yii::$app->request->csrfParam;?>": "<?=Yii::$app->request->csrfToken;?>"},
+                    success: function (res) {
+                        console.log(res);
+                        if (res.code === 200) {
+                            //发异步删除数据
+                            // $(obj).parents("tr").remove();
+                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                            layer.msg('停用成功!', {icon: 1, time: 1000});
+                        } else {
+                            layer.msg(res.msg, {
+                                icon: 2
+                                , time: 8 * 1000,
+                                shift: 6
+                            });
+                        }
+                    }
+                });
+
+
             });
         }
 
 
         function delAll(argument) {
-            var ids = [];
+            let ids = [];
 
             // 获取选中的id
             $('tbody input').each(function (index, el) {
@@ -200,10 +231,37 @@
                 }
             });
 
-            layer.confirm('确认要删除吗？' + ids.toString(), function (index) {
+            if (ids.length<=0){
+                layer.msg('请选择要停用的用户!', {icon: 5, time: 1000});
+                return false;
+            }
+
+            layer.confirm('确认要停用吗?' + ids.toString(), function (index) {
                 //捉到所有被选中的，发异步进行删除
-                layer.msg('删除成功', {icon: 1});
-                $(".layui-form-checked").not('.header').parents('tr').remove();
+                $.ajax({
+                    url: "/member/del.html",
+                    method: "POST",
+                    data: {id: ids, "<?=Yii::$app->request->csrfParam;?>": "<?=Yii::$app->request->csrfToken;?>"},
+                    success: function (res) {
+                        console.log(res);
+                        if (res.code === 200) {
+                            //发异步删除数据
+                            // $(obj).parents("tr").remove();
+                            $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                            layer.msg('停用成功!', {icon: 1, time: 1000}, function () {
+                                xadmin.father_reload();
+                            });
+                        } else {
+                            layer.msg(res.msg, {
+                                icon: 2
+                                , time: 8 * 1000,
+                                shift: 6
+                            });
+                        }
+                    }
+                });
+                // layer.msg('停用成功', {icon: 1});
+                // $(".layui-form-checked").not('.header').parents('tr').remove();
             });
         }
     </script>

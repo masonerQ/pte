@@ -13,6 +13,7 @@
      */
     class SignupForm extends Model
     {
+        public $id;
         public $email;
         public $username;
         public $password;
@@ -25,17 +26,20 @@
         public function rules()
         {
             return [
+                ['id', 'required', 'message'=>'{attribute}不能为空'],
+                ['id', 'number', 'message'=>'{attribute}必须是数字'],
+
                 ['username', 'trim'],
                 ['username', 'required'],
-                ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => '昵称已存在'],
+                ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => '昵称已存在', 'on'=>'add'],
                 ['username', 'string', 'min' => 2, 'max' => 255],
                 ['email', 'trim'],
                 ['email', 'required'],
                 ['email', 'email'],
                 ['email', 'string', 'max' => 255],
-                ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => '此邮箱已存在'],
+                ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => '此邮箱已存在', 'on'=>'add'],
 
-                ['password', 'required'],
+                ['password', 'required', 'on'=>'add'],
                 ['password', 'string', 'min' => 6],
 
                 // ['code', 'required'],
@@ -55,27 +59,50 @@
                 return null;
             }
 
-            $transaction = Yii::$app->db->beginTransaction();
+            // $transaction = Yii::$app->db->beginTransaction();
 
             $user           = new User();
             $user->username = $this->username;
             $user->email    = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
-            $user->verification_token = $this->code;
+            // $user->verification_token = $this->code;
             // $user->generateEmailVerificationToken();
             // && $this->sendEmail($user)
 
             // $EmailSendLog->active        = 2;
             // $EmailSendLog->bind_username = $this->username;
 
-            if ($user->save()) {
-                $transaction->commit();
-                return true;
-            }
-            $transaction->rollBack();
-            return false;
+            return $user->save();
         }
+
+        /**
+         * Signs user up.
+         *
+         * @return bool;
+         * @throws Exception
+         */
+        public function update()
+        {
+            if (!$this->validate()) {
+                return null;
+            }
+
+
+            $user           = User::findOne($this->id);
+            if (!$user){
+                $this->addError('id', 'id不存在');
+                return false;
+            }
+            $user->username = $this->username;
+            $user->email    = $this->email;
+            if ($this->password){
+                $user->setPassword($this->password);
+                $user->generateAuthKey();
+            }
+            return $user->save();
+        }
+
 
         /**
          * Sends confirmation email to user
