@@ -12,18 +12,18 @@
      * User model
      *
      * @property integer $id
-     * @property string $username
-     * @property string $password_hash
-     * @property string $password_reset_token
-     * @property string $verification_token
-     * @property string $access_token
-     * @property string $access_token_expir
-     * @property string $email
-     * @property string $auth_key
+     * @property string  $username
+     * @property string  $password_hash
+     * @property string  $password_reset_token
+     * @property string  $verification_token
+     * @property string  $access_token
+     * @property string  $access_token_expir
+     * @property string  $email
+     * @property string  $auth_key
      * @property integer $status
      * @property integer $created_at
      * @property integer $updated_at
-     * @property string $password write-only password
+     * @property string  $password write-only password
      */
     class User extends BaseActiveRecord implements IdentityInterface
     {
@@ -47,19 +47,11 @@
         public function rules()
         {
             return [
-                [
-                    'status',
-                    'default',
-                    'value' => self::STATUS_ACTIVE
-                ],
+                ['status', 'default', 'value' => self::STATUS_ACTIVE],
                 [
                     'status',
                     'in',
-                    'range' => [
-                        self::STATUS_ACTIVE,
-                        self::STATUS_INACTIVE,
-                        self::STATUS_DELETED
-                    ]
+                    'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]
                 ],
             ];
         }

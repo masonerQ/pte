@@ -57,11 +57,7 @@
         public function actionCate()
         {
             $where = ['parent_id' => 0];
-            $model = OnlineExerciseCate::find()
-                                       ->select(['id', 'parent_id', 'cate_name', 'cate_desc'])
-                                       ->where($where)
-                                       ->asArray()
-                                       ->with('child');
+            $model = OnlineExerciseCate::find()->select(['id', 'parent_id', 'cate_name', 'cate_desc'])->where($where)->asArray()->with('child');
 
             return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
         }
@@ -140,12 +136,15 @@
 
             $data = $ActiveDataProvider->getModels();
 
+            $user         = null;
+            $isCollection = 0;
+            if ($Authorization = $this->getAuthorization()) {
+                $user = User::findIdentityByAccessToken($Authorization);
+            }
+
             foreach ($data as $key => &$value) {
-                $isCollection = 0;
-                if (!Yii::$app->user->isGuest) {
-                    $isExists = Collection::find()
-                                          ->where(['exercise_id' => $value, 'user_id' => Yii::$app->user->identity->getId()])
-                                          ->exists();
+                if ($user) {
+                    $isExists = Collection::find()->where(['exercise_id' => $value, 'user_id' => $user->getId()])->exists();
                     if ($isExists) {
                         $isCollection = 1;
                     }
@@ -175,12 +174,8 @@
             }
 
             $where          = ['id' => $eid];
-            $onlineExercise = OnlineExercise::find()
-                                            ->select('id, cate_id, title, content, descption, img_link, audio_link, looks, status, type, min_type')
-                                            ->where($where)
-                                            ->asArray()
-                                            ->with(['cate', 'comment'])
-                                            ->one();
+            $field          = 'id, cate_id, title, content, descption, img_link, audio_link, looks, status, type, min_type';
+            $onlineExercise = OnlineExercise::find()->select($field)->where($where)->asArray()->with(['cate', 'comment'])->one();
 
             $count = 0;
 
@@ -189,41 +184,31 @@
             //小类型
             $answer = $options = null;
             if ($onlineExercise) {
-                $count  = OnlineExercise::find()
-                                        ->where(['cate_id' => $onlineExercise['cate_id']])
-                                        ->count();
-                $answer = ExerciseAnswer::find()
-                                        ->select('id, exercise_id, content, audio_link, sorts')
-                                        ->where(['exercise_id' => $eid])
-                                        ->orderBy('sorts asc')
-                                        ->all();
+                $count  = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->count();
+                $field  = 'id, exercise_id, content, audio_link, sorts';
+                $answer = ExerciseAnswer::find()->select($field)->where(['exercise_id' => $eid])->orderBy(['sorts' => 'asc'])->all();
 
                 //是否收藏
-                $isCollection = 0;
+                $isCollection = $isPass = 0;
                 if ($Authorization = $this->getAuthorization()) {
                     $user = User::findIdentityByAccessToken($Authorization);
-                    $CollectionIsExists = Collection::find()
-                                                    ->where(['exercise_id' => $onlineExercise['id'], 'user_id' => $user->getId()])
-                                                    ->exists();
-                    if ($CollectionIsExists) {
-                        $isCollection = 1;
+                    if ($user) {
+                        $where              = ['exercise_id' => $onlineExercise['id'], 'user_id' => $user->getId()];
+                        $CollectionIsExists = Collection::find()->where($where)->exists();
+                        if ($CollectionIsExists) {
+                            $isCollection = 1;
+                        }
+                        unset($CollectionIsExists);
+
+                        $PassExamIsExists = PassExam::find()->where($where)->exists();
+                        if ($PassExamIsExists) {
+                            $isPass = 1;
+                        }
+                        unset($PassExamIsExists);
                     }
-                    unset($CollectionIsExists);
                 }
                 $onlineExercise['is_collection'] = $isCollection;
-
-                //是否考过
-                $isPass = 0;
-                if (!Yii::$app->user->isGuest) {
-                    $PassExamIsExists = PassExam::find()
-                                                ->where(['exercise_id' => $onlineExercise['id'], 'user_id' => Yii::$app->user->identity->getId()])
-                                                ->exists();
-                    if ($PassExamIsExists) {
-                        $isPass = 1;
-                    }
-                    unset($PassExamIsExists);
-                }
-                $onlineExercise['is_pass'] = $isPass;
+                $onlineExercise['is_pass']       = $isPass;
 
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
@@ -249,15 +234,9 @@
             OnlineExercise::updateAllCounters(['looks' => 1], $where);
 
             //上一个
-            $prev = OnlineExercise::find()
-                                  ->select('id')
-                                  ->where(['<', 'id', $eid])
-                                  ->scalar();
+            $prev = OnlineExercise::find()->select('id')->where(['<', 'id', $eid])->scalar();
             //下一个
-            $next = OnlineExercise::find()
-                                  ->select('id')
-                                  ->where(['>', 'id', $eid])
-                                  ->scalar();
+            $next = OnlineExercise::find()->select('id')->where(['>', 'id', $eid])->scalar();
 
             return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
         }
@@ -286,8 +265,8 @@
             }
 
             $comment              = new Comment();
-            $comment->parent_id   = $parent_id;
             $comment->exercise_id = $exercise_id;
+            $comment->parent_id   = $parent_id;
             $comment->type        = $type;
             $comment->content     = $content;
             $comment->user_id     = Yii::$app->user->identity->getId();
@@ -309,7 +288,7 @@
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
             }
-            $PassExamModel = PassExam::find()->where(['exercise_id'=>$id, 'user_id'=>Yii::$app->user->identity->getId()])->one();
+            $PassExamModel = PassExam::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
             if (!$PassExamModel) {
                 $PassExamModel              = new PassExam();
                 $PassExamModel->exercise_id = $id;
@@ -341,7 +320,7 @@
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
             }
-            $CollectionModel = Collection::find()->where(['exercise_id'=>$id, 'user_id'=>Yii::$app->user->identity->getId()])->one();
+            $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
             if (!$CollectionModel) {
                 $CollectionModel              = new Collection();
                 $CollectionModel->exercise_id = $id;
