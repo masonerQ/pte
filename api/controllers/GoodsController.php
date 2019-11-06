@@ -38,11 +38,7 @@
         public function actionCate()
         {
             $where = ['parent_id' => 0];
-            $model = GoodsCate::find()
-                              ->select(['id', 'parent_id', 'cate_name', 'cate_desc'])
-                              ->where($where)
-                              ->asArray()
-                              ->with('child');
+            $model = GoodsCate::find()->select(['id', 'parent_id', 'cate_name', 'cate_desc'])->where($where)->asArray()->with('child');
 
             return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
         }
@@ -60,9 +56,8 @@
                 $where['cate_id'] = $cid;
             }
 
-            $onlineExercise = Goods::find()
-                                   ->select('id, cate_id, goods_title, goods_content, goods_cover, goods_price, goods_link, status')
-                                   ->where($where);
+            $field          = 'id, cate_id, goods_title, goods_content, goods_cover, goods_price, goods_link, status';
+            $onlineExercise = Goods::find()->select($field)->where($where);
 
             return new ActiveDataProvider(['query' => $onlineExercise, 'pagination' => new Pagination(['pageSize' => 20])]);
         }

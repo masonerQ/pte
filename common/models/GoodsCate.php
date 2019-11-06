@@ -4,6 +4,13 @@
     namespace common\models;
 
 
+    /**
+     * Class GoodsCate
+     * @property int id
+     * @property int parent_id
+     * @property string cate_name
+     * @package common\models
+     */
     class GoodsCate extends BaseActiveRecord
     {
         public static function tableName()

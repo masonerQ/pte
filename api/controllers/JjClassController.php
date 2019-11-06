@@ -40,7 +40,27 @@
         {
             $year = Yii::$app->request->get('year', '2019');
 
-            if (!in_array($year, ['2010','2011','2012','2010','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'])){
+            if (!in_array(
+                $year,
+                [
+                    '2010',
+                    '2011',
+                    '2012',
+                    '2010',
+                    '2013',
+                    '2014',
+                    '2015',
+                    '2016',
+                    '2017',
+                    '2018',
+                    '2019',
+                    '2020',
+                    '2021',
+                    '2022',
+                    '2023',
+                    '2024'
+                ]
+            )) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '年份不正确';
                 return false;
@@ -50,19 +70,12 @@
             $end   = strtotime("$year-12-31 23:59:59");
 
             $start_where = [];
-            $end_where = [];
+            $end_where   = [];
             // $start_where = ['>=', 'created_at', $start];
             // $end_where   = ['<=', 'created_at', $end];
 
-            $model = JijingClass::find()
-                                ->select(['id', 'cate_id', 'video_title', 'video_content', 'video_content', 'video_cover', 'video_link', 'status', 'created_at'])
-                                ->andWhere($start_where)
-                                ->andWhere($end_where);
-            return new ActiveDataProvider(
-                [
-                    'query'      => $model,
-                    'pagination' => new Pagination(['pageSize' => 20])
-                ]
-            );
+            $field = ['id', 'cate_id', 'video_title', 'video_content', 'video_content', 'video_cover', 'video_link', 'status', 'created_at'];
+            $model = JijingClass::find()->select($field)->andWhere($start_where)->andWhere($end_where);
+            return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
         }
     }
