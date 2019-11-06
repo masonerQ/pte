@@ -36,7 +36,7 @@
             $verbs['index']      = ['GET'];
             $verbs['cate']       = ['GET'];
             $verbs['comment']    = ['POST', 'OPTIONS'];
-            $verbs['pass-exam']  = ['POST'];
+            $verbs['pass-exam']  = ['POST', 'OPTIONS'];
             $verbs['collection'] = ['POST', 'OPTIONS'];
             return $verbs;
         }
