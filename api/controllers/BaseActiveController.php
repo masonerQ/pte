@@ -2,6 +2,7 @@
 
     namespace api\controllers;
 
+    use Yii;
     use yii\filters\AccessControl;
     use yii\filters\auth\CompositeAuth;
     use yii\filters\auth\HttpBasicAuth;
@@ -52,7 +53,7 @@
                 'corsFilter'        => [
                     'class' => Cors::class,
                     'cors'  => [
-                        'Origin'                           => ['*'],
+                        'Origin'                           => ['http://pte.html'],
                         'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
                         'Access-Control-Request-Headers'   => ['*'],
                         'Access-Control-Allow-Credentials' => null,
@@ -137,6 +138,17 @@
 
             return $time;
 
+        }
+
+
+        public function getAuthorization()
+        {
+            $Authorization = Yii::$app->request->headers->get('Authorization');
+            if (preg_match('/^Bearer\s+(.*?)$/', $Authorization, $matches)) {
+                return $matches[1];
+            } else {
+                return null;
+            }
         }
 
 
