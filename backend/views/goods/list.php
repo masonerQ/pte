@@ -11,9 +11,9 @@
     <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="">首页</a>
-            <a href="javascript:void(0);">会员管理</a>
+            <a href="javascript:void(0);">精品课程</a>
             <a>
-              <cite>会员列表</cite></a>
+              <cite>课程列表</cite></a>
           </span>
         <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
             <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
@@ -24,7 +24,7 @@
             <div class="layui-col-md12">
                 <div class="layui-card">
                     <div class="layui-card-body ">
-                        <form class="layui-form layui-col-space5" method="get" action="/member/list.html">
+                        <form class="layui-form layui-col-space5" method="get" action="/goods/list.html">
                             <!--<div class="layui-inline layui-show-xs-block">-->
                             <!--    <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">-->
                             <!--</div>-->
@@ -41,8 +41,11 @@
                         </form>
                     </div>
                     <div class="layui-card-header">
-                        <button class="layui-btn layui-btn-danger" onclick="dellAll()"><i class="layui-icon"></i>批量停用</button>
-                        <button class="layui-btn" onclick="xadmin.open('添加用户','add.html',600,400)"><i class="layui-icon"></i>添加</button>
+
+                        <button class="layui-btn layui-btn-danger" onclick="goods_operation_all(2)"><i class="layui-icon"></i>批量下架</button>
+                        <button class="layui-btn layui-btn-success" onclick="goods_operation_all(1)"><i class="layui-icon"></i>批量上架</button>
+
+                        <button class="layui-btn" onclick="xadmin.open('添加课程','add.html',600,400)"><i class="layui-icon"></i>添加</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
                         <table class="layui-table layui-form">
@@ -52,10 +55,10 @@
                                     <input type="checkbox" lay-filter="checkall" name="" lay-skin="primary">
                                 </th>
                                 <th>ID</th>
-                                <th>用户名</th>
-                                <th>邮箱</th>
-                                <th>手机</th>
-                                <th>地址</th>
+                                <th>课程名称</th>
+                                <th>课程封面</th>
+                                <th>课程分类</th>
+                                <th>课程链接</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -67,17 +70,15 @@
                                         <input type="checkbox" name="id" value="<?= $value->id; ?>" lay-skin="primary">
                                     </td>
                                     <td><?= $value->id; ?></td>
-                                    <td><?= $value->username; ?></td>
-                                    <td><?= $value->email; ?></td>
-                                    <td>xxxx</td>
-                                    <td>xxx市 xxx区</td>
+                                    <td><?= $value->goods_title; ?></td>
+                                    <td><?= $value->goods_cover; ?></td>
+                                    <td><?= $value->cate->cate_name; ?></td>
+                                    <td><?= $value->goods_link; ?></td>
                                     <td class="td-status">
-                                        <?php if ($value->status == 10): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
-                                        <?php elseif ($value->status == 0): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已停用</span>
-                                        <?php else: ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">未激活</span>
+                                        <?php if ($value->status == 1): ?>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini">上架</span>
+                                        <?php elseif ($value->status == 2): ?>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">下架</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="td-manage">
@@ -90,12 +91,12 @@
                                         <!--<a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">-->
                                         <!--    <i class="layui-icon">&#xe631;</i>-->
                                         <!--</a>-->
-                                        <? if ($value->status == 10): ?>
-                                            <a title="停用" onclick="member_operation(this,'<?= $value->id; ?>', 2)" href="javascript:void(0);">
+                                        <? if ($value->status == 1): ?>
+                                            <a title="下架" onclick="goods_operation(this,'<?= $value->id; ?>', 2)" href="javascript:void(0);">
                                                 <i class="layui-icon">&#xe640;</i>
                                             </a>
-                                        <?php elseif ($value->status == 0): ?>
-                                            <a title="启用" onclick="member_operation(this,'<?= $value->id; ?>', 1)" href="javascript:void(0);">
+                                        <?php elseif ($value->status == 2): ?>
+                                            <a title="上架" onclick="goods_operation(this,'<?= $value->id; ?>', 1)" href="javascript:void(0);">
                                                 <i class="layui-icon">&#xe669;</i>
                                             </a>
                                         <?php endif; ?>
@@ -193,18 +194,19 @@
             });
         }
 
-        /*用户-停用*/
-        function member_operation(obj, id, type) {
+        /*课程上下架操作*/
+        function goods_operation(obj, id, type) {
             if ($.inArray(type, [1, 2]) <= -1) {
                 return false;
             }
-            let msg, url = null;
+            let msg,
+                url = null;
             if (type === 1) {
-                msg = '启用';
-                url = "/member/start.html";
+                msg = '上架';
+                url = "/goods/start.html";
             } else if (type === 2) {
-                msg = '停用';
-                url = "/member/del.html";
+                msg = '下架';
+                url = "/goods/del.html";
             } else {
                 return false;
             }
@@ -229,15 +231,29 @@
                         }
                     }
                 });
+
+
             });
         }
 
-        function dellAll(type) {
+
+        function goods_operation_all(type) {
             if ($.inArray(type, [1, 2]) <= -1) {
                 return false;
             }
-            let ids = [];
+            let msg,
+                url = null;
+            if (type === 1) {
+                msg = '上架';
+                url = "/goods/start.html";
+            } else if (type === 2) {
+                msg = '下架';
+                url = "/goods/del.html";
+            } else {
+                return false;
+            }
 
+            let ids = [];
             // 获取选中的id
             $('tbody input').each(function (index, el) {
                 if ($(this).prop('checked')) {
@@ -246,14 +262,14 @@
             });
 
             if (ids.length <= 0) {
-                layer.msg('请选择要停用的用户!', {icon: 5, time: 1000});
+                layer.msg('请选择要' + msg + '的课程!', {icon: 5, time: 1000});
                 return false;
             }
 
-            layer.confirm('确认要停用吗?' + ids.toString(), function (index) {
+            layer.confirm('确认要' + msg + '吗?' + ids.toString(), function (index) {
                 //捉到所有被选中的，发异步进行删除
                 $.ajax({
-                    url: "/member/del.html",
+                    url: url,
                     method: "POST",
                     data: {id: ids, "<?=Yii::$app->request->csrfParam;?>": "<?=Yii::$app->request->csrfToken;?>"},
                     success: function (res) {

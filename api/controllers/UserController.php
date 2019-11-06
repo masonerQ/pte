@@ -31,19 +31,13 @@
         public function behaviors()
         {
             $behaviors                              = parent::behaviors();
-            $behaviors['authenticator']['optional'] = [
-                'login',
-                'register',
-                'send-email',
-                'rest-password'
-            ];
+            $behaviors['authenticator']['optional'] = ['login', 'register', 'send-email', 'rest-password'];
             return $behaviors;
         }
 
         public function actionIndex()
         {
-            $modelClass = $this->modelClass;
-            $result     = $modelClass::findOne(1);
+            $result     = ($this->modelClass)::findOne(1);
             return $result;
         }
 
@@ -122,24 +116,25 @@
                 return null;
             }
 
-            $EmailSendLog = EmailSendLog::find()
-                                        ->where(['email_address' => $email, 'type' => $type, 'active' => 1])
-                                        ->one();
+            $EmailSendLog = EmailSendLog::find()->where(['email_address' => $email, 'type' => $type, 'active' => 1])->one();
             if ($EmailSendLog && $EmailSendLog->created_at + 3600 > time()) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '您已经发送过验证码了';
                 return null;
             }
 
-            $verification_token = $this->generateCode();
-            $transaction        = Yii::$app->db->beginTransaction();
+            $transaction = Yii::$app->db->beginTransaction();
 
-            $isSend = Yii::$app->mailer->compose(['html' => 'register-html'], ['verification_token' => $verification_token])
-                                       ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' 自动发送(请勿回复)'])
-                                       ->setTo([$email => '哈哈'])
-                                       ->setCharset('utf-8')
-                                       ->setSubject('注册验证码 ' . Yii::$app->name)
-                                       ->send();
+            $verification_token = $this->generateCode();
+            $layout             = ['html' => 'register-html'];
+            $params             = ['verification_token' => $verification_token];
+            $from               = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' 自动发送(请勿回复)'];
+            $isSend             = Yii::$app->mailer->compose($layout, $params)
+                                                   ->setFrom($from)
+                                                   ->setTo([$email => '哈哈'])
+                                                   ->setCharset('utf-8')
+                                                   ->setSubject('注册验证码 ' . Yii::$app->name)
+                                                   ->send();
 
             $EmailSendLogModel                     = new EmailSendLog();
             $EmailSendLogModel->email_address      = $email;
