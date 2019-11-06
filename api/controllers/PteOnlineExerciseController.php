@@ -3,7 +3,7 @@
 
     namespace api\controllers;
 
-
+    use common\models\User;
     use Yii;
     use yii\data\ActiveDataProvider;
     use yii\data\Pagination;
@@ -200,9 +200,10 @@
 
                 //是否收藏
                 $isCollection = 0;
-                if (!Yii::$app->user->isGuest) {
+                if ($Authorization = $this->getAuthorization()) {
+                    $user = User::findIdentityByAccessToken($Authorization);
                     $CollectionIsExists = Collection::find()
-                                                    ->where(['exercise_id' => $onlineExercise['id'], 'user_id' => Yii::$app->user->identity->getId()])
+                                                    ->where(['exercise_id' => $onlineExercise['id'], 'user_id' => $user->getId()])
                                                     ->exists();
                     if ($CollectionIsExists) {
                         $isCollection = 1;
@@ -308,7 +309,7 @@
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
             }
-            $PassExamModel = PassExam::findOne($id);
+            $PassExamModel = PassExam::find()->where(['exercise_id'=>$id, 'user_id'=>Yii::$app->user->identity->getId()])->one();
             if (!$PassExamModel) {
                 $PassExamModel              = new PassExam();
                 $PassExamModel->exercise_id = $id;
@@ -340,7 +341,7 @@
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
             }
-            $CollectionModel = Collection::findOne($id);
+            $CollectionModel = Collection::find()->where(['exercise_id'=>$id, 'user_id'=>Yii::$app->user->identity->getId()])->one();
             if (!$CollectionModel) {
                 $CollectionModel              = new Collection();
                 $CollectionModel->exercise_id = $id;
