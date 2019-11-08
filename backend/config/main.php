@@ -17,7 +17,7 @@
                 'csrfParam' => '_csrf-backend',
             ],
             'user'         => [
-                'identityClass'   => 'common\models\User',
+                'identityClass'   => 'common\models\Admin',
                 'enableAutoLogin' => true,
                 'identityCookie'  => [
                     'name'     => '_identity-backend',
@@ -33,10 +33,7 @@
                 'targets'    => [
                     [
                         'class'  => 'yii\log\FileTarget',
-                        'levels' => [
-                            'error',
-                            'warning'
-                        ],
+                        'levels' => ['error', 'warning', 'info', 'trace'],
                     ],
                 ],
             ],

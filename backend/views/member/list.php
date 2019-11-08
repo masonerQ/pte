@@ -41,7 +41,8 @@
                         </form>
                     </div>
                     <div class="layui-card-header">
-                        <button class="layui-btn layui-btn-danger" onclick="dellAll()"><i class="layui-icon"></i>批量停用</button>
+                        <button class="layui-btn layui-btn-danger" onclick="member_operation_all(2)"><i class="layui-icon"></i>批量停用</button>
+                        <button class="layui-btn layui-btn-danger" onclick="member_operation_all(1)"><i class="layui-icon"></i>批量启用</button>
                         <button class="layui-btn" onclick="xadmin.open('添加用户','add.html',600,400)"><i class="layui-icon"></i>添加</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
@@ -194,7 +195,7 @@
         }
 
         /*用户-停用*/
-        function member_operation(obj, id, type) {
+        function member_operation(_this, id, type) {
             if ($.inArray(type, [1, 2]) <= -1) {
                 return false;
             }
@@ -218,8 +219,15 @@
                         if (res.code === 200) {
                             //发异步删除数据
                             // $(obj).parents("tr").remove();
-                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('停用成功!', {icon: 1, time: 1000});
+                            // $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已'+msg);
+                            let obj = $(_this).parents("tr").find(".td-status").find('span');
+                            if (type === 1){
+                                obj.removeClass('layui-btn-disabled')
+                            }else if (type === 2){
+                                obj.addClass('layui-btn-disabled')
+                            }
+                            obj.html('已'+msg);
+                            layer.msg(msg+'成功!', {icon: 1, time: 1000});
                         } else {
                             layer.msg(res.msg, {
                                 icon: 2
@@ -232,8 +240,18 @@
             });
         }
 
-        function dellAll(type) {
+        function member_operation_all(type) {
             if ($.inArray(type, [1, 2]) <= -1) {
+                return false;
+            }
+            let msg, url = null;
+            if (type === 1) {
+                msg = '启用';
+                url = "/member/start.html";
+            } else if (type === 2) {
+                msg = '停用';
+                url = "/member/del.html";
+            } else {
                 return false;
             }
             let ids = [];
@@ -246,14 +264,14 @@
             });
 
             if (ids.length <= 0) {
-                layer.msg('请选择要停用的用户!', {icon: 5, time: 1000});
+                layer.msg('请选择要'+msg+'的用户!', {icon: 5, time: 1000});
                 return false;
             }
 
-            layer.confirm('确认要停用吗?' + ids.toString(), function (index) {
+            layer.confirm('确认要'+msg+'吗?' + ids.toString(), function (index) {
                 //捉到所有被选中的，发异步进行删除
                 $.ajax({
-                    url: "/member/del.html",
+                    url: url,
                     method: "POST",
                     data: {id: ids, "<?=Yii::$app->request->csrfParam;?>": "<?=Yii::$app->request->csrfToken;?>"},
                     success: function (res) {
@@ -261,8 +279,14 @@
                         if (res.code === 200) {
                             //发异步删除数据
                             // $(obj).parents("tr").remove();
-                            $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('停用成功!', {icon: 1, time: 1000}, function () {
+                            let obj = $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span');
+                            if (type === 1){
+                                obj.removeClass('layui-btn-disabled')
+                            }else if (type === 2){
+                                obj.addClass('layui-btn-disabled')
+                            }
+                            obj.html('已'+msg);
+                            layer.msg(msg+'成功!', {icon: 1, time: 1000}, function () {
                                 xadmin.father_reload();
                             });
                         } else {

@@ -11,7 +11,7 @@
                 'article',
                 'goods',
                 'video-class',
-                'jj-class',
+                'Jj-class',
                 'pte-online-exercise',
             ],
             'pluralize'     => false,

@@ -45,7 +45,7 @@
                         <button class="layui-btn layui-btn-danger" onclick="goods_operation_all(2)"><i class="layui-icon"></i>批量下架</button>
                         <button class="layui-btn layui-btn-success" onclick="goods_operation_all(1)"><i class="layui-icon"></i>批量上架</button>
 
-                        <button class="layui-btn" onclick="xadmin.open('添加课程','add.html',600,400)"><i class="layui-icon"></i>添加</button>
+                        <button class="layui-btn" onclick="xadmin.open('添加课程','add.html')"><i class="layui-icon"></i>添加</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
                         <table class="layui-table layui-form">
@@ -58,6 +58,7 @@
                                 <th>课程名称</th>
                                 <th>课程封面</th>
                                 <th>课程分类</th>
+                                <th>课程价格</th>
                                 <th>课程链接</th>
                                 <th>状态</th>
                                 <th>操作</th>
@@ -73,19 +74,20 @@
                                     <td><?= $value->goods_title; ?></td>
                                     <td><?= $value->goods_cover; ?></td>
                                     <td><?= $value->cate->cate_name; ?></td>
+                                    <td><?= $value->goods_price; ?></td>
                                     <td><?= $value->goods_link; ?></td>
                                     <td class="td-status">
                                         <?php if ($value->status == 1): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini">上架</span>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini">已上架</span>
                                         <?php elseif ($value->status == 2): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">下架</span>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已下架</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="td-manage">
                                         <!--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
                                         <!--    <i class="layui-icon">&#xe601;</i>-->
                                         <!--</a>-->
-                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value->id; ?>',600,400)" href="javascript:;">
+                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value->id; ?>')" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
                                         <!--<a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">-->
@@ -195,7 +197,7 @@
         }
 
         /*课程上下架操作*/
-        function goods_operation(obj, id, type) {
+        function goods_operation(_this, id, type) {
             if ($.inArray(type, [1, 2]) <= -1) {
                 return false;
             }
@@ -220,8 +222,16 @@
                         if (res.code === 200) {
                             //发异步删除数据
                             // $(obj).parents("tr").remove();
-                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('停用成功!', {icon: 1, time: 1000});
+                            let obj = $(_this).parents("tr").find(".td-status").find('span');
+                            if (type === 1) {
+                                obj.removeClass('layui-btn-disabled')
+                            } else if (type === 2) {
+                                obj.addClass('layui-btn-disabled')
+                            }
+                            obj.html('已' + msg);
+                            layer.msg(msg + '成功!', {icon: 1, time: 1000}, function () {
+                                xadmin.father_reload();
+                            });
                         } else {
                             layer.msg(res.msg, {
                                 icon: 2
@@ -277,8 +287,14 @@
                         if (res.code === 200) {
                             //发异步删除数据
                             // $(obj).parents("tr").remove();
-                            $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('停用成功!', {icon: 1, time: 1000}, function () {
+                            let obj = $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span');
+                            if (type === 1) {
+                                obj.removeClass('layui-btn-disabled');
+                            } else if (type === 2) {
+                                obj.addClass('layui-btn-disabled');
+                            }
+                            obj.html('已' + msg);
+                            layer.msg(msg + '成功!', {icon: 1, time: 1000}, function () {
                                 xadmin.father_reload();
                             });
                         } else {

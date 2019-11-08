@@ -249,7 +249,7 @@
         function member_del(obj, id) {
             layer.confirm('确认要停用吗？', function (index) {
                 $.ajax({
-                    url: "/member/del.html",
+                    url: "/goods/del.html",
                     method: "POST",
                     data: {id: [id], "<?=Yii::$app->request->csrfParam;?>": "<?=Yii::$app->request->csrfToken;?>"},
                     success: function (res) {
@@ -292,7 +292,7 @@
             layer.confirm('确认要停用吗?' + ids.toString(), function (index) {
                 //捉到所有被选中的，发异步进行删除
                 $.ajax({
-                    url: "/member/del.html",
+                    url: "/goods/del.html",
                     method: "POST",
                     data: {id: ids, "<?=Yii::$app->request->csrfParam;?>": "<?=Yii::$app->request->csrfToken;?>"},
                     success: function (res) {
