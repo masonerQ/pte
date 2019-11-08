@@ -5,5 +5,6 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
-    'VerifyEmailBaseUrl' => 'http://pte.com'
+    'VerifyEmailBaseUrl' => 'http://pte.com',
+    'imgServer' => 'http://img.pte.com'
 ];

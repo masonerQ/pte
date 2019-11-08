@@ -45,7 +45,7 @@
                         <button class="layui-btn layui-btn-danger" onclick="teacher_operation_all(2)"><i class="layui-icon"></i>批量下线</button>
                         <button class="layui-btn layui-btn-success" onclick="teacher_operation_all(1)"><i class="layui-icon"></i>批量上线</button>
 
-                        <button class="layui-btn" onclick="xadmin.open('添加教师','add.html',600,400)"><i class="layui-icon"></i>添加</button>
+                        <button class="layui-btn" onclick="xadmin.open('添加教师','add.html')"><i class="layui-icon"></i>添加</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
                         <table class="layui-table layui-form">
@@ -76,16 +76,16 @@
                                     <td><?= $value->instruction; ?></td>
                                     <td class="td-status">
                                         <?php if ($value->status == 1): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini">上线</span>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini">已上线</span>
                                         <?php elseif ($value->status == 2): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">下线</span>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已下线</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="td-manage">
                                         <!--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
                                         <!--    <i class="layui-icon">&#xe601;</i>-->
                                         <!--</a>-->
-                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value->id; ?>',600,400)" href="javascript:;">
+                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value->id; ?>')" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
                                         <!--<a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">-->
@@ -144,8 +144,8 @@
 <?php JsBlock::begin(); ?>
     <script>
         layui.use(['laydate', 'form'], function () {
-            var laydate = layui.laydate;
-            var form = layui.form;
+            let laydate = layui.laydate;
+            let form = layui.form;
             // 监听全选
             form.on('checkbox(checkall)', function (data) {
 
@@ -173,21 +173,23 @@
 
 
         /*教师上下线操作*/
-        function teacher_operation(obj, id, type) {
+        function teacher_operation(_this, id, type) {
             if ($.inArray(type, [1, 2]) <= -1) {
                 return false;
             }
             let msg,
                 url = null;
             if (type === 1) {
-                msg = '上架';
+                msg = '上线';
                 url = "/teacher/start.html";
             } else if (type === 2) {
-                msg = '下架';
+                msg = '下线';
                 url = "/teacher/del.html";
             } else {
                 return false;
             }
+            console.log(_this);
+            // return false;
             layer.confirm('确认要' + msg + '吗?', function (index) {
                 $.ajax({
                     url: url,
@@ -198,8 +200,17 @@
                         if (res.code === 200) {
                             //发异步删除数据
                             // $(obj).parents("tr").remove();
-                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('停用成功!', {icon: 1, time: 1000});
+                            // console.log(_this);
+                            let obj = $(_this).parents("tr").find(".td-status").find('span');
+                            if (type === 1){
+                                obj.removeClass('layui-btn-disabled')
+                            }else if (type === 2){
+                                obj.addClass('layui-btn-disabled')
+                            }
+                            obj.html('已'+msg);
+                            layer.msg(msg+'成功!', {icon: 1, time: 1000}, function () {
+                                xadmin.father_reload();
+                            });
                         } else {
                             layer.msg(res.msg, {
                                 icon: 2
@@ -222,10 +233,10 @@
             let msg,
                 url = null;
             if (type === 1) {
-                msg = '上架';
+                msg = '上线';
                 url = "/teacher/start.html";
             } else if (type === 2) {
-                msg = '下架';
+                msg = '下线';
                 url = "/teacher/del.html";
             } else {
                 return false;
@@ -255,8 +266,14 @@
                         if (res.code === 200) {
                             //发异步删除数据
                             // $(obj).parents("tr").remove();
-                            $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('停用成功!', {icon: 1, time: 1000}, function () {
+                            let obj = $(".layui-form-checked").not('.header').parents('tr').find(".td-status").find('span');
+                            if (type === 1){
+                                obj.removeClass('layui-btn-disabled')
+                            }else if (type === 2){
+                                obj.addClass('layui-btn-disabled')
+                            }
+                            obj.html('已'+msg);
+                            layer.msg(msg+'成功!', {icon: 1, time: 1000}, function () {
                                 xadmin.father_reload();
                             });
                         } else {

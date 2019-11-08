@@ -169,17 +169,17 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('视频分类','admin-list.html')">
+                        <a onclick="xadmin.add_tab('视频分类','/video-class/cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>视频分类</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('视频列表','admin-role.html')">
+                        <a onclick="xadmin.add_tab('视频列表','/video-class/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>视频列表</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('电子机经','admin-cate.html')">
+                        <a onclick="xadmin.add_tab('电子机经','/jj/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>电子机经</cite></a>
                     </li>
@@ -192,12 +192,12 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('文章分类','city.html')">
+                        <a onclick="xadmin.add_tab('文章分类','/article/cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>文章分类</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('文章列表','city.html')">
+                        <a onclick="xadmin.add_tab('文章列表','/article/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>文章列表</cite></a>
                     </li>

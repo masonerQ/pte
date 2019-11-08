@@ -75,9 +75,9 @@
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
                 $ids = Yii::$app->request->post('id');
                 if (is_array($ids) && User::updateAll(['status' => User::STATUS_DELETED], ['id' => $ids])) {
-                    return ['code' => 200, 'msg' => '删除成功'];
+                    return ['code' => 200, 'msg' => '停用成功'];
                 } else {
-                    return ['code' => 203, 'msg' => '删除失败'];
+                    return ['code' => 203, 'msg' => '停用失败'];
                 }
             }
             return ['code' => 203, 'msg' => '非法操作'];
@@ -88,10 +88,10 @@
             Yii::$app->response->format = Response::FORMAT_JSON;
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
                 $ids = Yii::$app->request->post('id');
-                if (is_array($ids) && User::updateAll(['status' => User::STATUS_DELETED], ['id' => $ids])) {
-                    return ['code' => 200, 'msg' => '删除成功'];
+                if (is_array($ids) && User::updateAll(['status' => User::STATUS_ACTIVE], ['id' => $ids])) {
+                    return ['code' => 200, 'msg' => '启用成功'];
                 } else {
-                    return ['code' => 203, 'msg' => '删除失败'];
+                    return ['code' => 203, 'msg' => '启用失败'];
                 }
             }
             return ['code' => 203, 'msg' => '非法操作'];
