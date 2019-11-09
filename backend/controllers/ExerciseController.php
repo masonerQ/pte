@@ -3,26 +3,28 @@
 
     namespace backend\controllers;
 
-    use backend\models\UploadForm;
-    use common\models\OnlineExercise;
-    use common\models\Teacher;
+
+    use common\models\OnlineExerciseOption;
+    use Exception;
     use Yii;
     use yii\data\Pagination;
     use yii\web\NotFoundHttpException;
     use yii\web\Response;
     use common\models\OnlineExerciseCate;
-    use common\models\User;
+    use backend\models\UploadForm;
+    use common\models\OnlineExercise;
+    use common\models\OnlineExerciseAnswer;
 
 
     class ExerciseController extends BaseController
     {
         public function actionCate()
         {
-            $data       = [];
-            $where      = ['parent_id' => 0];
-            $query      = OnlineExerciseCate::find()->where($where)->with('child');
-            $pagination = new Pagination(['totalCount' => $query->count(), 'pagesize' => '40']);
-            $list       = $query->offset($pagination->offset)->limit($pagination->limit)->asArray()->all();
+            $data          = [];
+            $where         = ['parent_id' => 0, 'status' => 1];
+            $query         = OnlineExerciseCate::find()->where($where)->with('child');
+            $pagination    = new Pagination(['totalCount' => $query->count(), 'pagesize' => '40']);
+            $list          = $query->offset($pagination->offset)->limit($pagination->limit)->asArray()->all();
             $data['list']  = $list;
             $data['pages'] = $pagination;
             return $this->render('cate', $data);
@@ -37,14 +39,14 @@
          */
         public function actionCateEdit()
         {
-            $id   = Yii::$app->request->get('id', 0) ?: Yii::$app->request->post('id',0);
+            $id           = Yii::$app->request->get('id', 0) ?: Yii::$app->request->post('id', 0);
             $ExerciseCate = OnlineExerciseCate::findOne($id);
-            if (!$ExerciseCate){
+            if (!$ExerciseCate) {
                 throw new NotFoundHttpException('未找到......');
             }
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
-                $ExerciseCate->cate_name = Yii::$app->request->post('cate_name');
+                $ExerciseCate->cate_name    = Yii::$app->request->post('cate_name');
                 if ($ExerciseCate->save()) {
                     return ['code' => 200, 'msg' => '更新成功'];
                 }
@@ -53,13 +55,6 @@
             }
             return $this->render('cate-edit', ['model' => $ExerciseCate, 'error' => $ExerciseCate->getErrors()]);
         }
-
-
-
-
-
-
-
 
 
         public function actionList()
@@ -77,58 +72,117 @@
         }
 
 
+        /**
+         * @return array|string
+         * @throws NotFoundHttpException
+         * @throws \yii\db\Exception
+         */
         public function actionAdd()
         {
+            $cid          = Yii::$app->request->get('cid') ?: Yii::$app->request->post('cid');
+            $ExerciseCate = OnlineExerciseCate::findOne($cid);
+            if (!$ExerciseCate) {
+                throw new NotFoundHttpException('未找到......');
+            }
             $OnlineExercise = new OnlineExercise();
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+                $answer_content = Yii::$app->request->post('answer_content');
+                // $type = gettype($option);
+                // $op = $option;
+                // echo "<pre>";
+                // print_r($answer_content);
+                // exit;
+
+                $transaction                = Yii::$app->db->beginTransaction();
                 Yii::$app->response->format = Response::FORMAT_JSON;
-                $OnlineExercise->cate_id             = Yii::$app->request->post('cate_id');
-                $OnlineExercise->video_title         = Yii::$app->request->post('video_title');
-                $OnlineExercise->video_content       = Yii::$app->request->post('video_content');
-                $OnlineExercise->video_cover         = Yii::$app->request->post('video_cover');
-                $OnlineExercise->video_link          = Yii::$app->request->post('video_link');
+                $OnlineExercise->cate_id    = Yii::$app->request->post('cid');
+                $OnlineExercise->title      = Yii::$app->request->post('title');
+                $OnlineExercise->content    = Yii::$app->request->post('content');
+                $OnlineExercise->img_link   = Yii::$app->request->post('img_link');
+                $OnlineExercise->audio_link = Yii::$app->request->post('audio_link');
                 if ($OnlineExercise->save()) {
-                    return ['code' => 200, 'msg' => '更新成功'];
+                    $OnlineExerciseAnswer              = new OnlineExerciseAnswer();
+                    $OnlineExerciseAnswer->exercise_id = $OnlineExercise->id;
+                    $OnlineExerciseAnswer->content     = Yii::$app->request->post('answer_content');
+                    $OnlineExerciseAnswer->audio_link  = Yii::$app->request->post('answer_audio_link');
+                    if ($OnlineExerciseAnswer->save()) {
+                        //带下拉选项的题目
+                        if ($cid == 13) {
+                            $option    = Yii::$app->request->post('answer_option');
+                            $optionArr = explode('|', $option);
+                            if (count($optionArr) > 0) {
+                                $optionArr = array_filter($optionArr);
+                                foreach ($optionArr as $key => $value) {
+                                    $OnlineExerciseOption              = new OnlineExerciseOption();
+                                    $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
+                                    $OnlineExerciseOption->content     = $value;
+                                    if (!$OnlineExerciseOption->save()) {
+                                        $transaction->rollBack();
+                                        return ['code' => 203, 'msg' => '错误'];
+                                    }
+                                    unset($OnlineExerciseOption);
+                                }
+                            }
+                        }
+                        $transaction->commit();
+                        return ['code' => 200, 'msg' => '成功'];
+                    }
+                    $transaction->rollBack();
+                    $errors = array_values($OnlineExerciseAnswer->getFirstErrors());
+                } else {
+                    $transaction->rollBack();
+                    $errors = array_values($OnlineExercise->getFirstErrors());
                 }
-                $errors = array_values($OnlineExercise->getFirstErrors());
                 return ['code' => 203, 'msg' => $errors[0]];
             }
 
-            $query = OnlineExerciseCate::find()->where(['parent_id' => 0])->with('child')->asArray()->all();
-            $this->getTree($query, 0, $option, 0, true);
-            return $this->render('add', ['model' => $OnlineExercise, 'option' => $option]);
+            // $query = OnlineExerciseCate::find()->where(['parent_id' => 0, 'status'=>1])->with('child')->asArray()->all();
+            // $this->getTree($query, 0, $option, $cid, true);
+
+            $answerList = "";
+
+            return $this->render('add', ['model' => $OnlineExercise, 'Cate' => $ExerciseCate, 'answerList' => $answerList]);
         }
 
         /**
          * @return array|string
          * @throws NotFoundHttpException
+         * @throws \yii\db\Exception
          */
         public function actionEdit()
         {
-            $id    = Yii::$app->request->get('id', 0);
+            $id             = Yii::$app->request->get('id');
             $OnlineExercise = OnlineExercise::findOne($id);
             if (!$OnlineExercise) {
                 throw new NotFoundHttpException('未找到......');
             }
-
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+                $transaction                = Yii::$app->db->beginTransaction();
                 Yii::$app->response->format = Response::FORMAT_JSON;
-                $OnlineExercise->cate_id             = Yii::$app->request->post('cate_id');
-                $OnlineExercise->video_title         = Yii::$app->request->post('video_title');
-                $OnlineExercise->video_content       = Yii::$app->request->post('video_content');
-                $OnlineExercise->video_cover         = Yii::$app->request->post('video_cover');
-                $OnlineExercise->video_link          = Yii::$app->request->post('video_link');
+                $OnlineExercise->cate_id    = Yii::$app->request->post('cid');
+                $OnlineExercise->title      = Yii::$app->request->post('title');
+                $OnlineExercise->content    = Yii::$app->request->post('content');
+                $OnlineExercise->img_link   = Yii::$app->request->post('img_link');
+                $OnlineExercise->audio_link = Yii::$app->request->post('audio_link');
                 if ($OnlineExercise->save()) {
-                    return ['code' => 200, 'msg' => '更新成功'];
+                    $OnlineExerciseAnswer             = OnlineExerciseAnswer::findOne($OnlineExercise->id);
+                    $OnlineExerciseAnswer->content    = Yii::$app->request->post('content');
+                    $OnlineExerciseAnswer->audio_link = Yii::$app->request->post('audio_link');
+                    if ($OnlineExerciseAnswer->save()) {
+                        $transaction->commit();
+                        return ['code' => 200, 'msg' => '成功'];
+                    }
                 }
+
+                $transaction->rollBack();
                 $errors = array_values($OnlineExercise->getFirstErrors());
                 return ['code' => 203, 'msg' => $errors[0]];
             }
 
-            $query = OnlineExerciseCate::find()->where(['parent_id' => 0])->with('child')->asArray()->all();
-            $this->getTree($query, 0, $option, $OnlineExercise->cate_id);
+            // $query = OnlineExerciseCate::find()->where(['parent_id' => 0, 'status'=>1])->with('child')->asArray()->all();
+            // $this->getTree($query, 0, $option, $cid, true);
 
-            return $this->render('edit', ['model' => $OnlineExercise, 'option' => $option]);
+            return $this->render('edit', ['model' => $OnlineExercise]);
         }
 
 
@@ -178,13 +232,11 @@
                 } else {
                     $errors = array_values($UploadForm->getFirstErrors());
                     // return $errors;
-                    return ['code' => 203, 'msg' => '上传失败'.$errors[0], 'filename' => ''];
+                    return ['code' => 203, 'msg' => '上传失败' . $errors[0], 'filename' => ''];
                 }
             }
             return ['code' => 204, 'msg' => '非法操作', 'filename' => ''];
         }
-
-
 
 
     }

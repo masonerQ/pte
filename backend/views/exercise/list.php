@@ -41,11 +41,8 @@
                         </form>
                     </div>
                     <div class="layui-card-header">
-
                         <button class="layui-btn layui-btn-danger" onclick="video_operation_all(2)"><i class="layui-icon"></i>批量下架</button>
                         <button class="layui-btn layui-btn-success" onclick="video_operation_all(1)"><i class="layui-icon"></i>批量上架</button>
-
-                        <button class="layui-btn" onclick="xadmin.open('添加课a程','add.html')"><i class="layui-icon"></i>添加</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
                         <table class="layui-table layui-form">

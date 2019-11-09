@@ -12,7 +12,7 @@
     use common\models\Collection;
     use common\models\Comment;
     use common\models\ExerciseAnswer;
-    use common\models\ExerciseOption;
+    use common\models\OnlineExerciseOption;
     use common\models\OnlineExercise;
     use common\models\OnlineExerciseCate;
     use common\models\PassExam;
@@ -57,7 +57,7 @@
         public function actionCate()
         {
             $where = ['parent_id' => 0];
-            $model = OnlineExerciseCate::find()->select(['id', 'parent_id', 'cate_name', 'cate_desc'])->where($where)->asArray()->with('child');
+            $model = OnlineExerciseCate::find()->where(['status'=>1])->select(['id', 'parent_id', 'cate_name', 'cate_desc'])->where($where)->asArray()->with('child');
             return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
         }
 
@@ -211,7 +211,7 @@
                 // 阅读
                 if ($type == 3) {
                     //1拖拽 2排序
-                    $options = ExerciseOption::find()
+                    $options = OnlineExerciseOption::find()
                                              ->select('id, exercise_id, content, groups, status')
                                              ->where(['exercise_id' => $eid])
                                              ->asArray()
