@@ -68,7 +68,7 @@
                             <button type="button" class="layui-btn" id="video_link">视频上传</button>
                             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                                 <div class="layui-upload-list" id="video_link_preview">
-                                    <video controls="controls" width="115" height="100" src="<?= $model->video_link; ?>" alt="" class="layui-upload-img"/>
+                                    <video controls="controls" width="115" height="100" src="<?= $model->video_link; ?>" alt="" class="layui-upload-img"></video>
                                 </div>
                             </blockquote>
                         </div>

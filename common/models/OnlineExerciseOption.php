@@ -5,18 +5,16 @@
 
     /**
      * Class OnlineExercise
-     * @property int cate_id
-     * @property string title
+     * @property int id
+     * @property int exercise_id
      * @property string content
-     * @property string descption
-     * @property string img_link
-     * @property string audio_link
+     * @property int groups
      * @property int status
-     * @property int type
-     * @property int min_type
+     * @property int created_at
+     * @property int updated_at
      * @package common\models
      */
-    class ExerciseOption extends BaseActiveRecord
+    class OnlineExerciseOption extends BaseActiveRecord
     {
 
         public static function tableName()

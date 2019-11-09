@@ -6,6 +6,7 @@
     /**
      * Class OnlineExercise
      *
+     * @property int    id
      * @property int    cate_id
      * @property string title
      * @property string content
@@ -40,6 +41,11 @@
         {
             return $this->hasOne(OnlineExerciseCate::class, ['id' => 'cate_id'])
                         ->select('id, cate_name');
+        }
+
+        public function getAnswer()
+        {
+            return $this->hasMany(OnlineExerciseAnswer::class, ['exercise_id'=>'id']);
         }
 
         // public function getIscollection()

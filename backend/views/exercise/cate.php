@@ -70,12 +70,9 @@
                                     <!--    <input type="checkbox" name="switch" lay-text="开启|停用" checked="" lay-skin="switch">-->
                                     <!--</td>-->
                                     <td class="td-manage">
-                                        <button class="layui-btn layui-btn layui-btn-xs" onclick="xadmin.open('编辑','cate-edit.html?id=<?=$value['id'];?>', 600, 400)">
+                                        <button class="layui-btn layui-btn layui-btn-xs" onclick="xadmin.open('编辑','edit.html?id=<?=$value['id'];?>')">
                                             <i class="layui-icon">&#xe642;</i>编辑
                                         </button>
-                                        <!--<button class="layui-btn layui-btn-warm layui-btn-xs" onclick="xadmin.open('编辑','admin-edit.html')">-->
-                                        <!--    <i class="layui-icon">&#xe642;</i>添加子栏目-->
-                                        <!--</button>-->
                                         <!--<button class="layui-btn-danger layui-btn layui-btn-xs" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
                                         <!--    <i class="layui-icon">&#xe640;</i>删除-->
                                         <!--</button>-->
@@ -98,6 +95,9 @@
                                             <td class="td-manage">
                                                 <button class="layui-btn layui-btn layui-btn-xs" onclick="xadmin.open('编辑','cate-edit.html?id=<?=$val['id'];?>', 600, 400)">
                                                     <i class="layui-icon">&#xe642;</i>编辑
+                                                </button>
+                                                <button class="layui-btn layui-btn-info layui-btn-xs" onclick="xadmin.open('添加题目','add.html?cid=<?=$value['id']?>')">
+                                                    <i class="layui-icon"></i>添加题目
                                                 </button>
                                                 <!--<button class="layui-btn layui-btn-warm layui-btn-xs" onclick="xadmin.open('编辑','admin-edit.html')">-->
                                                 <!--    <i class="layui-icon">&#xe642;</i>添加子栏目-->
