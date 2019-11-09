@@ -95,7 +95,7 @@
             }
 
             $query = OnlineExerciseCate::find()->where(['parent_id' => 0])->with('child')->asArray()->all();
-            $this->getTree($query, 0, $option, 0);
+            $this->getTree($query, 0, $option, 0, true);
             return $this->render('add', ['model' => $OnlineExercise, 'option' => $option]);
         }
 

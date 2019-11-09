@@ -16,7 +16,7 @@
         public function behaviors()
         {
             $behaviors                              = parent::behaviors();
-            $behaviors['authenticator']['optional'] = ['index', 'cate'];
+            $behaviors['authenticator']['optional'] = ['index','view', 'cate'];
             return $behaviors;
         }
 
