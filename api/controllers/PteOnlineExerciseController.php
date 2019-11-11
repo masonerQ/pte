@@ -3,7 +3,7 @@
 
     namespace api\controllers;
 
-    use common\models\User;
+
     use Yii;
     use yii\data\ActiveDataProvider;
     use yii\data\Pagination;
@@ -11,11 +11,12 @@
 
     use common\models\Collection;
     use common\models\Comment;
-    use common\models\ExerciseAnswer;
     use common\models\OnlineExerciseOption;
     use common\models\OnlineExercise;
     use common\models\OnlineExerciseCate;
     use common\models\PassExam;
+    use common\models\OnlineExerciseAnswer;
+    use common\models\User;
 
     class PteOnlineExerciseController extends BaseActiveController
     {
@@ -57,7 +58,12 @@
         public function actionCate()
         {
             $where = ['parent_id' => 0];
-            $model = OnlineExerciseCate::find()->where(['status'=>1])->select(['id', 'parent_id', 'cate_name', 'cate_desc'])->where($where)->asArray()->with('child');
+            $model = OnlineExerciseCate::find()
+                                       ->where(['status' => 1])
+                                       ->select(['id', 'parent_id', 'cate_name', 'cate_desc'])
+                                       ->where($where)
+                                       ->asArray()
+                                       ->with('child');
             return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
         }
 
@@ -182,7 +188,7 @@
             if ($onlineExercise) {
                 $count  = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->count();
                 $field  = 'id, exercise_id, content, audio_link, sorts';
-                $answer = ExerciseAnswer::find()->select($field)->where(['exercise_id' => $eid])->orderBy(['sorts' => 'asc'])->all();
+                $answer = OnlineExerciseAnswer::find()->select($field)->where(['exercise_id' => $eid])->orderBy(['sorts' => 'asc'])->all();
 
                 //是否收藏
                 $isCollection = $isPass = 0;
@@ -212,10 +218,10 @@
                 if ($type == 3) {
                     //1拖拽 2排序
                     $options = OnlineExerciseOption::find()
-                                             ->select('id, exercise_id, content, groups, status')
-                                             ->where(['exercise_id' => $eid])
-                                             ->asArray()
-                                             ->all();
+                                                   ->select('id, exercise_id, content, groups, status')
+                                                   ->where(['exercise_id' => $eid])
+                                                   ->asArray()
+                                                   ->all();
                     $arr     = null;
                     if ($min_type == 3) { //3 下拉框选择
                         foreach ($options as $key => $value) {
