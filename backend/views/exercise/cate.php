@@ -96,7 +96,7 @@
                                                 <button class="layui-btn layui-btn layui-btn-xs" onclick="xadmin.open('编辑','cate-edit.html?id=<?=$val['id'];?>', 600, 400)">
                                                     <i class="layui-icon">&#xe642;</i>编辑
                                                 </button>
-                                                <button class="layui-btn layui-btn-info layui-btn-xs" onclick="xadmin.open('添加题目','add.html?cid=<?=$value['id']?>')">
+                                                <button class="layui-btn layui-btn-info layui-btn-xs" onclick="xadmin.open('添加题目','add.html?cid=<?=$val['id']?>')">
                                                     <i class="layui-icon"></i>添加题目
                                                 </button>
                                                 <!--<button class="layui-btn layui-btn-warm layui-btn-xs" onclick="xadmin.open('编辑','admin-edit.html')">-->

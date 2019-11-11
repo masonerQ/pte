@@ -153,10 +153,19 @@
         {
             $id             = Yii::$app->request->get('id');
             $OnlineExercise = OnlineExercise::findOne($id);
+
             if (!$OnlineExercise) {
                 throw new NotFoundHttpException('未找到......');
             }
+
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+                $answer_content = Yii::$app->request->post('answer_content');
+                // $type = gettype($option);
+                // $op = $option;
+                // echo "<pre>";
+                // print_r($answer_content);
+                // exit;
+
                 $transaction                = Yii::$app->db->beginTransaction();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 $OnlineExercise->cate_id    = Yii::$app->request->post('cid');
@@ -165,24 +174,54 @@
                 $OnlineExercise->img_link   = Yii::$app->request->post('img_link');
                 $OnlineExercise->audio_link = Yii::$app->request->post('audio_link');
                 if ($OnlineExercise->save()) {
-                    $OnlineExerciseAnswer             = OnlineExerciseAnswer::findOne($OnlineExercise->id);
-                    $OnlineExerciseAnswer->content    = Yii::$app->request->post('content');
-                    $OnlineExerciseAnswer->audio_link = Yii::$app->request->post('audio_link');
+                    $OnlineExerciseAnswer             = OnlineExerciseAnswer::find()->where(['exercise_id' => $OnlineExercise->id])->one();
+                    $OnlineExerciseAnswer->content    = Yii::$app->request->post('answer_content');
+                    $OnlineExerciseAnswer->audio_link = Yii::$app->request->post('answer_audio_link');
                     if ($OnlineExerciseAnswer->save()) {
+                        //带下拉选项的题目
+                        if ($OnlineExercise->cate_id == 13) {
+                            $option    = Yii::$app->request->post('answer_option');
+                            $optionArr = explode('|', $option);
+                            if (count($optionArr) > 0) {
+                                $optionArr = array_filter($optionArr);
+                                OnlineExerciseOption::deleteAll(['exercise_id' => $OnlineExercise->id]);
+                                foreach ($optionArr as $key => $value) {
+                                    $OnlineExerciseOption              = new OnlineExerciseOption();
+                                    $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
+                                    $OnlineExerciseOption->content     = $value;
+                                    if (!$OnlineExerciseOption->save()) {
+                                        $transaction->rollBack();
+                                        return ['code' => 203, 'msg' => '错误'];
+                                    }
+                                    unset($OnlineExerciseOption);
+                                }
+                            }
+                        }
                         $transaction->commit();
                         return ['code' => 200, 'msg' => '成功'];
                     }
+                    $transaction->rollBack();
+                    $errors = array_values($OnlineExerciseAnswer->getFirstErrors());
+                } else {
+                    $transaction->rollBack();
+                    $errors = array_values($OnlineExercise->getFirstErrors());
                 }
-
-                $transaction->rollBack();
-                $errors = array_values($OnlineExercise->getFirstErrors());
                 return ['code' => 203, 'msg' => $errors[0]];
             }
 
             // $query = OnlineExerciseCate::find()->where(['parent_id' => 0, 'status'=>1])->with('child')->asArray()->all();
             // $this->getTree($query, 0, $option, $cid, true);
 
-            return $this->render('edit', ['model' => $OnlineExercise]);
+            $answerOptionArr = [];
+            $answerOption = OnlineExerciseOption::find()->where(['exercise_id' => $id])->all();
+            foreach ($answerOption as $key => $value) {
+                array_unshift($answerOptionArr, $value['content']);
+            }
+
+            $answerOptionList = join('|', $answerOptionArr);
+
+            return $this->render('edit', ['model' => $OnlineExercise, 'answerOptionList' => $answerOptionList]);
+
         }
 
 
