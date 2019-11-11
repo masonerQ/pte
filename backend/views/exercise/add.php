@@ -198,7 +198,7 @@
                     elem: '#audio_link'
                     , url: 'upload.html'
                     , multiple: false
-                    , accept: 'video'
+                    , accept: 'audio'
                     , field: 'file'
                     , data: data
                     , before: function (obj) {
@@ -222,7 +222,7 @@
                     elem: '#answer_audio_link'
                     , url: 'upload.html'
                     , multiple: false
-                    , accept: 'video'
+                    , accept: 'audio'
                     , field: 'file'
                     , data: data
                     , before: function (obj) {

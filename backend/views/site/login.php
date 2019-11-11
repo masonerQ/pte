@@ -69,7 +69,7 @@
         <hr class="hr15">
         <input name="LoginForm[password]" lay-verify="required" placeholder="密码" type="password" class="layui-input">
         <textarea name="" id="" cols="30" rows="10">
-            <?php $error = $model->getErrors(); var_dump($error);?>
+            <?php $error = $model->getErrors(); //var_dump($error);?>
         </textarea>
         <hr class="hr15">
         <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
