@@ -33,7 +33,7 @@
                     </label>
                     <div class="layui-input-block">
                         <textarea type="text" id="L_title" name="title" required="" lay-filter="title" lay-verify="title" autocomplete="off"
-                                  class="layui-textarea"><?= $model->content; ?></textarea>
+                                  class="layui-textarea"><?= $model->title; ?></textarea>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
                         </label>
                         <div class="layui-input-block">
                         <textarea type="text" id="L_content" name="content" required="" lay-filter="content" lay-verify="content" autocomplete="off"
-                                  class="layui-textarea"><?= $model->descption; ?></textarea>
+                                  class="layui-textarea"><?= $model->content; ?></textarea>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -119,7 +119,7 @@
                                   class="layui-textarea"><?= $model->answer ? $model->answer->content : ''; ?></textarea>
                     </div>
                     <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                        <span class="x-red"></span>答案当中的逗号请一定输入英文的逗号
+                        <span class="x-red"></span>答案请用英文逗号隔开(xxx,ttt,bbb,ccc)    当中的逗号请一定输入英文的逗号
                     </div>
                 </div>
 
@@ -281,7 +281,7 @@
                             return '题目标题至少10个字符';
                         }
                     },
-                    descption: function (value) {
+                    content: function (value) {
                         layedit.sync(L_content);
                         let content = layedit.getContent(L_content);
                         if ($.trim(content).length < 10) {

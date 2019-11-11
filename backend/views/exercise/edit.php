@@ -5,7 +5,7 @@
     /**
      * @var $option
      * @var $Cate
-     * @var $answerList
+     * @var $answerOptionList
      */
 
 ?>
@@ -20,7 +20,7 @@
                     <div class="layui-input-inline">
                         <input readonly type="text" id="L_cate_id" name="cate_id" required="" lay-filter="cate_id" lay-verify="cate_id"
                                autocomplete="off" class="layui-input"
-                               value="<?= $Cate->cate_name; ?>"/>
+                               value="<?= $model->cate->cate_name; ?>"/>
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red"></span>
@@ -33,23 +33,26 @@
                     </label>
                     <div class="layui-input-block">
                         <textarea type="text" id="L_title" name="title" required="" lay-filter="title" lay-verify="title" autocomplete="off"
-                                  class="layui-textarea"><?= $model->content; ?></textarea>
+                                  class="layui-textarea"><?= $model->title; ?></textarea>
                     </div>
                 </div>
 
-                <?php if (in_array($Cate->id, [6, 9, 10, 11, 12, 13])): ?>
+                <?php if (in_array($model->cate_id, [6, 9, 10, 11, 12, 13])): ?>
                     <div class="layui-form-item layui-form-text">
                         <label for="L_content" class="layui-form-label">
                             <span class="x-red">*</span>题目内容
                         </label>
                         <div class="layui-input-block">
                         <textarea type="text" id="L_content" name="content" required="" lay-filter="content" lay-verify="content" autocomplete="off"
-                                  class="layui-textarea"><?= $model->descption; ?></textarea>
+                                  class="layui-textarea"><?= $model->content; ?></textarea>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
+                            <span class="x-red"></span>题目当中的占位符请用#wj#
                         </div>
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($Cate->id, [18])): ?>
+                <?php if (in_array($model->cate_id, [18])): ?>
                     <div class="layui-form-item">
                         <label for="L_img_link" class="layui-form-label">
                             <span class="x-red">*</span>题目图片
@@ -72,7 +75,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($Cate->id, [5, 7, 8, 14, 15, 19])): ?>
+                <?php if (in_array($model->cate_id, [5, 7, 8, 14, 15, 19])): ?>
                     <div class="layui-form-item">
                         <label for="L_audio_link" class="layui-form-label">
                             <span class="x-red">*</span>题目音频
@@ -80,7 +83,7 @@
                         <div class="layui-input-inline" style="width: 250px;">
                             <input readonly type="text" id="L_audio_link" name="audio_link" required="" lay-filter="audio_link"
                                    lay-verify="audio_link" autocomplete="off" class="layui-input"
-                                   value=""/>
+                                   value="<?= $model->audio_link; ?>"/>
                         </div>
                         <div class="layui-input-inline">
                             <div class="layui-upload">
@@ -95,35 +98,35 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($Cate->id, [13])): ?>
+                <?php if (in_array($model->cate_id, [13])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_option" class="layui-form-label">
                             <span class="x-red">*</span>答案选项
                         </label>
                         <div class="layui-input-block">
                             <textarea id="L_answer_option" name="answer_option" required="" lay-filter="answer_option" lay-verify="cate_id"
-                                      autocomplete="off" class="layui-textarea"><?= $answerList; ?></textarea>
+                                      autocomplete="off" class="layui-textarea"><?= $answerOptionList; ?></textarea>
                         </div>
                         <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                            <span class="x-red"></span>选项当中的逗号请一定输入英文的逗号
+                            <span class="x-red"></span>每组选项请用英文|隔开(xxx,ttt|bbb,ccc|ee,gg,xxx|ttt,rrr), 选项当中的每项用英文逗号隔开, 逗号请一定输入英文的逗号
                         </div>
                     </div>
                 <?php endif; ?>
                 <div class="layui-form-item layui-form-text">
                     <label for="L_answer_content" class="layui-form-label">
-                        <span class="x-red">*</span> <?php if (in_array($Cate->id, [11, 12, 13])): ?>答案列表<?php else: ?>文字答案<?php endif; ?>
+                        <span class="x-red">*</span> <?php if (in_array($model->cate_id, [11, 12, 13])): ?>答案列表<?php else: ?>文字答案<?php endif; ?>
                     </label>
                     <div class="layui-input-block">
                         <textarea type="text" id="L_answer_content" name="answer_content" required="" lay-filter="answer_content"
                                   lay-verify="answer_content" autocomplete="off"
-                                  class="layui-textarea"><?= $model->answer ? $model->answer->content : ''; ?></textarea>
+                                  class="layui-textarea"><?= $model->answer ? ($model->answer)[0]->content : ''; ?></textarea>
                     </div>
                     <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                        <span class="x-red"></span>答案当中的逗号请一定输入英文的逗号
+                        <span class="x-red"></span>答案请用英文逗号隔开(xxx,ttt,bbb,ccc)    当中的逗号请一定输入英文的逗号
                     </div>
                 </div>
 
-                <?php if (in_array($Cate->id, [5, 7, 8])): ?>
+                <?php if (in_array($model->cate_id, [5, 7, 8])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_audio_link" class="layui-form-label">
                             <span class="x-red">*</span>音频答案
@@ -131,7 +134,7 @@
                         <div class="layui-input-inline" style="width: 250px;">
                             <input readonly type="text" id="L_answer_audio_link" name="answer_audio_link" required="" lay-filter="answer_audio_link"
                                    lay-verify="answer_audio_link" autocomplete="off" class="layui-input"
-                                   value=""/>
+                                   value="<?= $model->answer ? ($model->answer)[0]->audio_link : ''; ?>"/>
                         </div>
                         <div class="layui-input-inline">
                             <div class="layui-upload">
@@ -146,7 +149,7 @@
                     </div>
                 <?php endif; ?>
 
-                <input type="hidden" name="cid" value="<?= $Cate->id; ?>"/>
+                <input type="hidden" name="cid" value="<?= $model->cate_id; ?>"/>
                 <input type="hidden" name="id" value="<?= $model->id; ?>"/>
                 <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>"/>
                 <div class="layui-form-item">
@@ -281,7 +284,7 @@
                             return '题目标题至少10个字符';
                         }
                     },
-                    descption: function (value) {
+                    content: function (value) {
                         layedit.sync(L_content);
                         let content = layedit.getContent(L_content);
                         if ($.trim(content).length < 10) {
@@ -312,7 +315,7 @@
                     function (data) {
                         console.log(data);
                         $.ajax({
-                            url: "/exercise/add.html",
+                            url: "/exercise/edit.html?id=<?=$model->id;?>",
                             method: "POST",
                             data: data.field,
                             success: function (res) {
@@ -321,7 +324,7 @@
                                     //发异步，把数据提交给php
                                     layer.alert("更新成功", {icon: 6}, () => {
                                             //关闭当前frame
-                                            xadmin.close();
+                                            // xadmin.close();
                                             // 可以对父窗口进行刷新
                                             // xadmin.father_reload();
                                         }
