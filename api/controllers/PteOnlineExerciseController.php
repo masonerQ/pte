@@ -342,7 +342,8 @@
         {
             $id    = Yii::$app->request->post('id');
             $level = Yii::$app->request->post('level', 1);
-            if (!$id) {
+            $type = Yii::$app->request->post('type', 0);
+            if (!$id || !$type) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
