@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-                <?php if (in_array($Cate->id, [5, 7, 8])): ?>
+                <?php if (in_array($Cate->id, [5, 6, 7, 8, 18])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_audio_link" class="layui-form-label">
                             <span class="x-red">*</span>音频答案
