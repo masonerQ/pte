@@ -322,9 +322,9 @@
                                     //发异步，把数据提交给php
                                     layer.alert("更新成功", {icon: 6}, () => {
                                             //关闭当前frame
-                                            // xadmin.close();
+                                            xadmin.close();
                                             // 可以对父窗口进行刷新
-                                            // xadmin.father_reload();
+                                            xadmin.father_reload();
                                         }
                                     );
                                 } else {
