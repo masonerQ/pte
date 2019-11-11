@@ -203,10 +203,10 @@
             $count          = 0;
             $where          = ['id' => $eid];
             $field          = 'id, cate_id, title, content, descption, img_link, audio_link, looks, status, type, min_type';
-            $onlineExercise = OnlineExercise::find()->select($field)->where($where)->asArray()->with(['cate', 'comment'])->one();
+            $onlineExercise = OnlineExercise::find()->select($field)->where($where)->asArray()->with(['cate', 'comment', 'option'])->one();
 
             //标记一下 大类型： 1口语，  2写作， 3阅读， 4听力
-            $answer = $options = null;
+            $answer = null;
             if ($onlineExercise) {
                 $count  = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->count();
                 $field  = 'id, exercise_id, content, audio_link, sorts';
@@ -237,21 +237,21 @@
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
                 // 阅读
-                if ($type == 3) {
-                    //1拖拽 2排序
-                    $options = OnlineExerciseOption::find()
-                                                   ->select('id, exercise_id, content, groups, status')
-                                                   ->where(['exercise_id' => $eid])
-                                                   ->asArray()
-                                                   ->all();
-                    $arr     = null;
-                    if ($min_type == 3) { //3 下拉框选择
-                        foreach ($options as $key => $value) {
-                            $arr[$value['groups']][] = $value;
-                        }
-                        $options = array_values($arr);
-                    }
-                }
+                // if ($type == 3) {
+                //     //1拖拽 2排序
+                //     $options = OnlineExerciseOption::find()
+                //                                    ->select('id, exercise_id, content, groups, status')
+                //                                    ->where(['exercise_id' => $eid])
+                //                                    ->asArray()
+                //                                    ->all();
+                //     $arr     = null;
+                //     if ($min_type == 3) { //3 下拉框选择
+                //         foreach ($options as $key => $value) {
+                //             $arr[$value['groups']][] = $value;
+                //         }
+                //         $options = array_values($arr);
+                //     }
+                // }
             }
             //自增1
             OnlineExercise::updateAllCounters(['looks' => 1], ['id' => $eid]);
@@ -259,7 +259,7 @@
             $prev = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['<', 'id', $eid])->select('id')->scalar();
             //下一个
             $next = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['>', 'id', $eid])->select('id')->scalar();
-            return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
+            return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'answer' => $answer];
         }
 
         /**
