@@ -147,7 +147,21 @@
                 $user = User::findIdentityByAccessToken($Authorization);
             }
 
+            $gaopin = $zuixin = 0;
+            $time              = $this->getStartEndTime('month');
             foreach ($data as $key => &$value) {
+
+                //新增
+                if ($value['looks']>=100){
+                    $gaopin = 1;
+                }
+                $value['gaopin'] = $gaopin;
+
+                if ($value['created_at'] >= $time['start'] && $value['created_at'] <= $time['end']){
+                    $zuixin = 1;
+                }
+                $value['zuixin'] = $zuixin;
+
                 if ($user) {
                     $isExists = Collection::find()->where(['exercise_id' => $value, 'user_id' => $user->getId()])->exists();
                     if ($isExists) {
@@ -156,6 +170,8 @@
                     unset($isExists);
                 }
                 $value['is_collection'] = $isCollection;
+
+
             }
 
             $ActiveDataProvider->setModels($data);
