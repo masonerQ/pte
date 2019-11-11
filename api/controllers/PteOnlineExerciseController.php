@@ -232,7 +232,7 @@
                 }
             }
             //自增1
-            OnlineExercise::updateAllCounters(['looks' => 1], $where);
+            OnlineExercise::updateAllCounters(['looks' => 1], ['id' => $eid]);
             //上一个
             $prev = OnlineExercise::find()->select('id')->where(['<', 'id', $eid])->scalar();
             //下一个
