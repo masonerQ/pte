@@ -48,6 +48,11 @@
             return $this->hasMany(OnlineExerciseAnswer::class, ['exercise_id'=>'id']);
         }
 
+        public function getOption()
+        {
+            return $this->hasMany(OnlineExerciseOption::class, ['exercise_id'=>'id']);
+        }
+
         // public function getIscollection()
         // {
         //     return $this->hasMany(Collection::class, ['exercise_id' => 'id'])
