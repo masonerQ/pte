@@ -148,16 +148,16 @@
             }
 
             $gaopin = $zuixin = 0;
-            $time              = $this->getStartEndTime('month');
+            $time   = $this->getStartEndTime('month');
             foreach ($data as $key => &$value) {
 
                 //新增
-                if ($value['looks']>=100){
+                if ($value['looks'] >= 100) {
                     $gaopin = 1;
                 }
                 $value['gaopin'] = $gaopin;
 
-                if ($value['created_at'] >= $time['start'] && $value['created_at'] <= $time['end']){
+                if ($value['created_at'] >= $time['start'] && $value['created_at'] <= $time['end']) {
                     $zuixin = 1;
                 }
                 $value['zuixin'] = $zuixin;
@@ -187,14 +187,14 @@
          */
         public function actionView()
         {
-            $eid = Yii::$app->request->get('eid');
+            $eid  = Yii::$app->request->get('eid');
             $type = Yii::$app->request->get('type');
             if (!$eid) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '请传入题目id';
                 return false;
             }
-            if ($type && !in_array($type, ['prev', 'next'])){
+            if ($type && !in_array($type, ['prev', 'next'])) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '传入翻页参数不合法';
                 return false;
@@ -256,9 +256,9 @@
             //自增1
             OnlineExercise::updateAllCounters(['looks' => 1], ['id' => $eid]);
             //上一个
-            $prev = OnlineExercise::find()->where(['cate_id'=>$onlineExercise['cate_id']])->andWhere(['<', 'id', $eid])->select('id')->scalar();
+            $prev = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['<', 'id', $eid])->select('id')->scalar();
             //下一个
-            $next = OnlineExercise::find()->where(['cate_id'=>$onlineExercise['cate_id']])->andWhere(['>', 'id', $eid])->select('id')->scalar();
+            $next = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['>', 'id', $eid])->select('id')->scalar();
             return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
         }
 
