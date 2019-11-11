@@ -240,9 +240,9 @@
             //自增1
             OnlineExercise::updateAllCounters(['looks' => 1], ['id' => $eid]);
             //上一个
-            $prev = OnlineExercise::find()->where(['cate_id'=>$onlineExercise->cate_id])->andWhere(['<', 'id', $eid])->select('id')->scalar();
+            $prev = OnlineExercise::find()->where(['cate_id'=>$onlineExercise['cate_id']])->andWhere(['<', 'id', $eid])->select('id')->scalar();
             //下一个
-            $next = OnlineExercise::find()->where(['cate_id'=>$onlineExercise->cate_id])->andWhere(['>', 'id', $eid])->select('id')->scalar();
+            $next = OnlineExercise::find()->where(['cate_id'=>$onlineExercise['cate_id']])->andWhere(['>', 'id', $eid])->select('id')->scalar();
             return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'options' => $options, 'answer' => $answer];
         }
 
