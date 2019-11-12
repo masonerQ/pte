@@ -135,12 +135,14 @@
                     <li>
                         <a onclick="xadmin.add_tab('练习分类','/exercise/cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>练习分类</cite></a>
+                            <cite>练习分类</cite>
+                        </a>
                     </li>
                     <li>
                         <a onclick="xadmin.add_tab('习题管理','/exercise/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>习题管理</cite></a>
+                            <cite>习题管理</cite>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -153,12 +155,14 @@
                     <li>
                         <a onclick="xadmin.add_tab('课程分类','/goods/cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>课程分类</cite></a>
+                            <cite>课程分类</cite>
+                        </a>
                     </li>
                     <li>
                         <a onclick="xadmin.add_tab('课程列表','/goods/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>课程列表</cite></a>
+                            <cite>课程列表</cite>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -171,17 +175,20 @@
                     <li>
                         <a onclick="xadmin.add_tab('视频分类','/video-class/cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>视频分类</cite></a>
+                            <cite>视频分类</cite>
+                        </a>
                     </li>
                     <li>
                         <a onclick="xadmin.add_tab('视频列表','/video-class/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>视频列表</cite></a>
+                            <cite>视频列表</cite>
+                        </a>
                     </li>
                     <li>
                         <a onclick="xadmin.add_tab('电子机经','/jj/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>电子机经</cite></a>
+                            <cite>电子机经</cite>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -194,12 +201,14 @@
                     <li>
                         <a onclick="xadmin.add_tab('文章分类','/article/cate.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>文章分类</cite></a>
+                            <cite>文章分类</cite>
+                        </a>
                     </li>
                     <li>
                         <a onclick="xadmin.add_tab('文章列表','/article/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>文章列表</cite></a>
+                            <cite>文章列表</cite>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -212,7 +221,22 @@
                     <li>
                         <a onclick="xadmin.add_tab('教师列表','/teacher/list.html')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>教师列表</cite></a>
+                            <cite>教师列表</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="其它设置">&#xe723;</i>
+                    <cite>其它设置</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('banner列表','/banner/list.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>banner列表</cite>
+                        </a>
                     </li>
                 </ul>
             </li>
