@@ -151,7 +151,6 @@
             $gaopin = $zuixin = 0;
             $time   = $this->getStartEndTime('month');
             foreach ($data as $key => &$value) {
-
                 //新增
                 if ($value['looks'] >= 100) {
                     $gaopin = 1;
@@ -175,6 +174,8 @@
                 $value['collection_level'] = $level;
                 $level = 0;
                 $isCollection = 0;
+                $gaopin = 0;
+                $zuixin = 0;
             }
 
             $ActiveDataProvider->setModels($data);

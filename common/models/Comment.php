@@ -5,15 +5,16 @@
 
     /**
      * Class Comment
+     *
      * @property integer $id
-     * @property string $parent_id
-     * @property string $exercise_id
-     * @property string $user_id
-     * @property string $content
-     * @property string $type
-     * @property string $verification_token
-     * @property string $access_token
-     * @property string $access_token_expir
+     * @property string  $parent_id
+     * @property string  $exercise_id
+     * @property string  $user_id
+     * @property string  $content
+     * @property string  $type
+     * @property string  $verification_token
+     * @property string  $access_token
+     * @property string  $access_token_expir
      * @package common\models
      */
     class Comment extends BaseActiveRecord
@@ -26,12 +27,17 @@
 
         public function getExercise()
         {
-            return $this->hasOne(OnlineExercise::class, ['id'=>'to_id']);
+            return $this->hasOne(OnlineExercise::class, ['id' => 'to_id']);
+        }
+
+        public function getChild()
+        {
+            return $this->hasMany(Comment::class, ['parent_id'=>'id'])->with('child');
         }
 
         public function getUserinfo()
         {
-            return $this->hasOne(User::class, ['id'=>'user_id'])->select('id, username');
+            return $this->hasOne(User::class, ['id' => 'user_id'])->select('id, username');
         }
 
     }

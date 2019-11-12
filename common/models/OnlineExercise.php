@@ -34,7 +34,7 @@
         {
             return $this->hasMany(Comment::class, ['exercise_id' => 'id'])
                         ->select('id, parent_id, user_id, exercise_id, type, content, created_at')
-                        ->with('userinfo');
+                        ->with(['userinfo', 'child']);
         }
 
         public function getCate()
