@@ -4,16 +4,7 @@
         // '/<controller:\w+>/<action:\w+>' => '/<controller>/<action>',
         [
             'class'         => 'yii\rest\UrlRule',
-            'controller'    => [
-                'user',
-                'course',
-                'teacher',
-                'article',
-                'goods',
-                'video-class',
-                'jj-class',
-                'pte-online-exercise',
-            ],
+            'controller'    => ['banner', 'user', 'course', 'teacher', 'article', 'goods', 'video-class', 'jj-class', 'pte-online-exercise'],
             'pluralize'     => false,
             'except'        => [],
             'extraPatterns' => [
