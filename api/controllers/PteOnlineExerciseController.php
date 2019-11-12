@@ -166,13 +166,15 @@
                 if ($user) {
                     $collection = Collection::find()->where(['exercise_id' => $value['id'], 'user_id' => $user->getId()])->one();
                     if ($collection) {
-                        $isCollection = 1;
                         $level        = $collection['level'];
+                        $isCollection = 1;
                     }
                     unset($collection);
                 }
                 $value['is_collection']    = $isCollection;
                 $value['collection_level'] = $level;
+                $level = 0;
+                $isCollection = 0;
             }
 
             $ActiveDataProvider->setModels($data);
