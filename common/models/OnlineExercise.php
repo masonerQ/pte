@@ -34,6 +34,7 @@
         {
             return $this->hasMany(Comment::class, ['exercise_id' => 'id'])
                         ->select('id, parent_id, user_id, exercise_id, type, content, created_at')
+                        ->where(['parent_id'=>0])
                         ->with(['userinfo', 'child']);
         }
 
