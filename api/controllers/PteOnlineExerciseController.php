@@ -142,6 +142,7 @@
             $data = $ActiveDataProvider->getModels();
 
             $user         = null;
+            $level        = 0;
             $isCollection = 0;
             if ($Authorization = $this->getAuthorization()) {
                 $user = User::findIdentityByAccessToken($Authorization);
@@ -163,13 +164,15 @@
                 $value['zuixin'] = $zuixin;
 
                 if ($user) {
-                    $isExists = Collection::find()->where(['exercise_id' => $value['id'], 'user_id' => $user->getId()])->exists();
-                    if ($isExists) {
+                    $collection = Collection::find()->where(['exercise_id' => $value['id'], 'user_id' => $user->getId()])->one();
+                    if ($collection) {
                         $isCollection = 1;
+                        $level        = $collection['level'];
                     }
-                    unset($isExists);
+                    unset($collection);
                 }
-                $value['is_collection'] = $isCollection;
+                $value['is_collection']    = $isCollection;
+                $value['collection_level'] = $level;
             }
 
             $ActiveDataProvider->setModels($data);
@@ -346,24 +349,39 @@
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
             }
-            $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
+            $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->exists();
             if (!$CollectionModel) {
-                $CollectionModel              = new Collection();
-                $CollectionModel->exercise_id = $id;
-                $CollectionModel->level       = $level;
-                $CollectionModel->user_id     = Yii::$app->user->identity->getId();
-                if ($CollectionModel->save()) {
-                    Yii::$app->response->statusText = '收藏成功';
-                    return true;
-                } else {
+                if ($type == 1){
+                    $CollectionModel              = new Collection();
+                    $CollectionModel->exercise_id = $id;
+                    $CollectionModel->level       = $level;
+                    $CollectionModel->user_id     = Yii::$app->user->identity->getId();
+                    if ($CollectionModel->save()) {
+                        Yii::$app->response->statusText = '收藏成功';
+                        return true;
+                    } else {
+                        Yii::$app->response->statusCode = 203;
+                        Yii::$app->response->statusText = '收藏失败';
+                        return false;
+                    }
+                }else if($type == 2){
                     Yii::$app->response->statusCode = 203;
-                    Yii::$app->response->statusText = '收藏失败';
+                    Yii::$app->response->statusText = '您还没有收藏过, 不能取消收藏';
                     return false;
                 }
             } else {
-                Yii::$app->response->statusCode = 203;
-                Yii::$app->response->statusText = '已收藏过';
-                return false;
+                if ($type == 1){
+                    Yii::$app->response->statusCode = 203;
+                    Yii::$app->response->statusText = '已收藏过';
+                    return false;
+                }else if($type == 2){
+                    $isDelete = Collection::deleteAll(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()]);
+                    if ($isDelete){
+                        Yii::$app->response->statusCode = 203;
+                        Yii::$app->response->statusText = '取消收藏成功';
+                        return false;
+                    }
+                }
             }
 
         }
