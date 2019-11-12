@@ -119,7 +119,7 @@
             }
 
             $onlineExercise = OnlineExercise::find()
-                                            ->select('id, title, cate_id, content, looks, status, type, min_type')
+                                            ->select('id, title, cate_id, content, looks, status, type, min_type, created_at')
                                             ->where($where)
                                             ->asArray()
                                             ->with('cate')
@@ -163,15 +163,13 @@
                 $value['zuixin'] = $zuixin;
 
                 if ($user) {
-                    $isExists = Collection::find()->where(['exercise_id' => $value, 'user_id' => $user->getId()])->exists();
+                    $isExists = Collection::find()->where(['exercise_id' => $value['id'], 'user_id' => $user->getId()])->exists();
                     if ($isExists) {
                         $isCollection = 1;
                     }
                     unset($isExists);
                 }
                 $value['is_collection'] = $isCollection;
-
-
             }
 
             $ActiveDataProvider->setModels($data);
@@ -342,7 +340,7 @@
         {
             $id    = Yii::$app->request->post('id');
             $level = Yii::$app->request->post('level', 1);
-            $type = Yii::$app->request->post('type', 0);
+            $type  = Yii::$app->request->post('type', 0);
             if (!$id || !$type) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数不正确';
