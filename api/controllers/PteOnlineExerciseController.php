@@ -349,7 +349,7 @@
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
             }
-            $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->exists();
+            $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
             if (!$CollectionModel) {
                 if ($type == 1){
                     $CollectionModel              = new Collection();
@@ -371,9 +371,17 @@
                 }
             } else {
                 if ($type == 1){
-                    Yii::$app->response->statusCode = 203;
-                    Yii::$app->response->statusText = '已收藏过';
-                    return false;
+                    if ($CollectionModel->level == $level){
+                        Yii::$app->response->statusCode = 203;
+                        Yii::$app->response->statusText = '已收藏过';
+                        return false;
+                    }else{
+                        $CollectionModel->level = $level;
+                        if ($CollectionModel->save()){
+                            Yii::$app->response->statusText = '更新收藏级别成功';
+                            return true;
+                        }
+                    }
                 }else if($type == 2){
                     $isDelete = Collection::deleteAll(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()]);
                     if ($isDelete){
