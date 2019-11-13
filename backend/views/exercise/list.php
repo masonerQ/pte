@@ -11,9 +11,9 @@
     <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="">首页</a>
-            <a href="javascript:void(0);">精品课程</a>
+            <a href="javascript:void(0);">在线练习</a>
             <a>
-              <cite>课程列表</cite></a>
+              <cite>习题列表</cite></a>
           </span>
         <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
             <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
