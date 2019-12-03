@@ -299,9 +299,9 @@
                         }
                     },
                     answer_audio_link: function (value) {
-                        if ($.trim(value).length < 26) {
-                            return '请上传音频答案';
-                        }
+                        // if ($.trim(value).length < 26) {
+                        //     return '请上传音频答案';
+                        // }
                     },
                 });
 
