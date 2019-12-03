@@ -189,8 +189,8 @@
                     }
                 });
 
-                let L_title = layedit.build('L_title');
-                let L_content = layedit.build('L_content');
+                // let L_title = layedit.build('L_title');
+                // let L_content = layedit.build('L_content');
                 // let L_answer_content = layedit.build('L_answer_content');
 
 
@@ -276,16 +276,16 @@
                         }
                     },
                     title: function (value) {
-                        layedit.sync(L_title);
-                        let content = layedit.getContent(L_title);
-                        if ($.trim(content).length < 10) {
+                        // layedit.sync(L_title);
+                        // let content = layedit.getContent(L_title);
+                        if ($.trim(value).length < 10) {
                             return '题目标题至少10个字符';
                         }
                     },
                     content: function (value) {
-                        layedit.sync(L_content);
-                        let content = layedit.getContent(L_content);
-                        if ($.trim(content).length < 10) {
+                        // layedit.sync(L_content);
+                        // let content = layedit.getContent(L_content);
+                        if ($.trim(value).length < 10) {
                             return '题目内容至少10个字符';
                         }
                     },
