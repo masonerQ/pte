@@ -65,18 +65,18 @@
                             <?php foreach ($list as $key => $value): ?>
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="id" value="<?= $value->id; ?>" lay-skin="primary">
+                                        <input type="checkbox" name="id" value="<?= $value['id']; ?>" lay-skin="primary">
                                     </td>
-                                    <td><?= $value->id; ?></td>
-                                    <td><?= $value->cate->cate_name; ?></td>
-                                    <td><?= $value->title; ?></td>
-                                    <td><?= $value->img_link; ?></td>
-                                    <td><?= $value->audio_link; ?></td>
-                                    <td><?= $value->looks; ?></td>
+                                    <td><?= $value['id']; ?></td>
+                                    <td><?= $value['cate']['cate_name']; ?></td>
+                                    <td><?= $value['title']; ?></td>
+                                    <td><?= $value['img_link']; ?></td>
+                                    <td><?= $value['audio_link']; ?></td>
+                                    <td><?= $value['looks']; ?></td>
                                     <td class="td-status">
-                                        <?php if ($value->status == 1): ?>
+                                        <?php if ($value['status'] == 1): ?>
                                             <span class="layui-btn layui-btn-normal layui-btn-mini">已上架</span>
-                                        <?php elseif ($value->status == 2): ?>
+                                        <?php elseif ($value['status'] == 2): ?>
                                             <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已下架</span>
                                         <?php endif; ?>
                                     </td>
@@ -84,18 +84,18 @@
                                         <!--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
                                         <!--    <i class="layui-icon">&#xe601;</i>-->
                                         <!--</a>-->
-                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value->id; ?>')" href="javascript:;">
+                                        <a title="编辑" onclick="xadmin.open('编辑','edit.html?id=<?= $value['id']; ?>')" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
                                         <!--<a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">-->
                                         <!--    <i class="layui-icon">&#xe631;</i>-->
                                         <!--</a>-->
-                                        <? if ($value->status == 1): ?>
-                                            <a title="下架" onclick="video_operation(this,'<?= $value->id; ?>', 2)" href="javascript:void(0);">
+                                        <? if ($value['status'] == 1): ?>
+                                            <a title="下架" onclick="video_operation(this,'<?= $value['id']; ?>', 2)" href="javascript:void(0);">
                                                 <i class="layui-icon">&#xe640;</i>
                                             </a>
-                                        <?php elseif ($value->status == 2): ?>
-                                            <a title="上架" onclick="video_operation(this,'<?= $value->id; ?>', 1)" href="javascript:void(0);">
+                                        <?php elseif ($value['status'] == 2): ?>
+                                            <a title="上架" onclick="video_operation(this,'<?= $value['id']; ?>', 1)" href="javascript:void(0);">
                                                 <i class="layui-icon">&#xe669;</i>
                                             </a>
                                         <?php endif; ?>

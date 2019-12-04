@@ -62,12 +62,16 @@
             $data         = [];
             $where        = [];
             $keywords     = Yii::$app->request->get('keywords');
-            $query        = OnlineExercise::find()->where($where)->andWhere(['like', 'title', "$keywords"]);
+            $query        = OnlineExercise::find()->where($where)->andWhere(['like', 'title', "$keywords"])->with('cate');
             $pagination   = new Pagination(['totalCount' => $query->count(), 'pagesize' => '20']);
-            $data['list'] = $query->offset($pagination->offset)->limit($pagination->limit)->all();
+            $data['list'] = $query->offset($pagination->offset)->limit($pagination->limit)->asArray()->all();
             // var_dump($data['list'] );
             $data['pages']    = $pagination;
             $data['keywords'] = $keywords;
+            echo "<pre>";
+            print_r($data['list'][4]);
+            echo "</pre>";
+            exit;
             return $this->render('list', $data);
         }
 
@@ -96,8 +100,8 @@
                 $transaction                = Yii::$app->db->beginTransaction();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 $OnlineExercise->cate_id    = Yii::$app->request->post('cid');
-                $OnlineExercise->title      = Yii::$app->request->post('title');
-                $OnlineExercise->content    = Yii::$app->request->post('content');
+                $OnlineExercise->title      = htmlspecialchars(Yii::$app->request->post('title'));
+                $OnlineExercise->content    = htmlspecialchars(Yii::$app->request->post('content'));
                 $OnlineExercise->img_link   = Yii::$app->request->post('img_link');
                 $OnlineExercise->audio_link = Yii::$app->request->post('audio_link');
                 if ($OnlineExercise->save()) {
