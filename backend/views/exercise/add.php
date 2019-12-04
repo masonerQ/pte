@@ -275,28 +275,28 @@
                     title: function (value) {
                         // layedit.sync(L_title);
                         // let content = layedit.getContent(L_title);
-                        if ($.trim(value).length < 10) {
-                            return '题目标题至少10个字符';
-                        }
+                        // if ($.trim(value).length < 10) {
+                        //     return '题目标题至少10个字符';
+                        // }
                     },
                     content: function (value) {
                         // layedit.sync(L_content);
                         // let content = layedit.getContent(L_content);
-                        if ($.trim(value).length < 10) {
-                            return '题目内容至少10个字符';
-                        }
+                        // if ($.trim(value).length < 10) {
+                        //     return '题目内容至少10个字符';
+                        // }
                     },
                     audio_link: function (value) {
-                        if ($.trim(value).length < 26) {
-                            return '题目音频至少26个字符';
-                        }
+                        // if ($.trim(value).length < 26) {
+                        //     return '题目音频至少26个字符';
+                        // }
                     },
                     answer_content: function (value) {
                         // layedit.sync(L_answer_content);
                         // let content = layedit.getContent(L_answer_content);
-                        if ($.trim(value).length < 10) {
-                            return '请填写文字答案, 不少于10个字符';
-                        }
+                        // if ($.trim(value).length < 10) {
+                        //     return '请填写文字答案, 不少于10个字符';
+                        // }
                     },
                     answer_audio_link: function (value) {
                         // if ($.trim(value).length < 26) {
