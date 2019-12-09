@@ -202,10 +202,10 @@
                 url = null;
             if (type === 1) {
                 msg = '上架';
-                url = "/video-class/start.html";
+                url = "/exercise/start.html";
             } else if (type === 2) {
                 msg = '下架';
-                url = "/video-class/del.html";
+                url = "/exercise/del.html";
             } else {
                 return false;
             }
@@ -252,10 +252,10 @@
                 url = null;
             if (type === 1) {
                 msg = '上架';
-                url = "/video-class/start.html";
+                url = "/exercise/start.html";
             } else if (type === 2) {
                 msg = '下架';
-                url = "/video-class/del.html";
+                url = "/exercise/del.html";
             } else {
                 return false;
             }
