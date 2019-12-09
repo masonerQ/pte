@@ -68,10 +68,10 @@
             // var_dump($data['list'] );
             $data['pages']    = $pagination;
             $data['keywords'] = $keywords;
-            echo "<pre>";
-            print_r($data['list'][4]);
-            echo "</pre>";
-            exit;
+            // echo "<pre>";
+            // print_r($data['list'][4]);
+            // echo "</pre>";
+            // exit;
             return $this->render('list', $data);
         }
 
