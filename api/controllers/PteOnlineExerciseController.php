@@ -33,12 +33,13 @@
 
         protected function verbs()
         {
-            $verbs               = parent::verbs();
-            $verbs['index']      = ['GET'];
-            $verbs['cate']       = ['GET'];
-            $verbs['comment']    = ['POST', 'OPTIONS'];
-            $verbs['pass-exam']  = ['POST', 'OPTIONS'];
-            $verbs['collection'] = ['POST', 'OPTIONS'];
+            $verbs                    = parent::verbs();
+            $verbs['index']           = ['GET'];
+            $verbs['cate']            = ['GET'];
+            $verbs['comment']         = ['POST', 'OPTIONS'];
+            $verbs['pass-exam']       = ['POST', 'OPTIONS'];
+            $verbs['collection']      = ['POST', 'OPTIONS'];
+            $verbs['collection-list'] = ['GET'];
             return $verbs;
         }
 
@@ -340,13 +341,12 @@
                 Yii::$app->response->statusText = '已考过';
                 return false;
             }
-
         }
 
 
         /**
          * @description 收藏
-         * @return bool
+         * @return mixed
          */
         public function actionCollection()
         {
@@ -380,6 +380,9 @@
                     Yii::$app->response->statusText = '您还没有收藏过, 不能取消收藏';
                     return false;
                 }
+                Yii::$app->response->statusCode = 203;
+                Yii::$app->response->statusText = '失败';
+                return false;
             } else {
                 if ($type == 1) {
                     if ($CollectionModel->level == $level) {
@@ -401,8 +404,48 @@
                         return false;
                     }
                 }
+                Yii::$app->response->statusCode = 203;
+                Yii::$app->response->statusText = '失败';
+                return false;
+            }
+        }
+
+
+        /**
+         * @description 收藏
+         * @return mixed
+         */
+        public function actionCollectionList()
+        {
+            $cid     = Yii::$app->request->get('cid');
+            $level   = Yii::$app->request->get('level');
+            $user_id = Yii::$app->user->identity->getId();
+
+            $sort_field = 'id';
+            $sort_value = SORT_DESC;
+
+            $where            = [];
+            $where['user_id'] = $user_id;
+            if ($cid) {
+                $where['cid'] = $cid;
+            }
+            if ($level) {
+                $where['level'] = $level;
             }
 
+            $Collection = Collection::find()->select('id, user_id, exercise_id, level, cid')->where($where)->asArray()->with('exercise');
+
+            return new ActiveDataProvider(
+                [
+                    'query'      => $Collection,
+                    'pagination' => new Pagination(['pageSize' => 20]),
+                    'sort'       => [
+                        'defaultOrder' => [
+                            "$sort_field" => $sort_value
+                        ]
+                    ]
+                ]
+            );
         }
 
 
