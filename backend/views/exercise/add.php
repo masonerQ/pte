@@ -93,7 +93,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($Cate->id, [13])): ?>
+                <?php if (in_array($Cate->id, [11])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_option" class="layui-form-label">
                             <span class="x-red">*</span>答案选项
