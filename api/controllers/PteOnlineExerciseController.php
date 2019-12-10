@@ -224,14 +224,15 @@
                 $answer = OnlineExerciseAnswer::find()->select($field)->where(['exercise_id' => $eid])->orderBy(['sorts' => 'asc'])->all();
 
                 //是否收藏
-                $isCollection = $isPass = 0;
+                $isCollection = $collection_level = $isPass = 0;
                 if ($Authorization = $this->getAuthorization()) {
                     $user = User::findIdentityByAccessToken($Authorization);
                     if ($user) {
                         $where              = ['exercise_id' => $onlineExercise['id'], 'user_id' => $user->getId()];
-                        $CollectionIsExists = Collection::find()->where($where)->exists();
+                        $CollectionIsExists = Collection::find()->where($where)->one();
                         if ($CollectionIsExists) {
-                            $isCollection = 1;
+                            $isCollection     = 1;
+                            $collection_level = $CollectionIsExists['level'];
                         }
                         unset($CollectionIsExists);
 
@@ -242,8 +243,9 @@
                         unset($PassExamIsExists);
                     }
                 }
-                $onlineExercise['is_collection'] = $isCollection;
-                $onlineExercise['is_pass']       = $isPass;
+                $onlineExercise['is_collection']    = $isCollection;
+                $onlineExercise['collection_level'] = $collection_level;
+                $onlineExercise['is_pass']          = $isPass;
 
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
@@ -354,7 +356,7 @@
             $cid   = Yii::$app->request->post('cid', 1);
             $level = Yii::$app->request->post('level', 1);
             $type  = Yii::$app->request->post('type', 0);
-            if (!$id || $cid || !$type ) {
+            if (!$id || $cid || !$type) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
