@@ -57,15 +57,15 @@
          */
         public function actionCate()
         {
-            $where = ['parent_id' => 0];
-            $model = OnlineExerciseCate::find()
-                                       ->where(['status' => 1])
-                                       ->select(['id', 'parent_id', 'cate_name', 'cate_desc'])
-                                       ->where($where)
-                                       ->asArray()
-                                       ->with('child');
+            $where              = ['parent_id' => 0];
+            $model              = OnlineExerciseCate::find()
+                                                    ->where(['status' => 1])
+                                                    ->select(['id', 'parent_id', 'cate_name', 'cate_desc'])
+                                                    ->where($where)
+                                                    ->asArray()
+                                                    ->with('child');
             $ActiveDataProvider = new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
-            $data = $ActiveDataProvider->getModels();
+            $data               = $ActiveDataProvider->getModels();
             // foreach ($data as $key=>$value){
             //
             // }
@@ -178,10 +178,10 @@
                 }
                 $value['is_collection']    = $isCollection;
                 $value['collection_level'] = $level;
-                $level = 0;
-                $isCollection = 0;
-                $gaopin = 0;
-                $zuixin = 0;
+                $level                     = 0;
+                $isCollection              = 0;
+                $gaopin                    = 0;
+                $zuixin                    = 0;
             }
 
             $ActiveDataProvider->setModels($data);
@@ -351,6 +351,7 @@
         public function actionCollection()
         {
             $id    = Yii::$app->request->post('id');
+            $cid   = Yii::$app->request->post('cid', 1);
             $level = Yii::$app->request->post('level', 1);
             $type  = Yii::$app->request->post('type', 0);
             if (!$id || !$type) {
@@ -360,8 +361,9 @@
             }
             $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
             if (!$CollectionModel) {
-                if ($type == 1){
+                if ($type == 1) {
                     $CollectionModel              = new Collection();
+                    $CollectionModel->cid         = $cid;
                     $CollectionModel->exercise_id = $id;
                     $CollectionModel->level       = $level;
                     $CollectionModel->user_id     = Yii::$app->user->identity->getId();
@@ -373,27 +375,27 @@
                         Yii::$app->response->statusText = '收藏失败';
                         return false;
                     }
-                }else if($type == 2){
+                } else if ($type == 2) {
                     Yii::$app->response->statusCode = 203;
                     Yii::$app->response->statusText = '您还没有收藏过, 不能取消收藏';
                     return false;
                 }
             } else {
-                if ($type == 1){
-                    if ($CollectionModel->level == $level){
+                if ($type == 1) {
+                    if ($CollectionModel->level == $level) {
                         Yii::$app->response->statusCode = 203;
                         Yii::$app->response->statusText = '已收藏过';
                         return false;
-                    }else{
+                    } else {
                         $CollectionModel->level = $level;
-                        if ($CollectionModel->save()){
+                        if ($CollectionModel->save()) {
                             Yii::$app->response->statusText = '更新收藏级别成功';
                             return true;
                         }
                     }
-                }else if($type == 2){
+                } else if ($type == 2) {
                     $isDelete = Collection::deleteAll(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()]);
-                    if ($isDelete){
+                    if ($isDelete) {
                         Yii::$app->response->statusCode = 203;
                         Yii::$app->response->statusText = '取消收藏成功';
                         return false;
