@@ -70,7 +70,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($Cate->id, [5, 7, 8, 14, 15, 19])): ?>
+                <?php if (in_array($Cate->id, [6, 7, 8, 14, 15, 19])): ?>
                     <div class="layui-form-item">
                         <label for="L_audio_link" class="layui-form-label">
                             <span class="x-red">*</span>题目音频

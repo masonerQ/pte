@@ -64,7 +64,13 @@
                                        ->where($where)
                                        ->asArray()
                                        ->with('child');
-            return new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
+            $ActiveDataProvider = new ActiveDataProvider(['query' => $model, 'pagination' => new Pagination(['pageSize' => 20])]);
+            $data = $ActiveDataProvider->getModels();
+            // foreach ($data as $key=>$value){
+            //
+            // }
+            $ActiveDataProvider->setModels($data);
+            return $ActiveDataProvider;
         }
 
 
