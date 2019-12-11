@@ -205,11 +205,11 @@
                 Yii::$app->response->statusText = '请传入题目id';
                 return false;
             }
-            if ($type && !in_array($type, ['prev', 'next'])) {
-                Yii::$app->response->statusCode = 203;
-                Yii::$app->response->statusText = '传入翻页参数不合法';
-                return false;
-            }
+            // if ($type && !in_array($type, ['prev', 'next'])) {
+            //     Yii::$app->response->statusCode = 203;
+            //     Yii::$app->response->statusText = '传入翻页参数不合法';
+            //     return false;
+            // }
 
             $count          = 0;
             $where          = ['id' => $eid];
@@ -272,7 +272,10 @@
             $prev = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['<', 'id', $eid])->select('id')->scalar();
             //下一个
             $next = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['>', 'id', $eid])->select('id')->scalar();
-            return ['exercise' => $onlineExercise, 'count' => $count, 'prev' => $prev, 'next' => $next, 'answer' => $answer];
+
+            $current_num = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['<=', 'id', $eid])->count();
+
+            return ['exercise' => $onlineExercise, 'current_num'=>$current_num,'count' => $count, 'prev' => $prev, 'next' => $next, 'answer' => $answer];
         }
 
         /**
