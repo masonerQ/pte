@@ -455,7 +455,7 @@
                     'pagination' => new Pagination(['pageSize' => 20]),
                     'sort'       => [
                         'defaultOrder' => [
-                            "$sort_field" => $sort_value
+                            "id" => SORT_DESC
                         ]
                     ]
                 ]
