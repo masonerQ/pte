@@ -7,6 +7,7 @@
      * Class Collection
      * @property int exercise_id
      * @property int cid
+     * @property int top_cid
      * @property int level
      * @property int user_id
      * @package common\models

@@ -247,7 +247,10 @@
                 $onlineExercise['is_collection']    = $isCollection;
                 $onlineExercise['collection_level'] = $collection_level;
                 $onlineExercise['is_pass']          = $isPass;
-                $onlineExercise['top_cid']          = OnlineExerciseCate::find()->where(['id' => $onlineExercise['cate_id']])->select('parent_id')->scalar();;
+                $onlineExercise['top_cid']          = OnlineExerciseCate::find()
+                                                                        ->where(['id' => $onlineExercise['cate_id']])
+                                                                        ->select('parent_id')
+                                                                        ->scalar();;
 
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
@@ -376,8 +379,9 @@
             $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
             if (!$CollectionModel) {
                 if ($type == 1) {
-                    $CollectionModel              = new Collection();
-                    $CollectionModel->cid         = $cid;
+                    $CollectionModel          = new Collection();
+                    $CollectionModel->cid     = $cid;
+                    $CollectionModel->top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();;;
                     $CollectionModel->exercise_id = $id;
                     $CollectionModel->level       = $level;
                     $CollectionModel->user_id     = Yii::$app->user->identity->getId();
@@ -447,7 +451,7 @@
                 $where['level'] = $level;
             }
 
-            $Collection = Collection::find()->select('id, user_id, exercise_id, level, cid')->where($where)->asArray()->with('exercise');
+            $Collection = Collection::find()->select('id, user_id, exercise_id, level, cid, top_cid')->where($where)->asArray()->with('exercise');
 
             return new ActiveDataProvider(
                 [
