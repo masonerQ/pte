@@ -440,7 +440,7 @@
          */
         public function actionCollectionList()
         {
-            $cid     = Yii::$app->request->get('cid');
+            $top_cid     = Yii::$app->request->get('top_cid');
             $level   = Yii::$app->request->get('level');
             $user_id = Yii::$app->user->identity->getId();
 
@@ -449,8 +449,8 @@
 
             $where            = [];
             $where['user_id'] = $user_id;
-            if ($cid) {
-                $where['cid'] = $cid;
+            if ($top_cid) {
+                $where['top_cid'] = $top_cid;
             }
             if ($level) {
                 $where['level'] = $level;
