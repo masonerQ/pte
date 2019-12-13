@@ -259,16 +259,16 @@
                 // if ($type == 3) {
                 //     //1拖拽 2排序
                 // }
-                $options = OnlineExerciseOption::find()
-                                               ->select('id, exercise_id, content, groups, status')
-                                               ->where(['exercise_id' => $eid])
-                                               ->asArray()
-                                               ->all();
-                $arr     = [];
-                foreach ($options as $key => $value) {
-                    $arr[$value['groups']][] = $value;
-                }
-                $options = array_values($arr);
+                // $options = OnlineExerciseOption::find()
+                //                                ->select('id, exercise_id, content, groups, status')
+                //                                ->where(['exercise_id' => $eid])
+                //                                ->asArray()
+                //                                ->all();
+                // $arr     = [];
+                // foreach ($options as $key => $value) {
+                //     $arr[$value['groups']][] = $value;
+                // }
+                // $options = array_values($arr);
             }
             //自增1
             OnlineExercise::updateAllCounters(['looks' => 1], ['id' => $eid]);
@@ -285,8 +285,7 @@
                 'count'       => $count,
                 'prev'        => $prev,
                 'next'        => $next,
-                'answer'      => $answer,
-                'options'     => $options
+                'answer'      => $answer
             ];
         }
 
