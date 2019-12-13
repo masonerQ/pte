@@ -379,6 +379,12 @@
             $CollectionModel = Collection::find()->where(['exercise_id' => $id, 'user_id' => Yii::$app->user->identity->getId()])->one();
             if (!$CollectionModel) {
                 if ($type == 1) {
+                    $top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();
+                    if (!$top_cid){
+                        Yii::$app->response->statusCode = 203;
+                        Yii::$app->response->statusText = '请传子级分类id';
+                        return false;
+                    }
                     $CollectionModel          = new Collection();
                     $CollectionModel->cid     = $cid;
                     $CollectionModel->top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();
