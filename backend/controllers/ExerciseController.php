@@ -113,7 +113,8 @@
                         //带下拉选项的题目
                         $option    = Yii::$app->request->post('answer_option');
                         $optionArr = explode('|', $option);
-                        if (count($optionArr) > 0) {
+                        $optionArrAfterFilter = array_filter($optionArr);
+                        if (count($optionArrAfterFilter) > 0) {
                             $optionArr = array_filter($optionArr);
                             foreach ($optionArr as $key => $value) {
                                 $OnlineExerciseOption              = new OnlineExerciseOption();
@@ -183,7 +184,8 @@
                         //带下拉选项的题目
                         $option    = Yii::$app->request->post('answer_option');
                         $optionArr = explode('|', $option);
-                        if (count($optionArr) > 0) {
+                        $optionArrAfterFilter = array_filter($optionArr);
+                        if (count($optionArrAfterFilter) > 0) {
                             $optionArr = array_filter($optionArr);
                             OnlineExerciseOption::deleteAll(['exercise_id' => $OnlineExercise->id]);
                             foreach ($optionArr as $key => $value) {
