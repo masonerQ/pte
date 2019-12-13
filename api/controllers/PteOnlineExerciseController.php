@@ -217,7 +217,8 @@
             $onlineExercise = OnlineExercise::find()->select($field)->where($where)->asArray()->with(['cate', 'comment', 'option'])->one();
 
             //标记一下 大类型： 1口语，  2写作， 3阅读， 4听力
-            $answer = null;
+            $answer  = null;
+            $options = null;
             if ($onlineExercise) {
                 $count  = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->count();
                 $field  = 'id, exercise_id, content, audio_link, sorts';
@@ -257,19 +258,17 @@
                 // 阅读
                 // if ($type == 3) {
                 //     //1拖拽 2排序
-                //     $options = OnlineExerciseOption::find()
-                //                                    ->select('id, exercise_id, content, groups, status')
-                //                                    ->where(['exercise_id' => $eid])
-                //                                    ->asArray()
-                //                                    ->all();
-                //     $arr     = null;
-                //     if ($min_type == 3) { //3 下拉框选择
-                //         foreach ($options as $key => $value) {
-                //             $arr[$value['groups']][] = $value;
-                //         }
-                //         $options = array_values($arr);
-                //     }
                 // }
+                $options = OnlineExerciseOption::find()
+                                               ->select('id, exercise_id, content, groups, status')
+                                               ->where(['exercise_id' => $eid])
+                                               ->asArray()
+                                               ->all();
+                $arr     = [];
+                foreach ($options as $key => $value) {
+                    $arr[$value['groups']][] = $value;
+                }
+                $options = array_values($arr);
             }
             //自增1
             OnlineExercise::updateAllCounters(['looks' => 1], ['id' => $eid]);
@@ -286,7 +285,8 @@
                 'count'       => $count,
                 'prev'        => $prev,
                 'next'        => $next,
-                'answer'      => $answer
+                'answer'      => $answer,
+                'options'     => $options
             ];
         }
 
@@ -380,14 +380,14 @@
             if (!$CollectionModel) {
                 if ($type == 1) {
                     $top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();
-                    if (!$top_cid){
+                    if (!$top_cid) {
                         Yii::$app->response->statusCode = 203;
                         Yii::$app->response->statusText = '请传子级分类id';
                         return false;
                     }
-                    $CollectionModel          = new Collection();
-                    $CollectionModel->cid     = $cid;
-                    $CollectionModel->top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();
+                    $CollectionModel              = new Collection();
+                    $CollectionModel->cid         = $cid;
+                    $CollectionModel->top_cid     = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();
                     $CollectionModel->exercise_id = $id;
                     $CollectionModel->level       = $level;
                     $CollectionModel->user_id     = Yii::$app->user->identity->getId();
