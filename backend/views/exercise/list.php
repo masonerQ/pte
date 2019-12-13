@@ -41,7 +41,7 @@
                         </form>
                     </div>
                     <div class="layui-card-header">
-                        <button class="layui-btn layui-btn-danger" onclick="video_operation_all(2)"><i class="layui-icon"></i>批量下架</button>
+                        <button class="layui-btn layui-btn-danger" onclick="video_operation_all(2)"><i class="layui-icon"></i>批量删除</button>
                         <button class="layui-btn layui-btn-success" onclick="video_operation_all(1)"><i class="layui-icon"></i>批量上架</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
@@ -77,7 +77,7 @@
                                         <?php if ($value['status'] == 1): ?>
                                             <span class="layui-btn layui-btn-normal layui-btn-mini">已上架</span>
                                         <?php elseif ($value['status'] == 2): ?>
-                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已下架</span>
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已删除</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="td-manage">
@@ -90,15 +90,9 @@
                                         <!--<a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">-->
                                         <!--    <i class="layui-icon">&#xe631;</i>-->
                                         <!--</a>-->
-                                        <? if ($value['status'] == 1): ?>
-                                            <a title="下架" onclick="video_operation(this,'<?= $value['id']; ?>', 2)" href="javascript:void(0);">
-                                                <i class="layui-icon">&#xe640;</i>
-                                            </a>
-                                        <?php elseif ($value['status'] == 2): ?>
-                                            <a title="上架" onclick="video_operation(this,'<?= $value['id']; ?>', 1)" href="javascript:void(0);">
-                                                <i class="layui-icon">&#xe669;</i>
-                                            </a>
-                                        <?php endif; ?>
+                                        <a title="删除" onclick="video_operation(this,'<?= $value['id']; ?>', 2)" href="javascript:void(0);">
+                                            <i class="layui-icon">&#xe640;</i>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -193,7 +187,7 @@
             });
         }
 
-        /*课程上下架操作*/
+        /*课程上删除操作*/
         function video_operation(_this, id, type) {
             if ($.inArray(type, [1, 2]) <= -1) {
                 return false;
@@ -204,7 +198,7 @@
                 msg = '上架';
                 url = "/exercise/start.html";
             } else if (type === 2) {
-                msg = '下架';
+                msg = '删除';
                 url = "/exercise/del.html";
             } else {
                 return false;
@@ -254,7 +248,7 @@
                 msg = '上架';
                 url = "/exercise/start.html";
             } else if (type === 2) {
-                msg = '下架';
+                msg = '删除';
                 url = "/exercise/del.html";
             } else {
                 return false;

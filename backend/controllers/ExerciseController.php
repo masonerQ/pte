@@ -230,10 +230,10 @@
             Yii::$app->response->format = Response::FORMAT_JSON;
             if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
                 $ids = Yii::$app->request->post('id');
-                if (is_array($ids) && OnlineExercise::updateAll(['status' => OnlineExercise::STATUS_DELETED], ['id' => $ids])) {
-                    return ['code' => 200, 'msg' => '下架成功'];
+                if (is_array($ids) && OnlineExercise::deleteAll(['id' => $ids])) {
+                    return ['code' => 200, 'msg' => '删除成功'];
                 } else {
-                    return ['code' => 203, 'msg' => '下架失败'];
+                    return ['code' => 203, 'msg' => '删除失败'];
                 }
             }
             return ['code' => 203, 'msg' => '非法操作'];
