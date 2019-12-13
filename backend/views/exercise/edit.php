@@ -83,12 +83,12 @@
                                    lay-verify="audio_link" autocomplete="off" class="layui-input"
                                    value="<?= $model->audio_link; ?>"/>
                         </div>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" style="width: 25%;">
                             <div class="layui-upload">
                                 <button type="button" class="layui-btn" id="audio_link">上传</button>
                                 <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                                     <div class="layui-upload-list" id="audio_link_preview">
-                                        <video controls="controls" width="115" height="100" src="" alt="" class="layui-upload-img"></video>
+                                        <audio controls="controls" width="115" height="100" src="https://static.pte.heiwangke.net/<?= $model->audio_link; ?>" alt="" class="layui-upload-img"></audio>
                                     </div>
                                 </blockquote>
                             </div>
@@ -134,12 +134,12 @@
                                    lay-verify="answer_audio_link" autocomplete="off" class="layui-input"
                                    value="<?= $model->answer ? ($model->answer)[0]->audio_link : ''; ?>"/>
                         </div>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" style="width: 25%;">
                             <div class="layui-upload">
                                 <button type="button" class="layui-btn" id="answer_audio_link">上传</button>
                                 <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                                     <div class="layui-upload-list" id="answer_audio_link_preview">
-                                        <video controls="controls" width="115" height="100" src="" alt="" class="layui-upload-img"></video>
+                                        <audio controls="controls" width="115" height="100" src="https://static.pte.heiwangke.net/<?= $model->answer ? ($model->answer)[0]->audio_link : ''; ?>" alt="" class="layui-upload-img"></audio>
                                     </div>
                                 </blockquote>
                             </div>
@@ -205,7 +205,7 @@
                     , before: function (obj) {
                         //预读本地文件示例，不支持ie8
                         obj.preview(function (index, file, result) {
-                            $('#audio_link_preview').html('<video controls="controls" width="115" height="100" src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                            $('#audio_link_preview').html('<audio controls="controls" width="115" height="100" src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
                         });
                     }
                     , done: function (res) {
@@ -229,7 +229,7 @@
                     , before: function (obj) {
                         //预读本地文件示例，不支持ie8
                         obj.preview(function (index, file, result) {
-                            $('#answer_audio_link_preview').html('<video controls="controls" width="115" height="100" src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                            $('#answer_audio_link_preview').html('<audio controls="controls" width="115" height="100" src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
                         });
                     }
                     , done: function (res) {
