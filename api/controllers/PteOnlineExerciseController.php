@@ -381,7 +381,7 @@
                 if ($type == 1) {
                     $CollectionModel          = new Collection();
                     $CollectionModel->cid     = $cid;
-                    $CollectionModel->top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();;;
+                    $CollectionModel->top_cid = OnlineExerciseCate::find()->where(['id' => $cid])->select('parent_id')->scalar();
                     $CollectionModel->exercise_id = $id;
                     $CollectionModel->level       = $level;
                     $CollectionModel->user_id     = Yii::$app->user->identity->getId();
