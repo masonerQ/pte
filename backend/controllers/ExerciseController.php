@@ -111,21 +111,19 @@
                     $OnlineExerciseAnswer->audio_link  = Yii::$app->request->post('answer_audio_link');
                     if ($OnlineExerciseAnswer->save()) {
                         //带下拉选项的题目
-                        if ($cid == 13) {
-                            $option    = Yii::$app->request->post('answer_option');
-                            $optionArr = explode('|', $option);
-                            if (count($optionArr) > 0) {
-                                $optionArr = array_filter($optionArr);
-                                foreach ($optionArr as $key => $value) {
-                                    $OnlineExerciseOption              = new OnlineExerciseOption();
-                                    $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
-                                    $OnlineExerciseOption->content     = $value;
-                                    if (!$OnlineExerciseOption->save()) {
-                                        $transaction->rollBack();
-                                        return ['code' => 203, 'msg' => '错误'];
-                                    }
-                                    unset($OnlineExerciseOption);
+                        $option    = Yii::$app->request->post('answer_option');
+                        $optionArr = explode('|', $option);
+                        if (count($optionArr) > 0) {
+                            $optionArr = array_filter($optionArr);
+                            foreach ($optionArr as $key => $value) {
+                                $OnlineExerciseOption              = new OnlineExerciseOption();
+                                $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
+                                $OnlineExerciseOption->content     = $value;
+                                if (!$OnlineExerciseOption->save()) {
+                                    $transaction->rollBack();
+                                    return ['code' => 203, 'msg' => '错误'];
                                 }
+                                unset($OnlineExerciseOption);
                             }
                         }
                         $transaction->commit();
@@ -183,22 +181,20 @@
                     $OnlineExerciseAnswer->audio_link = Yii::$app->request->post('answer_audio_link');
                     if ($OnlineExerciseAnswer->save()) {
                         //带下拉选项的题目
-                        if ($OnlineExercise->cate_id == 13) {
-                            $option    = Yii::$app->request->post('answer_option');
-                            $optionArr = explode('|', $option);
-                            if (count($optionArr) > 0) {
-                                $optionArr = array_filter($optionArr);
-                                OnlineExerciseOption::deleteAll(['exercise_id' => $OnlineExercise->id]);
-                                foreach ($optionArr as $key => $value) {
-                                    $OnlineExerciseOption              = new OnlineExerciseOption();
-                                    $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
-                                    $OnlineExerciseOption->content     = $value;
-                                    if (!$OnlineExerciseOption->save()) {
-                                        $transaction->rollBack();
-                                        return ['code' => 203, 'msg' => '错误'];
-                                    }
-                                    unset($OnlineExerciseOption);
+                        $option    = Yii::$app->request->post('answer_option');
+                        $optionArr = explode('|', $option);
+                        if (count($optionArr) > 0) {
+                            $optionArr = array_filter($optionArr);
+                            OnlineExerciseOption::deleteAll(['exercise_id' => $OnlineExercise->id]);
+                            foreach ($optionArr as $key => $value) {
+                                $OnlineExerciseOption              = new OnlineExerciseOption();
+                                $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
+                                $OnlineExerciseOption->content     = $value;
+                                if (!$OnlineExerciseOption->save()) {
+                                    $transaction->rollBack();
+                                    return ['code' => 203, 'msg' => '错误'];
                                 }
+                                unset($OnlineExerciseOption);
                             }
                         }
                         $transaction->commit();
