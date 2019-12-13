@@ -243,9 +243,11 @@
                         unset($PassExamIsExists);
                     }
                 }
+
                 $onlineExercise['is_collection']    = $isCollection;
                 $onlineExercise['collection_level'] = $collection_level;
                 $onlineExercise['is_pass']          = $isPass;
+                $onlineExercise['top_cid']          = OnlineExerciseCate::find()->where(['id' => $onlineExercise['cate_id']])->select('parent_id')->scalar();;
 
                 $type     = $onlineExercise['type'];
                 $min_type = $onlineExercise['min_type'];
