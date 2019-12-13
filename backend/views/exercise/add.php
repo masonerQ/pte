@@ -45,6 +45,9 @@
                         <textarea type="text" id="L_content" name="content" required="" lay-filter="content" lay-verify="content" autocomplete="off"
                                   class="layui-textarea"><?= $model->content; ?></textarea>
                     </div>
+                    <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
+                        <span class="x-red"></span>题目当中的答案占位符请用#wj#
+                    </div>
                 </div>
 
                 <?php if (in_array($Cate->id, [7])): ?>
@@ -103,7 +106,7 @@
                                       autocomplete="off" class="layui-textarea"><?= $answerList; ?></textarea>
                         </div>
                         <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                            <span class="x-red"></span>答案每个下拉框用竖线(英文)隔开: a,b,c|d,e,f|t,ta 下拉框里面的每个选项用逗号(英文)隔开:a,b,c
+                            <span class="x-red"></span>答案每个下拉框用竖线(英文)隔开: a#b#c|d#e#f|t#ta 下拉框里面的每个选项用#号(英文)隔开:a#b#c
                         </div>
                     </div>
                 <?php endif; ?>
@@ -117,7 +120,7 @@
                                   class="layui-textarea"><?= $model->answer ? $model->answer->content : ''; ?></textarea>
                     </div>
                     <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                        <span class="x-red"></span><?php if (in_array($Cate->id, [11, 12, 13])): ?>答案请用英文逗号隔开,例如: xxx,ttt,bbb,ccc    当中的逗号请一定输入英文的逗号<?php else: ?><?php endif; ?>
+                        <span class="x-red"></span><?php if (in_array($Cate->id, [11, 12, 13])): ?>答案请用英文#号隔开,例如: xxx#ttt#bbb#ccc    当中的#号请一定输入英文的#号<?php else: ?><?php endif; ?>
                     </div>
                 </div>
 

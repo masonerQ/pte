@@ -46,7 +46,7 @@
                                   class="layui-textarea"><?= $model->content; ?></textarea>
                     </div>
                     <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                        <span class="x-red"></span>题目当中的占位符请用#wj#
+                        <span class="x-red"></span>题目当中答案的占位符请用#wj#
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                                       autocomplete="off" class="layui-textarea"><?= $answerOptionList; ?></textarea>
                         </div>
                         <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                            <span class="x-red"></span>每组选项请用英文|隔开(xxx,ttt|bbb,ccc|ee,gg,xxx|ttt,rrr), 选项当中的每项用英文逗号隔开, 逗号请一定输入英文的逗号
+                            <span class="x-red"></span>每组选项请用英文|隔开(xxx#ttt|bbb#ccc|ee#gg#xxx|ttt#rrr), 选项当中的每项用英文#号隔开, 逗号请一定输入英文的#号
                         </div>
                     </div>
                 <?php endif; ?>
@@ -120,7 +120,7 @@
                                   class="layui-textarea"><?= $model->answer ? ($model->answer)[0]->content : ''; ?></textarea>
                     </div>
                     <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                        <span class="x-red"></span>答案请用英文逗号隔开(xxx,ttt,bbb,ccc)    当中的逗号请一定输入英文的逗号
+                        <span class="x-red"></span>答案请用英文#隔开(xxx#ttt#bbb#ccc)    当中的逗号请一定输入英文的逗号
                     </div>
                 </div>
 
