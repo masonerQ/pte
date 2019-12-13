@@ -15,7 +15,7 @@
 
                 <div class="layui-form-item">
                     <label for="L_cate_id" class="layui-form-label">
-                        <span class="x-red">*</span>题目分类
+                        <!--<span class="x-red">*</span>-->题目分类
                     </label>
                     <div class="layui-input-inline">
                         <input readonly type="text" id="L_cate_id" name="cate_id" required="" lay-filter="cate_id" lay-verify="cate_id"
@@ -29,7 +29,7 @@
 
                 <div class="layui-form-item layui-form-text">
                     <label for="L_title" class="layui-form-label">
-                        <span class="x-red">*</span>题目标题
+                        <!--<span class="x-red">*</span>-->题目标题
                     </label>
                     <div class="layui-input-block">
                         <textarea type="text" id="L_title" name="title" required="" lay-filter="title" lay-verify="title" autocomplete="off"
@@ -39,7 +39,7 @@
 
                 <div class="layui-form-item layui-form-text">
                     <label for="L_content" class="layui-form-label">
-                        <span class="x-red">*</span>题目内容
+                        <!--<span class="x-red">*</span>-->题目内容
                     </label>
                     <div class="layui-input-block">
                         <textarea type="text" id="L_content" name="content" required="" lay-filter="content" lay-verify="content" autocomplete="off"
@@ -53,7 +53,7 @@
                 <?php if (in_array($model->cate_id, [18])): ?>
                     <div class="layui-form-item">
                         <label for="L_img_link" class="layui-form-label">
-                            <span class="x-red">*</span>题目图片
+                            <!--<span class="x-red">*</span>-->题目图片
                         </label>
                         <div class="layui-input-inline" style="width: 250px;">
                             <input readonly type="text" id="L_img_link" name="img_link" required="" lay-verify="img_link" autocomplete="off"
@@ -76,7 +76,7 @@
                 <?php if (in_array($model->cate_id, [5, 7, 8, 14, 15, 19])): ?>
                     <div class="layui-form-item">
                         <label for="L_audio_link" class="layui-form-label">
-                            <span class="x-red">*</span>题目音频
+                            <!--<span class="x-red">*</span>-->题目音频
                         </label>
                         <div class="layui-input-inline" style="width: 250px;">
                             <input readonly type="text" id="L_audio_link" name="audio_link" required="" lay-filter="audio_link"
@@ -99,7 +99,7 @@
                 <?php if (in_array($model->cate_id, [13])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_option" class="layui-form-label">
-                            <span class="x-red">*</span>答案选项
+                            <!--<span class="x-red">*</span>-->答案选项
                         </label>
                         <div class="layui-input-block">
                             <textarea id="L_answer_option" name="answer_option" required="" lay-filter="answer_option" lay-verify="cate_id"
@@ -112,7 +112,7 @@
                 <?php endif; ?>
                 <div class="layui-form-item layui-form-text">
                     <label for="L_answer_content" class="layui-form-label">
-                        <span class="x-red">*</span> <?php if (in_array($model->cate_id, [11, 12, 13])): ?>答案列表<?php else: ?>文字答案<?php endif; ?>
+                        <!--<span class="x-red">*</span>--> <?php if (in_array($model->cate_id, [11, 12, 13])): ?>答案列表<?php else: ?>文字答案<?php endif; ?>
                     </label>
                     <div class="layui-input-block">
                         <textarea type="text" id="L_answer_content" name="answer_content" required="" lay-filter="answer_content"
@@ -127,7 +127,7 @@
                 <?php if (in_array($model->cate_id, [5, 7, 8])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_audio_link" class="layui-form-label">
-                            <span class="x-red">*</span>音频答案
+                            <!--<span class="x-red">*</span>-->音频答案
                         </label>
                         <div class="layui-input-inline" style="width: 250px;">
                             <input readonly type="text" id="L_answer_audio_link" name="answer_audio_link" required="" lay-filter="answer_audio_link"
