@@ -115,8 +115,7 @@
                         $optionArr = explode('|', $option);
                         $optionArrAfterFilter = array_filter($optionArr);
                         if (count($optionArrAfterFilter) > 0) {
-                            $optionArr = array_filter($optionArr);
-                            foreach ($optionArr as $key => $value) {
+                            foreach ($optionArrAfterFilter as $key => $value) {
                                 $OnlineExerciseOption              = new OnlineExerciseOption();
                                 $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
                                 $OnlineExerciseOption->content     = $value;
@@ -186,9 +185,8 @@
                         $optionArr = explode('|', $option);
                         $optionArrAfterFilter = array_filter($optionArr);
                         if (count($optionArrAfterFilter) > 0) {
-                            $optionArr = array_filter($optionArr);
                             OnlineExerciseOption::deleteAll(['exercise_id' => $OnlineExercise->id]);
-                            foreach ($optionArr as $key => $value) {
+                            foreach ($optionArrAfterFilter as $key => $value) {
                                 $OnlineExerciseOption              = new OnlineExerciseOption();
                                 $OnlineExerciseOption->exercise_id = $OnlineExercise->id;
                                 $OnlineExerciseOption->content     = $value;
