@@ -45,6 +45,9 @@
                         <textarea type="text" id="L_content" name="content" required="" lay-filter="content" lay-verify="content" autocomplete="off"
                                   class="layui-textarea"><?= $model->content; ?></textarea>
                     </div>
+                    <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
+                        <span class="x-red"></span>题目当中的答案占位符请用#wj#
+                    </div>
                 </div>
 
                 <?php if (in_array($Cate->id, [7])): ?>

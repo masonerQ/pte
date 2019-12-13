@@ -46,7 +46,7 @@
                                   class="layui-textarea"><?= $model->content; ?></textarea>
                     </div>
                     <div class="layui-form-mid layui-word-aux" style="margin-left: 110px;">
-                        <span class="x-red"></span>题目当中的占位符请用#wj#
+                        <span class="x-red"></span>题目当中答案的占位符请用#wj#
                     </div>
                 </div>
 
