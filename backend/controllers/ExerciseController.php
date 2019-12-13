@@ -111,8 +111,8 @@
                     $OnlineExerciseAnswer->audio_link  = Yii::$app->request->post('answer_audio_link');
                     if ($OnlineExerciseAnswer->save()) {
                         //带下拉选项的题目
-                        $option    = Yii::$app->request->post('answer_option');
-                        $optionArr = explode('|', $option);
+                        $option               = Yii::$app->request->post('answer_option');
+                        $optionArr            = explode('|', $option);
                         $optionArrAfterFilter = array_filter($optionArr);
                         if (count($optionArrAfterFilter) > 0) {
                             foreach ($optionArrAfterFilter as $key => $value) {
@@ -181,8 +181,8 @@
                     $OnlineExerciseAnswer->audio_link = Yii::$app->request->post('answer_audio_link');
                     if ($OnlineExerciseAnswer->save()) {
                         //带下拉选项的题目
-                        $option    = Yii::$app->request->post('answer_option');
-                        $optionArr = explode('|', $option);
+                        $option               = Yii::$app->request->post('answer_option');
+                        $optionArr            = explode('|', $option);
                         $optionArrAfterFilter = array_filter($optionArr);
                         if (count($optionArrAfterFilter) > 0) {
                             OnlineExerciseOption::deleteAll(['exercise_id' => $OnlineExercise->id]);
@@ -213,7 +213,7 @@
             // $this->getTree($query, 0, $option, $cid, true);
 
             $answerOptionArr = [];
-            $answerOption = OnlineExerciseOption::find()->where(['exercise_id' => $id])->all();
+            $answerOption    = OnlineExerciseOption::find()->where(['exercise_id' => $id])->all();
             foreach ($answerOption as $key => $value) {
                 array_unshift($answerOptionArr, $value['content']);
             }
