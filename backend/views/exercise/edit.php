@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <?php if (in_array($model->cate_id, [18])): ?>
+                <?php if (in_array($model->cate_id, [7])): ?>
                     <div class="layui-form-item">
                         <label for="L_img_link" class="layui-form-label">
                             <!--<span class="x-red">*</span>-->题目图片
@@ -73,7 +73,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($model->cate_id, [5, 7, 8, 14, 15, 19])): ?>
+                <?php if (in_array($model->cate_id, [6, 18, 8, 14, 15, 19])): ?>
                     <div class="layui-form-item">
                         <label for="L_audio_link" class="layui-form-label">
                             <!--<span class="x-red">*</span>-->题目音频
@@ -96,7 +96,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (in_array($model->cate_id, [13])): ?>
+                <?php if (in_array($model->cate_id, [11])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_option" class="layui-form-label">
                             <!--<span class="x-red">*</span>-->答案选项
@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <?php if (in_array($model->cate_id, [5, 7, 8])): ?>
+                <?php if (in_array($model->cate_id, [5, 6, 7, 8, 18])): ?>
                     <div class="layui-form-item">
                         <label for="L_answer_audio_link" class="layui-form-label">
                             <!--<span class="x-red">*</span>-->音频答案
