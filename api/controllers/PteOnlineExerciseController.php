@@ -275,7 +275,14 @@
 
             $current_num = OnlineExercise::find()->where(['cate_id' => $onlineExercise['cate_id']])->andWhere(['<=', 'id', $eid])->count();
 
-            return ['exercise' => $onlineExercise, 'current_num'=>$current_num,'count' => $count, 'prev' => $prev, 'next' => $next, 'answer' => $answer];
+            return [
+                'exercise'    => $onlineExercise,
+                'current_num' => $current_num,
+                'count'       => $count,
+                'prev'        => $prev,
+                'next'        => $next,
+                'answer'      => $answer
+            ];
         }
 
         /**
@@ -355,11 +362,11 @@
          */
         public function actionCollection()
         {
-            $id    = Yii::$app->request->post('id');
-            $cid   = Yii::$app->request->post('cid', 1);
-            $level = Yii::$app->request->post('level', 1);
-            $type  = Yii::$app->request->post('type', 0);
-            if (!$id || $cid || !$type) {
+            $id    = (int)Yii::$app->request->post('id', 0);
+            $cid   = (int)Yii::$app->request->post('cid', 0);
+            $type  = (int)Yii::$app->request->post('type', 0);
+            $level = (int)Yii::$app->request->post('level', 1);
+            if (!$id || !$cid || !$type) {
                 Yii::$app->response->statusCode = 203;
                 Yii::$app->response->statusText = '参数不正确';
                 return false;
