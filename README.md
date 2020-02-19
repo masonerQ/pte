@@ -1,3 +1,3 @@
 <p align="center">
-pte 无界教育
+pte 教育
 </p>
